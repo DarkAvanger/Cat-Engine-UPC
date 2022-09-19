@@ -22,8 +22,8 @@ PhysVehicle3D::~PhysVehicle3D()
 
 // ----------------------------------------------------------------------------
 void PhysVehicle3D::Render()
-{
-	Cylinder wheel;
+{}
+	/*Cylinder wheel;
 
 	wheel.color = Blue;
 
@@ -92,4 +92,4 @@ void PhysVehicle3D::Turn(float degrees)
 float PhysVehicle3D::GetKmh() const
 {
 	return vehicle->getCurrentSpeedKmHour();
-}
+}*/

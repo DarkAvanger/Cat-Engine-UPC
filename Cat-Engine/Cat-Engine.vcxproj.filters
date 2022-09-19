@@ -51,6 +51,12 @@
     <ClCompile Include="Source Code\ModuleWindow.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\imgui_impl_opengl2.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\imgui_impl_sdl.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -112,6 +118,12 @@
     <ClInclude Include="Source Code\ModuleWindow.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\imgui_impl_opengl2.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\imgui_impl_sdl.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -134,6 +146,9 @@
     </Filter>
     <Filter Include="Sources\Phys">
       <UniqueIdentifier>{d6bc8b5b-2618-4a0c-adb9-653ea0b7dbf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui">
+      <UniqueIdentifier>{f925da59-90d8-44ad-8e0a-0b4c115363a6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
