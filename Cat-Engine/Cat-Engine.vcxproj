@@ -79,23 +79,17 @@
     <ClInclude Include="Source Code\Color.h" />
     <ClInclude Include="Source Code\glmath.h" />
     <ClInclude Include="Source Code\Globals.h" />
-    <ClInclude Include="Source Code\imgui_impl_opengl2.h" />
-    <ClInclude Include="Source Code\imgui_impl_sdl.h" />
     <ClInclude Include="Source Code\Light.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleAudio.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
     <ClInclude Include="Source Code\ModuleInput.h" />
-    <ClInclude Include="Source Code\ModulePhysics3D.h" />
-    <ClInclude Include="Source Code\ModulePlayer.h" />
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
     <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
     <ClInclude Include="Source Code\p2DynArray.h" />
     <ClInclude Include="Source Code\p2List.h" />
     <ClInclude Include="Source Code\p2Point.h" />
-    <ClInclude Include="Source Code\PhysBody3D.h" />
-    <ClInclude Include="Source Code\PhysVehicle3D.h" />
     <ClInclude Include="Source Code\Primitive.h" />
     <ClInclude Include="Source Code\Timer.h" />
   </ItemGroup>
@@ -103,21 +97,15 @@
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Color.cpp" />
     <ClCompile Include="Source Code\glmath.cpp" />
-    <ClCompile Include="Source Code\imgui_impl_opengl2.cpp" />
-    <ClCompile Include="Source Code\imgui_impl_sdl.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
     <ClCompile Include="Source Code\ModuleAudio.cpp" />
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
     <ClCompile Include="Source Code\ModuleInput.cpp" />
-    <ClCompile Include="Source Code\ModulePhysics3D.cpp" />
-    <ClCompile Include="Source Code\ModulePlayer.cpp" />
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
     <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
-    <ClCompile Include="Source Code\PhysBody3D.cpp" />
-    <ClCompile Include="Source Code\PhysVehicle3D.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
   </ItemGroup>

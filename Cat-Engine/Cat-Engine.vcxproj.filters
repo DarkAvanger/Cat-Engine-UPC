@@ -21,12 +21,6 @@
     <ClCompile Include="Source Code\Timer.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\PhysBody3D.cpp">
-      <Filter>Sources\Phys</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\PhysVehicle3D.cpp">
-      <Filter>Sources\Phys</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\ModuleAudio.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -34,12 +28,6 @@
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleInput.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\ModulePhysics3D.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\ModulePlayer.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
@@ -50,12 +38,6 @@
     </ClCompile>
     <ClCompile Include="Source Code\ModuleWindow.cpp">
       <Filter>Sources\Modules</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\imgui_impl_opengl2.cpp">
-      <Filter>Externals\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\imgui_impl_sdl.cpp">
-      <Filter>Externals\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,12 +67,6 @@
     <ClInclude Include="Source Code\Timer.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\PhysVehicle3D.h">
-      <Filter>Sources\Phys</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\PhysBody3D.h">
-      <Filter>Sources\Phys</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\Module.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -103,12 +79,6 @@
     <ClInclude Include="Source Code\ModuleInput.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\ModulePhysics3D.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\ModulePlayer.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\ModuleRenderer3D.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -117,12 +87,6 @@
     </ClInclude>
     <ClInclude Include="Source Code\ModuleWindow.h">
       <Filter>Sources\Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\imgui_impl_opengl2.h">
-      <Filter>Externals\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\imgui_impl_sdl.h">
-      <Filter>Externals\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
