@@ -4,6 +4,11 @@
 #include "glmath.h"
 #include "Light.h"
 
+#include "imgui/imgui.h"
+#include "Imgui/imgui_internal.h"
+#include "Imgui/imgui_impl_sdl.h"
+#include "Imgui/imgui_impl_opengl3.h"
+
 #define MAX_LIGHTS 8
 
 class ModuleRenderer3D : public Module

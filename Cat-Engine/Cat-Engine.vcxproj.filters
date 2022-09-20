@@ -108,11 +108,5 @@
     <Filter Include="Sources\Tools">
       <UniqueIdentifier>{8e0c9a80-4973-471c-a09c-85dcbd23adb9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Phys">
-      <UniqueIdentifier>{d6bc8b5b-2618-4a0c-adb9-653ea0b7dbf3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Externals\ImGui">
-      <UniqueIdentifier>{f925da59-90d8-44ad-8e0a-0b4c115363a6}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
 </Project>
