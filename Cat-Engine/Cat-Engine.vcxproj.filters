@@ -39,6 +39,27 @@
     <ClCompile Include="Source Code\ModuleWindow.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\imgui.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\imgui_demo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\imgui_draw.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\imgui_tables.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\imgui_widgets.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Externals\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\imgui\backends\imgui_impl_sdl.cpp">
+      <Filter>Externals\ImGui\backends</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -88,6 +109,33 @@
     <ClInclude Include="Source Code\ModuleWindow.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imconfig.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imgui.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imgui_internal.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imstb_rectpack.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imstb_textedit.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\imstb_truetype.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\backends\imgui_impl_opengl3.h">
+      <Filter>Externals\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Externals\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\imgui\backends\imgui_impl_sdl.h">
+      <Filter>Externals\ImGui\backends</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -107,6 +155,12 @@
     </Filter>
     <Filter Include="Sources\Tools">
       <UniqueIdentifier>{8e0c9a80-4973-471c-a09c-85dcbd23adb9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui">
+      <UniqueIdentifier>{274ee927-b762-4163-a733-c9e9ad38a4cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui\backends">
+      <UniqueIdentifier>{8d4817ac-1b58-4bc2-aafd-25865712c6f4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
