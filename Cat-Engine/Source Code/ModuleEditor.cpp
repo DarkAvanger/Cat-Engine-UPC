@@ -46,10 +46,6 @@ update_status ModuleEditor::Update(float dt)
 		ImGui::ShowDemoWindow(&demo);
 
 	}
-	else if (App->input->GetKey(SDL_SCANCODE_R) == KEY_DOWN)
-	{
-		ImGui::End;
-	}
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
