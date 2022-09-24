@@ -4,11 +4,7 @@
 #include "glmath.h"
 #include "Light.h"
 
-//ImGui
-/*#include "imgui/imgui.h"
-#include "Imgui/imgui_internal.h"
-#include "Imgui/imgui_impl_sdl.h"
-#include "Imgui/imgui_impl_opengl3.h"*/
+
 
 #define MAX_LIGHTS 8
 
@@ -21,7 +17,6 @@ public:
 	bool Init();
 	update_status PreUpdate(float dt);
 	update_status PostUpdate(float dt);
-	update_status Update(float dt);
 	bool CleanUp();
 
 	void OnResize(int width, int height);

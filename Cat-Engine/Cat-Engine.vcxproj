@@ -89,6 +89,7 @@
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
     <ClInclude Include="Source Code\ModuleInput.h" />
     <ClInclude Include="Source Code\ModuleRenderer3D.h" />
+    <ClInclude Include="Source Code\ModuleSceneIntro.h" />
     <ClInclude Include="Source Code\ModuleWindow.h" />
     <ClInclude Include="Source Code\p2DynArray.h" />
     <ClInclude Include="Source Code\p2List.h" />
@@ -107,6 +108,7 @@
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
     <ClCompile Include="Source Code\ModuleInput.cpp" />
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp" />
+    <ClCompile Include="Source Code\ModuleSceneIntro.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
