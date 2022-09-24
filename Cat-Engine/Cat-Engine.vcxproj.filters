@@ -33,9 +33,6 @@
     <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\ModuleSceneIntro.cpp">
-      <Filter>Sources\Modules</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\ModuleWindow.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
@@ -59,6 +56,9 @@
     </ClCompile>
     <ClCompile Include="Source Code\External Libraries\imgui\backends\imgui_impl_sdl.cpp">
       <Filter>Externals\ImGui\backends</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleEditor.cpp">
+      <Filter>Sources\Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -103,9 +103,6 @@
     <ClInclude Include="Source Code\ModuleRenderer3D.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\ModuleSceneIntro.h">
-      <Filter>Sources\Modules</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\ModuleWindow.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\imgui\backends\imgui_impl_sdl.h">
       <Filter>Externals\ImGui\backends</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleEditor.h">
+      <Filter>Sources\Modules</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

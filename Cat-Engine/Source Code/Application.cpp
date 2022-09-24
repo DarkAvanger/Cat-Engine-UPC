@@ -5,9 +5,9 @@ Application::Application()
 	window = new ModuleWindow(this);
 	input = new ModuleInput(this);
 	audio = new ModuleAudio(this, true);
-	scene_intro = new ModuleSceneIntro(this);
 	renderer3D = new ModuleRenderer3D(this);
 	camera = new ModuleCamera3D(this);
+
 
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
@@ -19,8 +19,6 @@ Application::Application()
 	AddModule(input);
 	AddModule(audio);
 	
-	// Scenes
-	AddModule(scene_intro);
 
 	// Renderer last!
 	AddModule(renderer3D);

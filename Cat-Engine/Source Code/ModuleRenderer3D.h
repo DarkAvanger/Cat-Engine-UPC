@@ -4,6 +4,9 @@
 #include "glmath.h"
 #include "Light.h"
 
+#include "imgui/imgui.h"
+#include "imgui/backends/imgui_impl_sdl.h"
+#include "imgui/backends/imgui_impl_opengl3.h"
 
 
 #define MAX_LIGHTS 8
