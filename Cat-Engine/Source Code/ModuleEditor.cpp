@@ -42,19 +42,33 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {
-	
-
 	ImGui::ShowDemoWindow(&demo);
 
-	
 	ImGui::BeginMainMenuBar();
 
-	if (ImGui::Button("Quit"))
+	if (ImGui::BeginMenu("File"))
 	{
-		return UPDATE_STOP;
+		if (ImGui::Button("Quit"))
+		{
+			return UPDATE_STOP;
+		}
+	
+	ImGui::EndMenu();
+	}
+	if (ImGui::BeginMenu("About"))
+	{
+		if (ImGui::MenuItem("Documentation"))
+			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC");
+
+		if (ImGui::MenuItem("Download latest"))
+			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/releases");
+
+		if (ImGui::MenuItem("Report a bug"))
+			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/issues");
+
+		ImGui::EndMenu();
 	}
 	ImGui::EndMainMenuBar();
-	
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
