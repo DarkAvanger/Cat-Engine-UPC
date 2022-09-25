@@ -14,7 +14,7 @@ public:
 	~ModuleEditor();
 
 	update_status Update(float dt);
-	update_status PostUpdate(float dt);
+	update_status PreUpdate(float dt);
 	bool CleanUp();
 	bool Start();
 
