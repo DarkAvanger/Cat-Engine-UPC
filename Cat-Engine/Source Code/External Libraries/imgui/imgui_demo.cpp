@@ -619,7 +619,7 @@ static void ShowDemoWindowWidgets()
         ImGui::Text("Hold to repeat:");
         ImGui::SameLine();
 
-        // Arrow buttons with Repeater
+        // Arrow buttons with Repeater  HiPo
         IMGUI_DEMO_MARKER("Widgets/Basic/Buttons (Repeating)");
         static int counter = 0;
         float spacing = ImGui::GetStyle().ItemInnerSpacing.x;

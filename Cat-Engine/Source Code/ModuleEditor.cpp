@@ -4,7 +4,7 @@
 #include "ModuleWindow.h"
 #include "ModuleRenderer3D.h"
 
-
+//Search HiPo for interesting information
 
 ModuleEditor::ModuleEditor(Application* app, bool start_enabled) : Module(app, start_enabled)
 {
@@ -39,14 +39,16 @@ update_status ModuleEditor::Update(float dt)
 
 	ImGui::ShowDemoWindow(&demo);
 
+	
 	ImGui::BeginMainMenuBar();
-	//ImGui::Text("Close Menu");
 
 	if (ImGui::Button("Quit"))
 	{
 		return UPDATE_STOP;
 	}
+
 	ImGui::EndMainMenuBar();
+	
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
