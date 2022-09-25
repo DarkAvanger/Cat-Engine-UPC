@@ -31,11 +31,18 @@ bool ModuleEditor::Start()
 	return ret;
 }
 
-update_status ModuleEditor::Update(float dt)
+update_status ModuleEditor::PreUpdate(float dt)
 {
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
+
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleEditor::Update(float dt)
+{
+	
 
 	ImGui::ShowDemoWindow(&demo);
 
@@ -46,7 +53,6 @@ update_status ModuleEditor::Update(float dt)
 	{
 		return UPDATE_STOP;
 	}
-
 	ImGui::EndMainMenuBar();
 	
 
@@ -55,12 +61,7 @@ update_status ModuleEditor::Update(float dt)
 
 	return UPDATE_CONTINUE;
 }
-update_status ModuleEditor::PostUpdate(float dt)
-{
 
-
-	return UPDATE_CONTINUE;
-}
 
 // Called before quitting
 bool ModuleEditor::CleanUp()
