@@ -37,17 +37,25 @@ update_status ModuleEditor::Update(float dt)
 	ImGui_ImplSDL2_NewFrame(App->window->window);
 	ImGui::NewFrame();
 
-	if (App->input->GetKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		demo = !demo;
-	}
-	if (demo)
-	{
-		ImGui::ShowDemoWindow(&demo);
+	ImGui::ShowDemoWindow(&demo);
 
+	ImGui::BeginMainMenuBar();
+	//ImGui::Text("Close Menu");
+
+	if (ImGui::Button("Quit"))
+	{
+		return UPDATE_STOP;
 	}
+	ImGui::EndMainMenuBar();
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+	return UPDATE_CONTINUE;
+}
+update_status ModuleEditor::PostUpdate(float dt)
+{
+
 
 	return UPDATE_CONTINUE;
 }
