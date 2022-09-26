@@ -70,15 +70,6 @@
     <ClInclude Include="Source Code\Light.h">
       <Filter>Sources\Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\p2DynArray.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2List.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\p2Point.h">
-      <Filter>Sources\Containers</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\Primitive.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
