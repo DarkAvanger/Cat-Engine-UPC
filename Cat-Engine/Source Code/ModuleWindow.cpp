@@ -78,10 +78,11 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
+	/*if (window != NULL)
 	{
 		SDL_DestroyWindow(window);
-	}
+	}*/
+	SDL_DestroyWindow(window);
 
 	//Quit SDL subsystems
 	SDL_Quit();

@@ -24,9 +24,6 @@ bool ModuleEditor::Start()
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer3D->context);
 	ImGui_ImplOpenGL3_Init();
 	ImGui::StyleColorsDark();
-	bool show_demo_window = true;
-	bool show_another_window = false;
-	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	return ret;
 }
@@ -42,7 +39,7 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {
-	ImGui::ShowDemoWindow(&demo);
+	//ImGui::ShowDemoWindow(&demo);
 
 	ImGui::BeginMainMenuBar();
 
