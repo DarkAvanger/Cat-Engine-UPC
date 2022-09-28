@@ -39,7 +39,12 @@ update_status ModuleEditor::PreUpdate(float dt)
 
 update_status ModuleEditor::Update(float dt)
 {
-	//ImGui::ShowDemoWindow(&demo);
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleEditor::PostUpdate(float dt)
+{
+	ImGui::ShowDemoWindow(&demo);
 
 	ImGui::BeginMainMenuBar();
 
@@ -57,8 +62,8 @@ update_status ModuleEditor::Update(float dt)
 		{
 			return UPDATE_STOP;
 		}
-	
-	ImGui::EndMenu();
+
+		ImGui::EndMenu();
 	}
 	if (ImGui::BeginMenu("About"))
 	{
