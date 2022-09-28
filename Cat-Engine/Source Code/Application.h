@@ -9,6 +9,7 @@
 #include "ModuleCamera3D.h"
 #include "ModuleEditor.h"
 #include <list>
+using namespace std;
 
 
 class Application
@@ -24,7 +25,7 @@ private:
 
 	Timer	ms_timer;
 	float	dt;
-	std::list<Module*> list_modules;
+	list<Module*> list_modules;
 
 public:
 

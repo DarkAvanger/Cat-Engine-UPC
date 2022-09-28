@@ -92,5 +92,7 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
+	SDL_Quit();
+
 	return true;
 }
