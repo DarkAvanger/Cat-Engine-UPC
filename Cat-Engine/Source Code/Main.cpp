@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "Application.h"
 #include "Globals.h"
+#include "MemoryLeaks.h"
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
@@ -81,7 +82,7 @@ int main(int argc, char ** argv)
 
 		}
 	}
-
+	ReportMemoryLeaks();
 	delete App;
 	LOG("Exiting game '%s'...\n", TITLE);
 	return main_return;

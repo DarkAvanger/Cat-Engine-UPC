@@ -121,6 +121,7 @@
     <ClInclude Include="Source Code\ModuleEditor.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\MemoryLeaks.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">

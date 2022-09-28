@@ -135,6 +135,15 @@ update_status ModuleRenderer3D::PreUpdate(float dt)
 // PostUpdate present buffer to screen
 update_status ModuleRenderer3D::PostUpdate(float dt)
 {
+	if (App->input->GetKey(SDL_SCANCODE_M))
+	{
+		glLineWidth(2.0f);
+		glBegin(GL_LINES);
+		glVertex3f(0.f, 0.f, 0.f);
+		glVertex3f(0.f, 10.f, 0.f);
+		glEnd();
+		glLineWidth(1.0f);
+	}
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -145,6 +154,7 @@ bool ModuleRenderer3D::CleanUp()
 	LOG("Destroying 3D Renderer");
 
 	SDL_GL_DeleteContext(context);
+	
 
 	return true;
 }
