@@ -48,7 +48,15 @@ update_status ModuleEditor::Update(float dt)
 
 	if (ImGui::BeginMenu("File"))
 	{
-		if (ImGui::Button("Quit"))
+		if (ImGui::MenuItem("New"))
+		{
+			return UPDATE_STOP;
+		}
+		if (ImGui::MenuItem("Open"))
+		{
+			return UPDATE_STOP;
+		}
+		if (ImGui::MenuItem("Quit"))
 		{
 			return UPDATE_STOP;
 		}
