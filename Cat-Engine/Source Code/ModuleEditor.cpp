@@ -65,7 +65,7 @@ update_status ModuleEditor::PostUpdate(float dt)
 
 		ImGui::EndMenu();
 	}
-	if (ImGui::BeginMenu("About"))
+	if (ImGui::BeginMenu("Help"))
 	{
 		if (ImGui::MenuItem("Documentation"))
 			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC");
@@ -75,6 +75,11 @@ update_status ModuleEditor::PostUpdate(float dt)
 
 		if (ImGui::MenuItem("Report a bug"))
 			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/issues");
+		if (ImGui::MenuItem("About"))
+		{
+			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/issues");
+		}
+			
 
 		ImGui::EndMenu();
 	}
