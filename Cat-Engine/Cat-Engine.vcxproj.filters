@@ -57,6 +57,12 @@
     <ClCompile Include="Source Code\ModuleEditor.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\MenuAbout.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Menu.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -122,6 +128,12 @@
       <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\MemoryLeaks.h" />
+    <ClInclude Include="Source Code\MenuAbout.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Menu.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -147,6 +159,9 @@
     </Filter>
     <Filter Include="Externals\ImGui\backends">
       <UniqueIdentifier>{8d4817ac-1b58-4bc2-aafd-25865712c6f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Menus">
+      <UniqueIdentifier>{b76a7cbd-aefb-47bf-8c2d-97dda2d99a6e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

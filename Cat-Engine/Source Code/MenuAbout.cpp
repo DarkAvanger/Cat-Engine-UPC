@@ -1,0 +1,1 @@
+#include "MenuAbout.h" //Here goes About window

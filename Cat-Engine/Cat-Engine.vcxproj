@@ -94,6 +94,8 @@
     <ClInclude Include="Source Code\Globals.h" />
     <ClInclude Include="Source Code\Light.h" />
     <ClInclude Include="Source Code\MemoryLeaks.h" />
+    <ClInclude Include="Source Code\Menu.h" />
+    <ClInclude Include="Source Code\MenuAbout.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
     <ClInclude Include="Source Code\ModuleEditor.h" />
@@ -117,6 +119,8 @@
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
+    <ClCompile Include="Source Code\Menu.cpp" />
+    <ClCompile Include="Source Code\MenuAbout.cpp" />
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
     <ClCompile Include="Source Code\ModuleEditor.cpp" />
     <ClCompile Include="Source Code\ModuleInput.cpp" />
