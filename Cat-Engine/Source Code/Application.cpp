@@ -18,6 +18,8 @@ Application::Application()
 	AddModule(camera);
 	AddModule(input);
 	AddModule(editor);
+
+	
 	
 
 	// Renderer last!

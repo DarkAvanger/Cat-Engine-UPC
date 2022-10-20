@@ -63,6 +63,9 @@
     <ClCompile Include="Source Code\Menu.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ModuleMesh.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -260,6 +263,21 @@
     <ClInclude Include="Source Code\External Libraries\DevIL\include\ilut_config.h">
       <Filter>Externals\DevIL</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Glew\include\eglew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Glew\include\glew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Glew\include\glxew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Glew\include\wglew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleMesh.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -297,6 +315,9 @@
     </Filter>
     <Filter Include="Externals\PhysFs">
       <UniqueIdentifier>{a69f5fad-ef7b-4fea-b7e5-c220d193eeaa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\Glew">
+      <UniqueIdentifier>{74b37d48-ba6a-4c47-9a56-bcf22288b224}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

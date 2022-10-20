@@ -75,9 +75,20 @@ update_status ModuleEditor::PostUpdate(float dt)
 
 		if (ImGui::MenuItem("Report a bug"))
 			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/issues");
+
 		if (ImGui::MenuItem("About"))
 		{
 			App->RequestBrowser("https://github.com/DarkAvanger/Cat-Engine-UPC/issues");
+			/*ImGui::SetNextWindowSize({350,250});
+			ImGuiWindowFlags inspectorFlags = 0;
+			inspectorFlags |= ImGuiWindowFlags_NoResize;
+			inspectorFlags |= ImGuiWindowFlags_NoFocusOnAppearing;
+			ImGui::Begin("");
+			ImGui::Text("Cat Engine");
+			ImGui::Spacing();
+			ImGui::Text("Game engine created at CITM Terrassa ");
+			ImGui::Separator();
+			ImGui::Text("Created by Angel Consola Lopez ");*/
 		}
 			
 
