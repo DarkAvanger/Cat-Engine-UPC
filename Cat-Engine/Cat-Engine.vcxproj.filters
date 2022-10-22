@@ -57,14 +57,38 @@
     <ClCompile Include="Source Code\ModuleEditor.cpp">
       <Filter>Sources\Modules</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ModuleMesh.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Json\parson.c">
+      <Filter>Externals\Json</Filter>
+    </ClCompile>
     <ClCompile Include="Source Code\MenuAbout.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Menu.cpp">
+    <ClCompile Include="Source Code\MenuConfig.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\ModuleMesh.cpp">
+    <ClCompile Include="Source Code\MenuConsole.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuHierarchy.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuInspector.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuViewport.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleScene.cpp">
       <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\GameObject.cpp">
+      <Filter>Sources\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuBar.cpp">
+      <Filter>Sources\Menus</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -131,12 +155,6 @@
       <Filter>Sources\Modules</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\MemoryLeaks.h" />
-    <ClInclude Include="Source Code\MenuAbout.h">
-      <Filter>Sources\Menus</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\Menu.h">
-      <Filter>Sources\Menus</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Assimp\Assimp\include\ai_assert.h">
       <Filter>Externals\Assimp</Filter>
     </ClInclude>
@@ -278,6 +296,42 @@
     <ClInclude Include="Source Code\ModuleMesh.h">
       <Filter>Sources\Modules</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Json\parson.h">
+      <Filter>Externals\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Menu.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuAbout.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuBar.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuConfig.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuConsole.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuHierarchy.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuInspector.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuViewport.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Primitives.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleScene.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\GameObject.h">
+      <Filter>Sources\GameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -318,6 +372,15 @@
     </Filter>
     <Filter Include="Externals\Glew">
       <UniqueIdentifier>{74b37d48-ba6a-4c47-9a56-bcf22288b224}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Buffers">
+      <UniqueIdentifier>{4a9b936a-9830-4311-9044-c00e8497a0fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameObject">
+      <UniqueIdentifier>{f6c3d2a9-5ef1-4ed6-a3f0-cb60ecb7a568}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\Json">
+      <UniqueIdentifier>{110ef863-de6d-4462-9bd1-346d11ee0de1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

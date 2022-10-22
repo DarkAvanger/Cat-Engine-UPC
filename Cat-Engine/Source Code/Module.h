@@ -2,6 +2,7 @@
 
 class Application;
 struct PhysBody3D;
+class JsonParsing;
 
 class Module
 {
@@ -20,6 +21,10 @@ public:
 	virtual bool Init() 
 	{
 		return true; 
+	}
+	virtual bool Init(JsonParsing& node)
+	{
+		return true;
 	}
 
 	virtual bool Start()
@@ -46,4 +51,16 @@ public:
 	{ 
 		return true; 
 	}
+
+	virtual bool LoadConfig(JsonParsing& node)
+	{
+		return true;
+	}
+
+	virtual bool SaveConfig(JsonParsing& node) const
+	{
+		return true;
+	}
+
+	const char* name;
 };
