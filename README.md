@@ -4,11 +4,11 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 
 ##Installation
 
-Download the latest release
+- Download the latest release
 
-Unzip de file
+- Unzip de file
 
-Open CatEngine.exe
+- Open CatEngine.exe
 
 ##Controls
 
