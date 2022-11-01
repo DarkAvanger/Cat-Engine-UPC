@@ -101,7 +101,7 @@ namespace RSphere
 {
 	void CreateSphere(std::vector<float3>& vertices, std::vector<float3>& normals, std::vector<unsigned int>& indices, std::vector<float2>& texCoords)
 	{
-
+		//To Do
 	}
 }
 
@@ -109,7 +109,7 @@ namespace RCylinder
 {
 	void CreateCylinder(std::vector<float3>& vertices, std::vector<float3>& normals, std::vector<unsigned int>& indices, std::vector<float2>& texCoords)
 	{
-		
+		//To Do
 	}
 }
 
