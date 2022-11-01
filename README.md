@@ -2,6 +2,14 @@
 
 Video Game Engine created for Game Engine subject at CITM UPC.
 
+##Installation
+
+Download the latest release
+
+Unzip de file
+
+Open CatEngine.exe
+
 ##Controls
 
 - Left shift: Double the camera movement speed.
