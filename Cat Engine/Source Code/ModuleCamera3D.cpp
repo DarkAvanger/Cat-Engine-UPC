@@ -108,31 +108,7 @@ bool ModuleCamera3D::Update(float dt)
 	if (app->input->GetMouseButton(SDL_BUTTON_LEFT) == KeyState::KEY_REPEAT &&
 		app->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT)
 	{
-		GameObject* target = app->editor->GetSelected();
-		if (target != nullptr)
-		{
-			float3 targetPos = {};
-			Quat targetRot = {};
-			float3 targetSize = {};
-			target->GetComponent<TransformComponent>()->GetTransform().Decompose(targetPos, targetRot, targetSize);
-			float3 distanceTarget = cameraFrustum.Pos() - targetPos;
-
-			Quat rotateOrbitY;
-			rotateOrbitY = rotateOrbitY.RotateY(-dX * dt);
-			rotateOrbitY.Normalize();
-
-			Quat rotateOrbitX;
-			rotateOrbitX = rotateOrbitX.RotateAxisAngle(cameraFrustum.WorldRight().Normalized(), -dY * dt);
-			rotateOrbitX.Normalize();
-			newUp =  rotateOrbitX * newUp;
-			newUp.Normalize();
-			newUp = rotateOrbitY * newUp;
-			newUp.Normalize();
-			distanceTarget = rotateOrbitX * rotateOrbitY * distanceTarget;
-			newFront = distanceTarget.Normalized().Neg();
-			newPos = distanceTarget + targetPos;
-			float3::Orthonormalize(newFront, newUp);
-		}
+		//To Do
 	}
 
 	if (app->input->GetKey(SDL_SCANCODE_F) == KeyState::KEY_UP)
