@@ -2,7 +2,7 @@
 
 Video Game Engine created for Game Engine subject at CITM UPC.
 
-##Installation
+## Installation
 
 - Download the latest release
 
@@ -10,7 +10,7 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 
 - Open CatEngine.exe
 
-##Controls
+## Controls
 
 - Left shift: Double the camera movement speed.
 - Right click + WASD: Move the camera in that direction.
@@ -20,7 +20,7 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 - Key R: Camera Reset.
 - Right click: Open hierarchy menu options.
 
-##Features
+## Features
 
 - Camera movement.
 - Drag and drop textures and models.
@@ -36,7 +36,7 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 - Saving images to DDS for lower size.
 - Windows docking
 
-##License
+## License
 
 Copyright(c) under Mit License 2022
 
