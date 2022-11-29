@@ -333,7 +333,7 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent** mesh)
 
 		// Setting information
 		vertices.reserve(header[0]);
-		//indices.reserve(header[1]);
+		indices.reserve(header[1]);
 		normals.reserve(header[2]);
 		texCoords.reserve(header[3]);
 

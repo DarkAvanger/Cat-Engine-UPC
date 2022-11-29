@@ -1,4 +1,4 @@
-#include "Primitive.h" // To Do
+#include "Primitive.h" 
 
 #include "glew/include/GL/glew.h"
 #include "glmath.h"
