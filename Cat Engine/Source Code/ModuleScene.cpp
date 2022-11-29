@@ -24,6 +24,7 @@ bool ModuleScene::Start()
 {
 	RG_PROFILING_FUNCTION("Starting Scene");
 
+	MeshLoader::GetInstance()->ImportModel(std::string("Assets/Resources/BakerHouse.fbx"));
 	MeshLoader::GetInstance()->LoadingModel(std::string("Assets/Resources/BakerHouse.fbx"));
 
 	return true;
