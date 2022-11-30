@@ -41,11 +41,12 @@ public:
 	void GameObject::SetTotalAABB();
 	inline AABB GetAABB() { return boundingBox; }
 	inline void SetAABB(AABB newAABB) { boundingBox = newAABB; }
-	void OnLoad(JsonParsing& node);
-	void OnSave(JsonParsing& node, JSON_Array* array);
 
 	void MoveChildrenUp(GameObject *child);
 	void MoveChildrenDown(GameObject *child);
+
+	void OnLoad(JsonParsing& node);
+	void OnSave(JsonParsing& node, JSON_Array* array);
 
 	template<typename T>
 	T* GetComponent();

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "assimp/cimport.h"
 #include "assimp/Importer.hpp"

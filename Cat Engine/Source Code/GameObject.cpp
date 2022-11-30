@@ -189,3 +189,30 @@ void GameObject::MoveChildrenDown(GameObject* child)
 		}
 	}
 }
+
+void GameObject::OnLoad(JsonParsing& node)
+{
+}
+
+void GameObject::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "UUID", uuid);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Parent UUID", parent ? parent->GetUUID() : 0);
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Name", name.c_str());
+
+	JSON_Array* newArray = file.SetNewJsonArray(file.GetRootValue(), "Components");
+
+	for (int i = 0; i < components.size(); ++i)
+	{
+		components[i]->OnSave(file, newArray);
+	}
+
+	node.SetValueToArray(array, file.GetRootValue());
+
+	for (int i = 0; i < children.size(); ++i)
+	{
+		children[i]->OnSave(node, array);
+	}
+}

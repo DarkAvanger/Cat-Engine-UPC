@@ -66,6 +66,7 @@ void MeshLoader::LoadingModel(std::string& path)
 	
 	std::string p = path.substr(0, path.find_last_of('.'));
 	p = p.substr(path.find_last_of('\\') + 1, p.size());
+	p = p.substr(path.find_last_of('/') + 1, p.size());
 	GameObject* object = app->scene->CreateGameObject(nullptr);
 	object->SetName(p.c_str());
 	ProcessNode(scene->mRootNode, scene, object);
@@ -81,7 +82,11 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj
 		obj->CreateComponent(ComponentType::MESH_RENDERER);
 		MeshComponent* component = obj->GetComponent<MeshComponent>();
 		LoadMesh(mesh->mName.C_Str(), component);
-		TextureLoader::GetInstance();
+		aiString str;
+		scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+		MaterialComponent* material = TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str()));
+		component->SetMaterial(material);
+		obj->AddComponent(material);
 		obj->SetName(node->mName.C_Str());
 	}
 
@@ -153,7 +158,7 @@ MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 	{
 		DEBUG_LOG("Processing material...");
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		TextureLoader::GetInstance()->ImportTexture(material, &diffuse, aiTextureType_DIFFUSE, "texture_diffuse");
+		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
 
 		DEBUG_LOG("Material loading completed!");
 	}
@@ -239,7 +244,18 @@ void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene)
 	}
 
 	SaveMesh(mesh->mName.C_Str(), vertices, indices, norms, texCoords);
+
+	if (mesh->mMaterialIndex >= 0)
+	{
+		DEBUG_LOG("Processing material...");
+
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+
+		DEBUG_LOG("Material loading completed!");
+	}
 }
+
 
 MaterialComponent* MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
 {

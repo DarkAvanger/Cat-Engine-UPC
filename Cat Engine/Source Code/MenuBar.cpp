@@ -3,6 +3,7 @@
 #include "ModuleEditor.h"
 #include "MenuConsole.h"
 #include "MenuConfig.h"
+#include "ModuleScene.h"
 #include "MenuBar.h"
 #include "MenuAbout.h"
 #include "MenuInspector.h"
@@ -40,7 +41,10 @@ bool MenuBar::Update(float dt)
 
 			ImGui::Separator();
 
-			ImGui::MenuItem("Save", "Ctrl + S", &ret);
+			if (ImGui::MenuItem("Save", "Ctrl + S", &ret))
+			{
+				app->scene->SaveScene();
+			}
 			if (ImGui::MenuItem("Exit", "ESC", &ret))
 			{
 				return false;

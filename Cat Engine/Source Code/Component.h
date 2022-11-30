@@ -2,6 +2,8 @@
 
 #include "Imgui/imgui.h"
 
+#include "JsonParse.h"
+
 class GameObject;
 
 enum class ComponentType

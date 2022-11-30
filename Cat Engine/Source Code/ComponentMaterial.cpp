@@ -3,12 +3,15 @@
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 
+#include "ComponentMesh.h"
+
 #include "Profiling.h"
 
 TextureBuffer* MaterialComponent::checkerBuffer = nullptr;
 
 MaterialComponent::MaterialComponent(GameObject* own) : id(0), width(0), height(0), path(""), texBuffer(nullptr)
 {
+	type = ComponentType::MATERIAL;
 	owner = own;
 	owner->GetComponent<MeshComponent>()->SetMaterial(this);
 	checker = false;
@@ -20,6 +23,7 @@ MaterialComponent::MaterialComponent(GameObject* own) : id(0), width(0), height(
 
 MaterialComponent::MaterialComponent(int i, int w, int h, std::string& p) : id(i), width(w), height(h), path(p)
 {
+	type = ComponentType::MATERIAL;
 	texBuffer = new TextureBuffer(i, w, h);
 	checker = false;
 	CreateChecker();
@@ -32,6 +36,7 @@ MaterialComponent::MaterialComponent(int i, int w, int h, std::string& p) : id(i
 
 MaterialComponent::MaterialComponent(int i, int w, int h, GLubyte* data) : id(i), width(w), height(h)
 {
+	type = ComponentType::MATERIAL;
 	texBuffer = new TextureBuffer(i, w, h, data);
 	checker = false;
 	CreateChecker();
@@ -141,4 +146,21 @@ void MaterialComponent::CreateChecker()
 			checkerImage[i][j][3] = (GLubyte)255;
 		}
 	}
+}
+
+bool MaterialComponent::OnLoad(JsonParsing& node, JSON_Array* array)
+{
+	return true;
+}
+
+bool MaterialComponent::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", path.c_str());
+
+	node.SetValueToArray(array, file.GetRootValue());
+
+	return true;
 }

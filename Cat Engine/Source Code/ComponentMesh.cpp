@@ -227,3 +227,19 @@ void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>
 
 	owner->SetAABB(vertices);
 }
+
+bool MeshComponent::OnLoad(JsonParsing& node, JSON_Array* array)
+{
+	return true;
+}
+
+bool MeshComponent::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
+
+	node.SetValueToArray(array, file.GetRootValue());
+
+	return true;
+}
