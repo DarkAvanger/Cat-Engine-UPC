@@ -32,7 +32,7 @@ FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 		DEBUG_LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
 	const char* dirs[] = {
-		ASSETS_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, MATERIALS_FOLDER, MESHES_FOLDER, SCENES_FOLDER
+		ASSETS_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, LIBRARY_FOLDER MATERIALS_FOLDER, LIBRARY_FOLDER MESHES_FOLDER
 	};
 
 	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)

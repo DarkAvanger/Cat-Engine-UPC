@@ -9,11 +9,6 @@
 
 #include "MathGeoLib/src/MathGeoLib.h"
 
-typedef unsigned int uint;
-
-typedef json_array_t JSON_Array;
-class JsonParsing;
-
 class GameObject
 {
 public:
@@ -32,7 +27,6 @@ public:
 	inline void SetName(const char* n) { name = n; }
 
 	char* GetNameBuffer();
-	inline uint const GetUUID() const { return uuid; }
 	inline const char* GetName() const { return name.c_str(); }
 	inline GameObject* GetParent() const { return parent; }
 	inline const bool& GetActive() const { return active; }
@@ -41,8 +35,6 @@ public:
 	void GameObject::SetTotalAABB();
 	inline AABB GetAABB() { return boundingBox; }
 	inline void SetAABB(AABB newAABB) { boundingBox = newAABB; }
-	void OnLoad(JsonParsing& node);
-	void OnSave(JsonParsing& node, JSON_Array* array);
 
 	void MoveChildrenUp(GameObject *child);
 	void MoveChildrenDown(GameObject *child);
@@ -63,8 +55,6 @@ private:
 	bool newComponent;
 
 	AABB boundingBox;
-
-	uint uuid;
 };
 
 template<typename T>

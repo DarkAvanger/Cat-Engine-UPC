@@ -1,11 +1,6 @@
 #include "GameObject.h" //Fix
 #include "Globals.h"
 
-#include "ComponentTransform.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
-#include "JsonParse.h"
-
 #include "Imgui/imgui.h"
 
 #include "Profiling.h"
@@ -13,9 +8,6 @@
 GameObject::GameObject() : active(true), parent(nullptr), name("Game Object"), newComponent(false)
 {
 	boundingBox.SetNegativeInfinity();
-
-	LCG lcg;
-	uuid = lcg.IntFast();
 }
 
 GameObject::~GameObject()
