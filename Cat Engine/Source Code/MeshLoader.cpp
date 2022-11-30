@@ -62,6 +62,7 @@ void MeshLoader::LoadingModel(std::string& path)
 	
 	std::string p = path.substr(0, path.find_last_of('.'));
 	p = p.substr(path.find_last_of('\\') + 1, p.size());
+	p = p.substr(path.find_last_of('/') + 1, p.size());
 	GameObject* object = app->scene->CreateGameObject(nullptr);
 	object->SetName(p.c_str());
 	ProcessNode(scene->mRootNode, scene, object);
@@ -77,7 +78,11 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj
 		obj->CreateComponent(ComponentType::MESH_RENDERER);
 		MeshComponent* component = obj->GetComponent<MeshComponent>();
 		LoadMesh(mesh->mName.C_Str(), component);
-		TextureLoader::GetInstance();
+		aiString str;
+		scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &str);
+		MaterialComponent* material = TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str()));
+		component->SetMaterial(material);
+		obj->AddComponent(material);
 		obj->SetName(node->mName.C_Str());
 	}
 
@@ -149,7 +154,7 @@ MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 	{
 		DEBUG_LOG("Processing material...");
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		TextureLoader::GetInstance()->ImportTexture(material, &diffuse, aiTextureType_DIFFUSE, "texture_diffuse");
+		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
 
 		DEBUG_LOG("Material loading completed!");
 	}
@@ -235,6 +240,16 @@ void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene)
 	}
 
 	SaveMesh(mesh->mName.C_Str(), vertices, indices, norms, texCoords);
+
+	if (mesh->mMaterialIndex >= 0)
+	{
+		DEBUG_LOG("Processing material...");
+
+		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+
+		DEBUG_LOG("Material loading done!");
+	}
 }
 
 MaterialComponent* MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
@@ -253,21 +268,6 @@ MaterialComponent* MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureTy
 	}
 
 	return material;
-}
-
-void MeshLoader::LoadingTransform(aiNode* node, GameObject* obj)
-{
-	aiVector3D pos;
-	aiQuaternion quat;
-	aiVector3D scale;
-
-	node->mTransformation.Decompose(scale, quat, pos);
-
-	float3 p = { pos.x, pos.y, pos.z };
-	Quat q = { quat.x, quat.y, quat.z, quat.w };
-	float3 s = { scale.x, scale.y, scale.z };
-
-	obj->GetComponent<TransformComponent>()->SetTransform(p, q, s);
 }
 
 Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords)
@@ -361,4 +361,19 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent* mesh)
 	}
 	else
 		DEBUG_LOG("Mesh file not found!");
+}
+
+void MeshLoader::LoadingTransform(aiNode* node, GameObject* obj)
+{
+	aiVector3D pos;
+	aiQuaternion quat;
+	aiVector3D scale;
+
+	node->mTransformation.Decompose(scale, quat, pos);
+
+	float3 p = { pos.x, pos.y, pos.z };
+	Quat q = { quat.x, quat.y, quat.z, quat.w };
+	float3 s = { scale.x, scale.y, scale.z };
+
+	obj->GetComponent<TransformComponent>()->SetTransform(p, q, s);
 }
