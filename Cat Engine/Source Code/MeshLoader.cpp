@@ -6,6 +6,10 @@
 #include "TextureLoader.h"
 #include "FileSystem.h"
 
+#include "ComponentTransform.h"
+#include "ComponentMesh.h"
+#include "ComponentMaterial.h"
+
 #include "MathGeoLib/src/MathGeoLib.h"
 #include "IL/il.h"
 #include "IL/ilut.h"
@@ -299,7 +303,7 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	memcpy(cursor, texCoords.data(), bytes);
 	cursor += bytes;
 
-	std::string meshName = LIBRARY_FOLDER MESHES_FOLDER;
+	std::string meshName = MESHES_FOLDER;
 	meshName += name;
 	meshName += ".rgmesh";
 
@@ -313,7 +317,7 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent* mesh)
 {
 	char* buffer = nullptr;
 
-	std::string meshPath = LIBRARY_FOLDER MESHES_FOLDER;
+	std::string meshPath = MESHES_FOLDER;
 	meshPath += name;
 	meshPath += ".rgmesh";
 
