@@ -74,9 +74,10 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		MeshComponent* component;
-		LoadMesh(mesh->mName.C_Str(), &component);
-		obj->AddComponent(component);
+		obj->CreateComponent(ComponentType::MESH_RENDERER);
+		MeshComponent* component = obj->GetComponent<MeshComponent>();
+		LoadMesh(mesh->mName.C_Str(), component);
+		TextureLoader::GetInstance();
 		obj->SetName(node->mName.C_Str());
 	}
 
@@ -282,19 +283,19 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	memcpy(cursor, header, bytes);
 	cursor += bytes;
 
-	bytes = sizeof(vertices);
+	bytes = sizeof(float3) * vertices.size();
 	memcpy(cursor, vertices.data(), bytes);
 	cursor += bytes;
 
-	bytes = sizeof(indices);
+	bytes = sizeof(unsigned int) * indices.size();
 	memcpy(cursor, indices.data(), bytes);
 	cursor += bytes;
 
-	bytes = sizeof(normals);
+	bytes = sizeof(float3) * normals.size();
 	memcpy(cursor, normals.data(), bytes);
 	cursor += bytes;
 
-	bytes = sizeof(texCoords);
+	bytes = sizeof(float2) * texCoords.size();
 	memcpy(cursor, texCoords.data(), bytes);
 	cursor += bytes;
 
@@ -308,7 +309,7 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	return size;
 }
 
-void MeshLoader::LoadMesh(const char* name, MeshComponent** mesh)
+void MeshLoader::LoadMesh(const char* name, MeshComponent* mesh)
 {
 	char* buffer = nullptr;
 
@@ -332,14 +333,14 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent** mesh)
 		cursor += bytes;
 
 		// Setting information
-		vertices.reserve(header[0]);
-		indices.reserve(header[1]);
-		normals.reserve(header[2]);
-		texCoords.reserve(header[3]);
+		vertices.resize(header[0]);
+		indices.resize(header[1]);
+		normals.resize(header[2]);
+		texCoords.resize(header[3]);
 
 		// Loading vertices
 		bytes = sizeof(float3) * vertices.size();
-		memcpy(vertices.data(), cursor, bytes);
+		memcpy(&vertices[0], cursor, bytes);
 		cursor += bytes;
 
 		// Loading indices
@@ -356,7 +357,7 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent** mesh)
 		bytes = sizeof(float2) * texCoords.size();
 		memcpy(texCoords.data(), cursor, bytes);
 
-		*mesh = new MeshComponent(vertices, indices, texCoords, normals);
+		mesh->SetMesh(vertices, indices, texCoords, normals);
 	}
 	else
 		DEBUG_LOG("Mesh file not found!");
