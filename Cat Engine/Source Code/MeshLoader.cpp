@@ -323,7 +323,7 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	meshName += name;
 	meshName += ".rgmesh";
 
-	if (app->fs->Save(meshName.c_str(), cursor, size) > 0)
+	if (app->fs->Save(meshName.c_str(), buffer, size) > 0)
 		DEBUG_LOG("Mesh %s saved succesfully", meshName);
 
 	return size;
