@@ -7,6 +7,8 @@
 typedef unsigned int GLuint;
 typedef unsigned char GLubyte;
 
+class Texture;
+
 class MaterialComponent : public Component
 {
 public:
@@ -23,6 +25,7 @@ public:
 
 	void BindTexture();
 	void UnbindTexture();
+	void SetTexture(Texture* tex) { diffuse = tex; }
 
 	void CreateChecker();
 
@@ -47,4 +50,6 @@ private:
 	static TextureBuffer* checkerBuffer;
 	TextureBuffer* texBuffer;
 	GLubyte checkerImage[64][64][4];
+
+	Texture* diffuse;
 };

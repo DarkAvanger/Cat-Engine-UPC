@@ -123,6 +123,7 @@
     <ClInclude Include="Source Code\MenuInspector.h" />
     <ClInclude Include="Source Code\JsonParse.h" />
     <ClInclude Include="Source Code\Light.h" />
+    <ClInclude Include="Source Code\Mesh.h" />
     <ClInclude Include="Source Code\MeshLoader.h" />
     <ClInclude Include="Source Code\MenuBar.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Source Code\Primitive.h" />
     <ClInclude Include="Source Code\Primitives.h" />
     <ClInclude Include="Source Code\Profiling.h" />
+    <ClInclude Include="Source Code\Texture.h" />
     <ClInclude Include="Source Code\TextureBuffer.h" />
     <ClInclude Include="Source Code\TextureLoader.h" />
     <ClInclude Include="Source Code\Timer.h" />
@@ -170,6 +172,7 @@
     <ClCompile Include="Source Code\MenuInspector.cpp" />
     <ClCompile Include="Source Code\JsonParse.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
+    <ClCompile Include="Source Code\Mesh.cpp" />
     <ClCompile Include="Source Code\MeshLoader.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
@@ -183,6 +186,7 @@
     <ClCompile Include="Source Code\ModuleScene.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
+    <ClCompile Include="Source Code\Texture.cpp" />
     <ClCompile Include="Source Code\TextureBuffer.cpp" />
     <ClCompile Include="Source Code\TextureLoader.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />

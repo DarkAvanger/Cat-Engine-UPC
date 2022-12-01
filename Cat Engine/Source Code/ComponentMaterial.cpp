@@ -4,6 +4,7 @@
 #include "Imgui/imgui.h"
 
 #include "ComponentMesh.h"
+#include "TextureLoader.h"
 
 #include "Profiling.h"
 
@@ -150,6 +151,7 @@ void MaterialComponent::CreateChecker()
 
 bool MaterialComponent::OnLoad(JsonParsing& node)
 {
+	diffuse = TextureLoader::GetInstance()->LoadTexture(std::string(node.GetJsonString("Path")));
 	return true;
 }
 

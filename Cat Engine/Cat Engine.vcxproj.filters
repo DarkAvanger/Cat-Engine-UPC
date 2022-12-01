@@ -126,6 +126,8 @@
     <ClCompile Include="Source Code\MenuViewport.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\Mesh.cpp" />
+    <ClCompile Include="Source Code\Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -289,6 +291,8 @@
     <ClInclude Include="Source Code\MenuViewport.h">
       <Filter>Sources\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\Texture.h" />
+    <ClInclude Include="Source Code\Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">

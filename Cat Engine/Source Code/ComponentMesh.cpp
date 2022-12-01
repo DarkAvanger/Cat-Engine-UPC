@@ -4,6 +4,9 @@
 #include "GameObject.h"
 #include "Globals.h"
 
+#include "Mesh.h"
+#include "MeshLoader.h"
+
 #include "Imgui/imgui.h"
 
 #include "glew/include/GL/glew.h"
@@ -12,7 +15,9 @@
 
 MeshComponent::MeshComponent(GameObject* own, TransformComponent* trans) : ebo(nullptr), vbo(nullptr), tbo(0), material(nullptr), transform(trans), faceNormals(false), verticesNormals(false), normals({}), normalLength(1.0f), colorNormal(150.0f, 0.0f, 255.0f)
 {
+	type = ComponentType::MESH_RENDERER;
 	owner = own;
+	mesh = nullptr;
 }
 
 MeshComponent::MeshComponent(std::vector<float3>& vert, std::vector<unsigned int>& ind, MaterialComponent* mat, std::vector<float2>& texCoord) : vertices(vert), indices(ind), texCoords(texCoord), transform(nullptr), material(mat), normals({}), normalLength(1.0f), colorNormal(150.0f, 0.0f, 255.0f)
@@ -83,30 +88,23 @@ void MeshComponent::Draw()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
-	/*glMultTransposeMatrixf(transform->GetTransform().ptr());*/
+	
 	glMultMatrixf(transform->GetTransform().Transposed().ptr());
 	
-	if (vbo != nullptr) vbo->Bind();
-	glVertexPointer(3, GL_FLOAT, 0, NULL);
+	if (mesh != nullptr) mesh->Draw(verticesNormals, faceNormals);
 
-	glBindBuffer(GL_ARRAY_BUFFER, tbo);
-	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+	//if (vbo != nullptr) vbo->Bind();
+	//glVertexPointer(3, GL_FLOAT, 0, NULL);
 
-	if (material != nullptr && material->GetActive()) material->BindTexture();
-	if (ebo != nullptr) ebo->Bind();
+	//glBindBuffer(GL_ARRAY_BUFFER, tbo);
+	//glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
-	// Debug normals
-	if (verticesNormals)
-		ShowVertexNormals();
-	else if (faceNormals)
-		ShowFaceNormals();
+	//if (material != nullptr && material->GetActive()) material->BindTexture();
+	//if (ebo != nullptr) ebo->Bind();
 
-	glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+	
 
-	if (ebo != nullptr) ebo->Unbind();
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	if (vbo != nullptr) vbo->Unbind();
-	if (material != nullptr && material->GetActive()) material->UnbindTexture();
+	//glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 	
 	glPopMatrix();
 
@@ -230,6 +228,8 @@ void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>
 
 bool MeshComponent::OnLoad(JsonParsing& node)
 {
+	MeshLoader::GetInstance()->LoadMesh(node.GetJsonString("Path"), this);
+
 	return true;
 }
 
@@ -238,6 +238,7 @@ bool MeshComponent::OnSave(JsonParsing& node, JSON_Array* array)
 	JsonParsing file = JsonParsing();
 
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", mesh->GetPath());
 
 	node.SetValueToArray(array, file.GetRootValue());
 
