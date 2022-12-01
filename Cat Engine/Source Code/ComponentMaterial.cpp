@@ -5,6 +5,7 @@
 
 #include "ComponentMesh.h"
 #include "TextureLoader.h"
+#include "Texture.h"
 
 #include "Profiling.h"
 
@@ -75,13 +76,13 @@ void MaterialComponent::OnEditor()
 		{
 			ImGui::Text("Path: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", path.c_str());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", diffuse->GetPath());
 			ImGui::Text("Width: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", width);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diffuse->GetWidth());
 			ImGui::Text("Height: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", height);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diffuse->GetHeight());
 			ImGui::Checkbox("Checker Image", &checker);
 			ImGui::Image((ImTextureID)texBuffer->GetID(), ImVec2(128, 128));
 		}
@@ -102,12 +103,30 @@ void MaterialComponent::OnEditor()
 
 void MaterialComponent::SetNewMaterial(int i, int w, int h, std::string& p)
 {
-	RELEASE(texBuffer);
+	/*RELEASE(texBuffer);
 
 	texBuffer = new TextureBuffer(i, w, h);
 	path = p;
 
-	texBuffer->Unbind();
+	texBuffer->Unbind();*/
+}
+
+bool MaterialComponent::OnLoad(JsonParsing& node)
+{
+	diffuse = TextureLoader::GetInstance()->LoadTexture(std::string(node.GetJsonString("Path")));
+	return true;
+}
+
+bool MaterialComponent::OnSave(JsonParsing& node, JSON_Array* array)
+{
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", diffuse->GetPath().c_str());
+
+	node.SetValueToArray(array, file.GetRootValue());
+
+	return true;
 }
 
 void MaterialComponent::BindTexture()
@@ -149,20 +168,3 @@ void MaterialComponent::CreateChecker()
 	}
 }
 
-bool MaterialComponent::OnLoad(JsonParsing& node)
-{
-	diffuse = TextureLoader::GetInstance()->LoadTexture(std::string(node.GetJsonString("Path")));
-	return true;
-}
-
-bool MaterialComponent::OnSave(JsonParsing& node, JSON_Array* array)
-{
-	JsonParsing file = JsonParsing();
-
-	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
-	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", path.c_str());
-
-	node.SetValueToArray(array, file.GetRootValue());
-
-	return true;
-}

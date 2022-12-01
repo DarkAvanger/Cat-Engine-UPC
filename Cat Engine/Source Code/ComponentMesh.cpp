@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Globals.h"
 
+#include "Texture.h"
 #include "Mesh.h"
 #include "MeshLoader.h"
 
@@ -91,7 +92,9 @@ void MeshComponent::Draw()
 	
 	glMultMatrixf(transform->GetTransform().Transposed().ptr());
 	
-	if (mesh != nullptr) mesh->Draw(verticesNormals, faceNormals);
+	material->GetTexture()->Bind();
+	if (mesh != nullptr) mesh->Draw(verticesNormals, faceNormals, colorNormal, normalLength);
+	material->GetTexture()->Unbind();
 
 	//if (vbo != nullptr) vbo->Bind();
 	//glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -119,10 +122,10 @@ void MeshComponent::OnEditor()
 		Checkbox(this, "Active", active);
 		ImGui::Text("Number of vertices: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", vertices.size());
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh->GetVerticesSize());
 		ImGui::Text("Number of indices: ");
 		ImGui::SameLine();
-		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", indices.size());
+		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh->GetIndicesSize());
 		ImGui::Checkbox("Vertices normals", &verticesNormals);
 		ImGui::Checkbox("Face normals", &faceNormals);
 		ImGui::DragFloat("Normal Length", &normalLength, 0.200f);

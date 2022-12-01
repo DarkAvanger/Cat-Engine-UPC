@@ -112,6 +112,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::MATERIAL:
 		component = new MaterialComponent(this);
+		GetComponent<MeshComponent>()->SetMaterial((MaterialComponent*)component);
 		break;
 	}
 
@@ -202,7 +203,7 @@ void GameObject::OnLoad(JsonParsing& node)
 	for (int i = 0; i < size; ++i)
 	{
 		JsonParsing c = node.GetJsonArrayValue(jsonArray, i);
-		Component* component = CreateComponent((ComponentType)c.GetJsonNumber("Type"));
+		Component* component = CreateComponent((ComponentType)(int)c.GetJsonNumber("Type"));
 		component->OnLoad(c);
 	}
 }
