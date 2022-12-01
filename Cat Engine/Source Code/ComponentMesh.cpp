@@ -228,7 +228,7 @@ void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>
 	owner->SetAABB(vertices);
 }
 
-bool MeshComponent::OnLoad(JsonParsing& node, JSON_Array* array)
+bool MeshComponent::OnLoad(JsonParsing& node)
 {
 	return true;
 }

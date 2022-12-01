@@ -148,7 +148,7 @@ void MaterialComponent::CreateChecker()
 	}
 }
 
-bool MaterialComponent::OnLoad(JsonParsing& node, JSON_Array* array)
+bool MaterialComponent::OnLoad(JsonParsing& node)
 {
 	return true;
 }
