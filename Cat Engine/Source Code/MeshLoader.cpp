@@ -87,10 +87,7 @@ void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj
 		scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &str);
 		obj->CreateComponent(ComponentType::MATERIAL);
 		MaterialComponent* material = obj->GetComponent<MaterialComponent>();
-		material->SetTexture(TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str())));
-		//MaterialComponent* material = TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str()));
-		//component->SetMaterial(material);
-		//obj->AddComponent(material);
+		TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str()), material);
 		obj->SetName(node->mName.C_Str());
 	}
 
@@ -167,11 +164,6 @@ MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 		DEBUG_LOG("Material loading completed!");
 	}
 	MeshComponent* m = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);
-
-	if (mesh->HasNormals())
-		m->SetMesh(vertices, indices, texCoords, norms);
-	else
-		m->SetMesh(vertices, indices, texCoords);
 
 	if (diffuse)
 	{
@@ -330,6 +322,8 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	if (app->fs->Save(meshName.c_str(), buffer, size) > 0)
 		DEBUG_LOG("Mesh %s saved succesfully", meshName);
 
+	RELEASE_ARRAY(buffer);
+
 	return size;
 }
 
@@ -387,7 +381,11 @@ void MeshLoader::LoadMesh(const char* name, MeshComponent* mesh)
 
 		Mesh* m = new Mesh(vertices, indices, normals, texCoords, std::string(name));
 		mesh->SetMesh(m);
+
+		RELEASE_ARRAY(header);
 	}
 	else
 		DEBUG_LOG("Mesh file not found!");
+
+	RELEASE_ARRAY(buffer);
 }

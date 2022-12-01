@@ -4,6 +4,10 @@
 #include "MeshLoader.h"
 #include "TextureLoader.h"
 
+#include "ModuleEditor.h"
+#include "GameObject.h"
+#include "ComponentMaterial.h"
+
 #include "SDL/include/SDL_filesystem.h"
 #include "assimp/cimport.h"
 #include "Assimp.h"
@@ -189,7 +193,7 @@ void FileSystem::LoadFile(std::string& path)
 		if (*s == extension)
 		{
 			RG_PROFILING_FUNCTION("Loading Texture");
-			TextureLoader::GetInstance()->LoadTextureToSelected(path);
+			TextureLoader::GetInstance()->LoadTexture(path, app->editor->GetSelected()->GetComponent<MaterialComponent>());
 			return;
 		}
 	}
