@@ -17,7 +17,7 @@ TextureLoader* TextureLoader::instance = nullptr;
 TextureLoader* TextureLoader::GetInstance()
 {
 	if (instance == nullptr) instance = new TextureLoader();
-	
+
 	return instance;
 }
 
@@ -69,7 +69,7 @@ Uint64 TextureLoader::SaveTexture(std::string& fileName)
 			if (app->fs->Save(fileName.c_str(), data, size) > 0)
 				DEBUG_LOG("Texture saved!");
 		}
-		
+
 		RELEASE_ARRAY(data);
 	}
 
@@ -87,7 +87,7 @@ Texture* TextureLoader::LoadTexture(std::string& path)
 	std::string p = MATERIALS_FOLDER + path;
 	p += ".dds";
 
-	unsigned int size = app->fs->Load(path.c_str(), &buffer);
+	unsigned int size = app->fs->Load(p.c_str(), &buffer);
 
 	ILuint image;
 	ilGenImages(1, &image);
@@ -108,6 +108,7 @@ void TextureLoader::LoadTextureToSelected(std::string& path)
 		ilGenImages(1, &image);
 		ilBindImage(image);
 		ilLoadImage(path.c_str());
+		//ilLoadImage(str.C_Str());
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 		int w = ilGetInteger(IL_IMAGE_WIDTH);
 		int h = ilGetInteger(IL_IMAGE_HEIGHT);
