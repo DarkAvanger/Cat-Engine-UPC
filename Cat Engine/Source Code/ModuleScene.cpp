@@ -1,4 +1,5 @@
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
 
 #include "Application.h"
 #include "ModuleCamera3D.h"
@@ -12,7 +13,7 @@
 
 #include "Profiling.h"
 
-ModuleScene::ModuleScene()
+ModuleScene::ModuleScene() : mainCamera(nullptr)
 {
 	root = new GameObject();
 	root->SetName("Scene");
@@ -211,6 +212,9 @@ bool ModuleScene::LoadScene(const char* name)
 	{
 		DEBUG_LOG("Scene couldn't be loaded");
 	}
+
+	app->editor->SetSelected(nullptr);
+
 	RELEASE_ARRAY(buffer);
 
 	return true;

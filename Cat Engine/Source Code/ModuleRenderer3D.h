@@ -7,11 +7,11 @@
 #include <vector>
 #include "Primitive.h"
 #include "glew/include/GL/glew.h"
-#include "Framebuffer.h"
 
 #define MAX_LIGHTS 8
 
 typedef unsigned int GLuint;
+class Framebuffer;
 
 class ModuleRenderer3D : public Module
 {
@@ -59,6 +59,7 @@ public:
 	Mat4x4 projectionMatrix;
 
 	Framebuffer* fbo;
+	Framebuffer* mainCameraFbo;
 
 	bool depthTest;
 	bool cullFace;

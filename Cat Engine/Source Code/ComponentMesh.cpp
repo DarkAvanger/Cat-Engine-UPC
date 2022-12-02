@@ -43,18 +43,6 @@ void MeshComponent::Draw()
 
 	if (material != nullptr) material->UnbindTexture();
 
-	if (vboAabb && eboAabb)
-	{
-		vboAabb->Bind();
-		glVertexPointer(3, GL_FLOAT, 0, NULL);
-		eboAabb->Bind();
-		glLineWidth(2.0f);
-		glDrawElements(GL_LINES, eboAabb->GetSize(), GL_UNSIGNED_INT, NULL);
-		glLineWidth(1.0f);
-		vboAabb->Unbind();
-		eboAabb->Unbind();
-	}
-
 	glPopMatrix();
 
 	glDisableClientState(GL_VERTEX_ARRAY);
@@ -114,33 +102,6 @@ void MeshComponent::SetMesh(Mesh* m)
 	localBoundingBox.Enclose(mesh->GetVerticesData(), mesh->GetVerticesSize());
 
 	owner->SetAABB(localBoundingBox);
-
-	float3 corners[8];
-	localBoundingBox.GetCornerPoints(corners);
-
-	unsigned int indices[24] = {
-	0,1,
-	1,3,
-	3,2,
-	2,0,
-
-	1,5,
-	4,6,
-	7,3,
-
-	6,7,
-	6,2,
-
-	7,5,
-	4,5,
-
-	4,0
-	};
-
-	eboAabb = new IndexBuffer(indices, 24);
-	vboAabb = new VertexBuffer(corners, sizeof(float3) * 8);
-	eboAabb->Unbind();
-	vboAabb->Unbind();
 }
 
 void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float2>& texCoord, std::vector<float3> norm, std::string& path)
@@ -152,31 +113,4 @@ void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>
 	localBoundingBox.Enclose(vert.data(), vert.size());
 
 	owner->SetAABB(localBoundingBox);
-
-	float3 corners[8];
-	localBoundingBox.GetCornerPoints(corners);
-
-	unsigned int indices[24] = {
-	0,1,
-	1,3,
-	3,2,
-	2,0,
-
-	1,5,
-	4,6,
-	7,3,
-
-	6,7,
-	6,2,
-
-	7,5,
-	4,5,
-
-	4,0
-	};
-
-	eboAabb = new IndexBuffer(indices, 24);
-	vboAabb = new VertexBuffer(corners, sizeof(float3) * 8);
-	eboAabb->Unbind();
-	vboAabb->Unbind();
 }
