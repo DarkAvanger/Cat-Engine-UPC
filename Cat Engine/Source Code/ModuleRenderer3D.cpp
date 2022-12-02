@@ -165,7 +165,7 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 	OnResize(w, h);
 
 	fbo = new Framebuffer(w, h);
-	mainCameraFbo = new Framebuffer(200, 100);
+	//mainCameraFbo = new Framebuffer(200, 100);
 
 	grid = new PGrid(200, 200);
 
@@ -178,8 +178,6 @@ bool ModuleRenderer3D::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
-	glPopMatrix();
 
 	return true;
 }
@@ -212,6 +210,7 @@ bool ModuleRenderer3D::CleanUp()
 
 	RELEASE(grid);
 	RELEASE(fbo);
+	RELEASE(mainCameraFbo);
 
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();

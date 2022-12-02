@@ -1,7 +1,10 @@
+#include "ModuleCamera3D.h"
 #include "MenuViewport.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
 #include "FileSystem.h"
+#include "ComponentCamera.h"
+#include "ModuleScene.h"
 
 #include "Imgui/imgui.h"
 
@@ -31,7 +34,6 @@ void MenuViewport::Draw(Framebuffer* framebuffer)
 	bounds = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, size.x, size.y };
 	selected = ImGui::IsWindowFocused();
 
-	ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
 
 	if (ImGui::BeginDragDropTarget())
 	{
@@ -42,7 +44,24 @@ void MenuViewport::Draw(Framebuffer* framebuffer)
 		}
 		ImGui::EndDragDropTarget();
 	}
+	if (selected)
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
+		glPopMatrix();
+		ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
+	}
 
+	ImGui::End();
+
+	ImGui::Begin("Game");
+	if (!selected)
+	{
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(app->scene->mainCamera->matrixViewFrustum.Transposed().ptr());
+		glPopMatrix();
+		ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
+	}
 	ImGui::End();
 }
 

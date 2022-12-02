@@ -115,6 +115,10 @@ void GameObject::DrawEditor()
 
 void GameObject::DebugColliders()
 {
+	glPushMatrix();
+
+	glMultMatrixf(GetComponent<TransformComponent>()->GetTransform().Transposed().ptr());
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	vertex->Bind();
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -127,6 +131,7 @@ void GameObject::DebugColliders()
 	vertex->Unbind();
 	index->Unbind();
 	glDisableClientState(GL_VERTEX_ARRAY);
+	glPopMatrix();
 }
 
 Component* GameObject::CreateComponent(ComponentType type)
@@ -142,7 +147,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		component = new MeshComponent(this, GetComponent<TransformComponent>());
 		break;
 	case ComponentType::CAMERA:
-		component = new CameraComponent(this);
+		component = new CameraComponent(this, GetComponent<TransformComponent>());
 		app->scene->SetMainCamera((CameraComponent*)component);
 		break;
 	case ComponentType::MATERIAL:
