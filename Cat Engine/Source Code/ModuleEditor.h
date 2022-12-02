@@ -4,6 +4,8 @@
 #include "MenuBar.h"
 #include "MenuViewport.h"
 
+#include "Imgui/ImGuizmo.h"
+
 #include <vector>
 #include <string>
 
@@ -41,4 +43,5 @@ private:
 	GameObject* selectedParent;
 
 	MenuViewport* viewport;
+	ImGuizmo::OPERATION currentOperation;
 };

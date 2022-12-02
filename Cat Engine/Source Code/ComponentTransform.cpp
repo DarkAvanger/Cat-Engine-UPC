@@ -5,6 +5,9 @@
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_internal.h"
 
+#include "ModuleCamera3D.h"
+#include "Imgui/ImGuizmo.h"
+
 #include "Profiling.h"
 
 TransformComponent::TransformComponent(GameObject* own)
@@ -40,9 +43,6 @@ void TransformComponent::OnEditor()
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 		ImGui::PushItemWidth(90);
-		//std::string test = std::to_string(position.x);
-		//char* pos = new char[test.length()];
-		//strcpy(pos, test.c_str());
 		
 		ShowTransformationInfo();
 
@@ -58,6 +58,14 @@ void TransformComponent::SetTransform(float3 pos, Quat rot, float3 sca)
 
 
 	globalMatrix = float4x4::FromTRS(position, rotation, scale);
+}
+
+void TransformComponent::SetTransform(float4x4 trMatrix)
+{
+	globalMatrix = trMatrix;
+	globalMatrix.Decompose(position, rotation, scale);
+
+	RecursiveTransform(owner);
 }
 
 void TransformComponent::SetTranslation(float3 pos)

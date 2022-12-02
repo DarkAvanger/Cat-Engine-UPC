@@ -138,6 +138,9 @@
     <ClCompile Include="Source Code\MenuContentBrowser.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -312,6 +315,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\MenuContentBrowser.h">
       <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h">
+      <Filter>Externals\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

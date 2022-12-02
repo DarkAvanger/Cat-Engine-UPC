@@ -181,12 +181,12 @@ bool ModuleCamera3D::Update(float dt)
 				if ((*it)->GetAABB().IsFinite())
 				{
 					rayCast.Transform((*it)->GetComponent<TransformComponent>()->GetTransform().Transposed());
-					AABB test = (*it)->GetAABB();
-					hit = rayCast.Intersects(test);
+					hit = rayCast.Intersects((*it)->GetAABB());
 
 					if (hit)
 					{
 						app->editor->SetSelected((*it));
+						DEBUG_LOG("HITTED IS %s", (*it)->GetName());
 					}
 				}
 			}

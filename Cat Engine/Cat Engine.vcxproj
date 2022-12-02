@@ -56,7 +56,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)Source Code\External Libraries\glew\include;$(SolutionDir)Source Code\External Libraries\;$(SolutionDir)Source Code\External Libraries\SDL\include;$(SolutionDir)Source Code\External Libraries\Assimp\include;$(SolutionDir)Source Code\External Libraries\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>RG_PROFILING;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RG_PROFILING;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,7 +76,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)Source Code\External Libraries\glew\include;$(SolutionDir)Source Code\External Libraries\;$(SolutionDir)Source Code\External Libraries\SDL\include;$(SolutionDir)Source Code\External Libraries\Assimp\include;$(SolutionDir)Source Code\External Libraries\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\ComponentCamera.h" />
+    <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
     <ClInclude Include="Source Code\MenuAbout.h" />
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Assimp.h" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
     <ClCompile Include="Source Code\MenuAbout.cpp" />
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Assimp.cpp" />
