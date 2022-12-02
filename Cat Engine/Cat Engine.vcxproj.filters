@@ -126,8 +126,15 @@
     <ClCompile Include="Source Code\MenuViewport.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Mesh.cpp" />
-    <ClCompile Include="Source Code\Texture.cpp" />
+    <ClCompile Include="Source Code\Mesh.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Texture.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -291,8 +298,15 @@
     <ClInclude Include="Source Code\MenuViewport.h">
       <Filter>Sources\Menus</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\Texture.h" />
-    <ClInclude Include="Source Code\Mesh.h" />
+    <ClInclude Include="Source Code\Mesh.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Texture.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentCamera.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -339,6 +353,9 @@
     </Filter>
     <Filter Include="Externals\Mmgr">
       <UniqueIdentifier>{77c9d238-1549-424a-bd59-dcef987c0a34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Resources">
+      <UniqueIdentifier>{d9f337d2-2f8e-4b17-a9ef-86670d91ccc2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
