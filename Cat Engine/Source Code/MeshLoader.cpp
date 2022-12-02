@@ -49,29 +49,78 @@ void MeshLoader::ImportModel(std::string& path)
 
 	std::string p = path.substr(0, path.find_last_of('.'));
 	p = p.substr(path.find_last_of('\\') + 1, p.size());
+	p = p.substr(path.find_last_of('/') + 1, p.size());
 
-	ProcessNode2(scene->mRootNode, scene);
+	JsonParsing json = JsonParsing();
+	JsonParsing child = json.SetChild(json.GetRootValue(), "Model");
+	child.SetNewJsonString(child.ValueToObject(child.GetRootValue()), "Name", p.c_str());
+	std::string root = "Childs" + p;
+	JSON_Array* array = child.SetNewJsonArray(child.GetRootValue(), root.c_str());
+
+	ProcessNode2(scene->mRootNode, scene, child, array);
+
+	char* buffer = nullptr;
+	size_t size = json.Save(&buffer);
+
+	std::string fileName = MODELS_FOLDER + p + ".rgmodel";
+
+	app->fs->Save(fileName.c_str(), buffer, size);
 }
 
 void MeshLoader::LoadingModel(std::string& path)
 {
-	Assimp::Importer import;
-	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs);
+	char* buffer = nullptr;
 
-	if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode)
+	path = path.substr(0, path.find_last_of("."));
+	path = path.substr(path.find_last_of("/") + 1, path.length());
+	path = MODELS_FOLDER + path + ".rgmodel";
+
+	app->fs->Load(path.c_str(), &buffer);
+
+	if (buffer != nullptr)
 	{
-		DEBUG_LOG("ERROR ASSIMP %s", import.GetErrorString());
-		return;
+		JsonParsing json = JsonParsing(buffer);
+
+		json = json.GetChild(json.GetRootValue(), "Model");
+
+		GameObject* go = new GameObject();
+		std::string name = json.GetJsonString("Name");
+		go->SetName(name.c_str());
+
+		name = "Childs" + name;
+		CreatingModel(json, json.GetJsonArray(json.ValueToObject(json.GetRootValue()), name.c_str()), app->scene->GetRoot());
 	}
-	directory = path.substr(5, path.find_last_of('\\'));
-	
-	std::string p = path.substr(0, path.find_last_of('.'));
-	p = p.substr(path.find_last_of('\\') + 1, p.size());
-	p = p.substr(path.find_last_of('/') + 1, p.size());
-	GameObject* object = app->scene->CreateGameObject(nullptr);
-	object->SetName(p.c_str());
-	ProcessNode(scene->mRootNode, scene, object);
-	object->SetTotalAABB();
+}
+
+void MeshLoader::CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go)
+{
+	size_t size = json.GetJsonArrayCount(array);
+	for (int i = 0; i < size; ++i)
+	{
+		GameObject* newGo = new GameObject();
+		newGo->CreateComponent(ComponentType::TRANSFORM);
+		newGo->SetParent(go);
+		go->AddChild(newGo);
+
+		JsonParsing parsing = json.GetJsonArrayValue(array, i);
+		std::string name = parsing.GetJsonString("Name");
+
+		newGo->SetName(name.c_str());
+		JSON_Array* arr = parsing.GetJsonArray(parsing.ValueToObject(parsing.GetRootValue()), "Components");
+		size_t s = parsing.GetJsonArrayCount(arr);
+
+		for (int j = 0; j < s; ++j)
+		{
+			JsonParsing components = parsing.GetJsonArrayValue(arr, j);
+			MeshComponent* mesh = (MeshComponent*)newGo->CreateComponent(ComponentType::MESH_RENDERER);
+			LoadMesh(components.GetJsonString("Mesh Path"), mesh);
+			MaterialComponent* material = (MaterialComponent*)newGo->CreateComponent(ComponentType::MATERIAL);
+			TextureLoader::GetInstance()->LoadTexture(std::string(components.GetJsonString("Texture Path")), material);
+		}
+
+		name = "Childs" + name;
+		CreatingModel(parsing, parsing.GetJsonArray(parsing.ValueToObject(parsing.GetRootValue()), name.c_str()), newGo);
+	}
 }
 
 void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
@@ -159,7 +208,7 @@ MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 	{
 		DEBUG_LOG("Processing material...");
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		//TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
 
 		DEBUG_LOG("Material loading completed!");
 	}
@@ -175,22 +224,28 @@ MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameO
 	return m;
 }
 
-void MeshLoader::ProcessNode2(aiNode* node, const aiScene* scene)
+void MeshLoader::ProcessNode2(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json)
 {
+	JsonParsing jsonValue = JsonParsing();
+	jsonValue.SetNewJsonString(jsonValue.ValueToObject(jsonValue.GetRootValue()), "Name", node->mName.C_Str());
 	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 	{
 		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		ProcessMesh2(mesh, scene);
+		ProcessMesh2(mesh, scene, jsonValue);
 	}
+
+	std::string name = "Childs" + std::string(node->mName.C_Str());
+	JSON_Array* array = jsonValue.SetNewJsonArray(jsonValue.GetRootValue(), name.c_str());
 
 	// Repeat the process until there's no more children
 	for (unsigned int i = 0; i < node->mNumChildren; ++i)
 	{
-		ProcessNode2(node->mChildren[i], scene);
+		ProcessNode2(node->mChildren[i], scene, jsonValue, array);
 	}
+	nodeJ.SetValueToArray(json, jsonValue.GetRootValue());
 }
 
-void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene)
+void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene, JsonParsing& json)
 {
 	RG_PROFILING_FUNCTION("Process Mesh");
 	DEBUG_LOG("Processing mesh...");
@@ -239,17 +294,27 @@ void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene)
 		}
 	}
 
-	SaveMesh(mesh->mName.C_Str(), vertices, indices, norms, texCoords);
+	std::string meshName = MESHES_FOLDER;
+	meshName += mesh->mName.C_Str();
+	meshName += ".rgmesh";
+
+	SaveMesh(meshName.c_str(), vertices, indices, norms, texCoords);
+
+	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
+	JsonParsing parse = JsonParsing();
+	parse.SetNewJsonString(parse.ValueToObject(parse.GetRootValue()), "Mesh Path", meshName.c_str());
 
 	if (mesh->mMaterialIndex >= 0)
 	{
 		DEBUG_LOG("Processing material...");
 
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
+		TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse", parse);
+		json.SetValueToArray(array, parse.GetRootValue());
 
 		DEBUG_LOG("Material loading completed!");
 	}
+	json.SetValueToArray(array, parse.GetRootValue());
 }
 
 
@@ -315,12 +380,8 @@ Uint64 MeshLoader::SaveMesh(const char* name, std::vector<float3>& vertices, std
 	memcpy(cursor, texCoords.data(), bytes);
 	cursor += bytes;
 
-	std::string meshName = MESHES_FOLDER;
-	meshName += name;
-	meshName += ".rgmesh";
-
-	if (app->fs->Save(meshName.c_str(), buffer, size) > 0)
-		DEBUG_LOG("Mesh %s saved succesfully", meshName);
+	if (app->fs->Save(name, buffer, size) > 0)
+		DEBUG_LOG("Mesh %s saved succesfully", name);
 
 	RELEASE_ARRAY(buffer);
 

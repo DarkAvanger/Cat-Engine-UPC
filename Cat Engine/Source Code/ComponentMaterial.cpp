@@ -17,7 +17,7 @@ MaterialComponent::MaterialComponent(GameObject* own)
 	owner = own;
 	checker = false;
 
-	TextureLoader::GetInstance()->LoadTexture(std::string("Checker"), &checkerImage);
+	//TextureLoader::GetInstance()->LoadTexture(std::string("Checker"), &checkerImage);
 	active = true;
 }
 

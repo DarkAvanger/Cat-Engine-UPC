@@ -119,6 +119,7 @@
     <ClInclude Include="Source Code\GameObject.h" />
     <ClInclude Include="Source Code\glmath.h" />
     <ClInclude Include="Source Code\Globals.h" />
+    <ClInclude Include="Source Code\MenuContentBrowser.h" />
     <ClInclude Include="Source Code\MenuHierarchy.h" />
     <ClInclude Include="Source Code\IndexBuffer.h" />
     <ClInclude Include="Source Code\MenuInspector.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Source Code\Framebuffer.cpp" />
     <ClCompile Include="Source Code\GameObject.cpp" />
     <ClCompile Include="Source Code\glmath.cpp" />
+    <ClCompile Include="Source Code\MenuContentBrowser.cpp" />
     <ClCompile Include="Source Code\MenuHierarchy.cpp" />
     <ClCompile Include="Source Code\IndexBuffer.cpp" />
     <ClCompile Include="Source Code\MenuInspector.cpp" />

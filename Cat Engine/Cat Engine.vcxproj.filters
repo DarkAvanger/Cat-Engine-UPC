@@ -135,6 +135,9 @@
     <ClCompile Include="Source Code\ComponentCamera.cpp">
       <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\MenuContentBrowser.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -306,6 +309,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\ComponentCamera.h">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuContentBrowser.h">
+      <Filter>Sources\Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -11,7 +11,8 @@ enum class Menus
 	CONFIGURATION = 1,
 	ABOUT = 2,
 	INSPECTOR = 3,
-	HIERARCHY = 4
+	HIERARCHY = 4,
+	CONTENT_BROWSER = 5,
 };
 
 class MenuBar : public Menu
@@ -20,6 +21,7 @@ public:
 	MenuBar();
 	~MenuBar();
 
+	bool Start() override;
 	bool Update(float dt) override;
 	bool CleanUp() override;
 

@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+#include "JsonParse.h"
+
 #include "assimp/cimport.h"
 #include "assimp/Importer.hpp"
 #include "assimp/scene.h"
@@ -27,12 +29,13 @@ public:
 
 	void ImportModel(std::string& path);
 	void LoadingModel(std::string& path);
+	void CreatingModel(JsonParsing& json, JSON_Array* array, GameObject* go);
 	void LoadingTransform(aiNode* node, GameObject* obj);
 
 	void ProcessNode(aiNode* node, const aiScene* scene, GameObject* object);
-	void ProcessNode2(aiNode* node, const aiScene* scene);
+	void ProcessNode2(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json);
 	MeshComponent* ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* object);
-	void ProcessMesh2(aiMesh* mesh, const aiScene* scene);
+	void ProcessMesh2(aiMesh* mesh, const aiScene* scene, JsonParsing& json);
 	MaterialComponent* LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName);
 	Uint64 SaveMesh(const char* name, std::vector<float3>& vertices, std::vector<unsigned int>& indices, std::vector<float3>& normals, std::vector<float2>& texCoords);
 	void LoadMesh(const char* name, MeshComponent* mesh);

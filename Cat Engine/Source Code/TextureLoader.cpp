@@ -26,7 +26,7 @@ void TextureLoader::ReleaseInstance()
 	RELEASE(instance);
 }
 
-void TextureLoader::ImportTexture(const aiMaterial* material, aiTextureType type, const char* typeName)
+void TextureLoader::ImportTexture(const aiMaterial* material, aiTextureType type, const char* typeName, JsonParsing& json)
 {
 	for (unsigned int i = 0; i < 1; ++i)
 	{
@@ -47,7 +47,7 @@ void TextureLoader::ImportTexture(const aiMaterial* material, aiTextureType type
 		path = path.substr(0, path.find_last_of("."));
 		path = path.insert(0, MATERIALS_FOLDER);
 		path += ".dds";
-		//*component = new MaterialComponent(image, w, h, path);
+		json.SetNewJsonString(json.ValueToObject(json.GetRootValue()), "Texture Path", path.c_str());
 		Uint64 size = SaveTexture(path);
 		ilDeleteImages(1, &image);
 	}
