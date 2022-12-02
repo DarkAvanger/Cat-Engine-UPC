@@ -5,6 +5,7 @@
 
 #include "TextureLoader.h"
 #include "Texture.h"
+#include "ResourceManager.h"
 
 #include "Imgui/imgui.h"
 
@@ -20,7 +21,7 @@ ContentBrowserMenu::~ContentBrowserMenu()
 
 bool ContentBrowserMenu::Start()
 {
-	TextureLoader::GetInstance()->LoadTexture(std::string("folder"), &dirIcon);
+	dirIcon = TextureLoader::GetInstance()->LoadTexture(std::string("Library/Materials/folder.dds"));
 
 	return true;
 }
@@ -84,7 +85,8 @@ bool ContentBrowserMenu::Update(float dt)
 	{
 		ImGui::PushID(i++);
 		std::string item = (*it).substr((*it).find_last_of("/") + 1, (*it).length());
-		ImGui::ImageButton("", { cell, cell });
+		Texture* texture = ResourceManager::GetInstance()->IsTextureLoaded(item);
+		ImGui::ImageButton(texture ? (ImTextureID)texture->GetId() : "", { cell, cell });
 
 		if (ImGui::BeginDragDropSource())
 		{

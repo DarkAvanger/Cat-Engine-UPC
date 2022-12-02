@@ -14,6 +14,7 @@
 #include "IL/il.h"
 
 #include <vector>
+#include <stack>
 
 #include "Profiling.h"
 
@@ -193,7 +194,64 @@ void FileSystem::LoadFile(std::string& path)
 		if (*s == extension)
 		{
 			RG_PROFILING_FUNCTION("Loading Texture");
-			TextureLoader::GetInstance()->LoadTexture(path, app->editor->GetSelected()->GetComponent<MaterialComponent>());
+			app->editor->GetSelected()->GetComponent<MaterialComponent>()->SetTexture(TextureLoader::GetInstance()->LoadTexture(path));
+			return;
+		}
+	}
+}
+
+void FileSystem::ImportFiles(std::string& path)
+{
+	std::stack<std::string> dirsStack;
+	dirsStack.push(path);
+
+	while (!dirsStack.empty())
+	{
+		std::string dir = dirsStack.top();
+
+		std::vector<std::string> files;
+		std::vector<std::string> dirs;
+
+		DiscoverFiles(dir.c_str(), files, dirs);
+
+		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
+		{
+			CheckExtension(*it);
+		}
+
+		dirsStack.pop();
+
+		for (std::vector<std::string>::iterator it = dirs.begin(); it != dirs.end(); ++it)
+		{
+			dirsStack.push(*it);
+		}
+	}
+}
+
+void FileSystem::CheckExtension(std::string& path)
+{
+	std::string extension = path.substr(path.find_last_of(".", path.length()));
+	std::list<std::string>::iterator s;
+	std::list<std::string>::iterator end = modelExtension.end();
+
+	for (s = modelExtension.begin(); s != end; ++s)
+	{
+		if (*s == extension)
+		{
+			RG_PROFILING_FUNCTION("Importing Model");
+			MeshLoader::GetInstance()->ImportModel(path);
+			return;
+		}
+	}
+
+	end = texExtension.end();
+
+	for (s = texExtension.begin(); s != end; ++s)
+	{
+		if (*s == extension)
+		{
+			RG_PROFILING_FUNCTION("Importing Texture");
+			TextureLoader::GetInstance()->ImportTexture(path);
 			return;
 		}
 	}

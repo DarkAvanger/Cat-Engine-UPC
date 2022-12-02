@@ -4,11 +4,10 @@
 #include "assimp/material.h"
 
 class JsonParsing;
+class Texture;
 
 typedef uint64_t Uint64;
 
-class MaterialComponent;
-class Texture;
 
 class TextureLoader
 {
@@ -19,8 +18,7 @@ public:
 	void ImportTexture(const aiMaterial* material, aiTextureType type, const char* typeName, JsonParsing& json);
 	void ImportTexture(std::string& path);
 	Uint64 SaveTexture(std::string& fileName);
-	void LoadTexture(std::string& path, MaterialComponent* material);
-	void LoadTexture(std::string& path, Texture** checker);
+	Texture* LoadTexture(std::string& path);
 
 private:
 	TextureLoader() {}

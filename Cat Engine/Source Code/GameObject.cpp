@@ -3,9 +3,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
 
-#include "ComponentTransform.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
 #include "JsonParse.h"
 
 #include "VertexBuffer.h"

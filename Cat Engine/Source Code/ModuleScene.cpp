@@ -31,7 +31,7 @@ bool ModuleScene::Start()
 	camera->CreateComponent(ComponentType::CAMERA);
 	camera->SetName("Camera");
 
-	MeshLoader::GetInstance()->ImportModel(std::string("Assets/Resources/BakerHouse.fbx"));
+	app->fs->ImportFiles(std::string("Assets/"));
 	MeshLoader::GetInstance()->LoadingModel(std::string("Assets/Resources/BakerHouse.fbx"));
 
 	return true;

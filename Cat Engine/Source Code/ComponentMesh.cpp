@@ -1,9 +1,6 @@
 #include "Application.h"
 #include "ComponentMesh.h"
-#include "ComponentTransform.h"
-#include "ComponentMaterial.h"
 #include "GameObject.h"
-#include "Globals.h"
 #include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
@@ -27,7 +24,6 @@ MeshComponent::MeshComponent(GameObject* own, TransformComponent* trans) : mater
 
 MeshComponent::~MeshComponent()
 {
-	RELEASE(mesh);
 }
 
 void MeshComponent::Draw()
@@ -41,7 +37,7 @@ void MeshComponent::Draw()
 
 	if (material != nullptr) material->BindTexture();
 
-	if (mesh != nullptr && app->scene->mainCamera->ContainsAaBox(localBoundingBox) == 1 || app->scene->mainCamera->ContainsAaBox(localBoundingBox) == 2) mesh->Draw(verticesNormals, faceNormals, colorNormal, normalLength);
+	if (mesh != nullptr && (app->scene->mainCamera->ContainsAaBox(localBoundingBox) == 1 || app->scene->mainCamera->ContainsAaBox(localBoundingBox) == 2)) mesh->Draw(verticesNormals, faceNormals, colorNormal, normalLength);
 
 	if (material != nullptr) material->UnbindTexture();
 
@@ -76,7 +72,6 @@ void MeshComponent::OnEditor()
 
 bool MeshComponent::OnLoad(JsonParsing& node)
 {
-	RELEASE(mesh);
 	MeshLoader::GetInstance()->LoadMesh(node.GetJsonString("Path"), this);
 
 	active = node.GetJsonBool("Active");
@@ -108,7 +103,6 @@ void MeshComponent::SetMesh(Mesh* m)
 
 void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float2>& texCoord, std::vector<float3> norm, std::string& path)
 {
-	RELEASE(mesh);
 	mesh = new Mesh(vert, ind, norm, texCoord, path);
 
 	localBoundingBox.SetNegativeInfinity();

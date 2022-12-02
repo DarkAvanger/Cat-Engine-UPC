@@ -8,6 +8,7 @@
 #include "FileSystem.h"
 #include "MeshLoader.h"
 #include "TextureLoader.h"
+#include "ResourceManager.h"
 
 #include "Profiling.h"
 
@@ -53,6 +54,7 @@ Application::~Application()
 	RELEASE(fs);
 	MeshLoader::ReleaseInstance();
 	TextureLoader::ReleaseInstance();
+	ResourceManager::ReleaseInstance();
 
 	listModules.clear();
 }

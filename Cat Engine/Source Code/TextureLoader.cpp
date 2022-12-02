@@ -1,14 +1,12 @@
 #include "TextureLoader.h"
-#include "ComponentMaterial.h"
 #include "Application.h"
-#include "ModuleEditor.h"
+#include "ResourceManager.h"
 
 #include "GameObject.h"
 #include "FileSystem.h"
 #include "Texture.h"
 
 #include "IL/il.h"
-#include "glew/include/GL/glew.h"
 
 #include "Profiling.h"
 
@@ -28,7 +26,7 @@ void TextureLoader::ReleaseInstance()
 
 void TextureLoader::ImportTexture(const aiMaterial* material, aiTextureType type, const char* typeName, JsonParsing& json)
 {
-	for (unsigned int i = 0; i < 1; ++i)
+	for (unsigned int i = 0; i < material->GetTextureCount(type); ++i)
 	{
 		aiString str;
 		material->GetTexture(type, i, &str);
@@ -47,6 +45,7 @@ void TextureLoader::ImportTexture(const aiMaterial* material, aiTextureType type
 		path = path.substr(0, path.find_last_of("."));
 		path = path.insert(0, MATERIALS_FOLDER);
 		path += ".dds";
+		json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Type", (int)ComponentType::MATERIAL);
 		json.SetNewJsonString(json.ValueToObject(json.GetRootValue()), "Texture Path", path.c_str());
 		Uint64 size = SaveTexture(path);
 		ilDeleteImages(1, &image);
@@ -92,7 +91,7 @@ Uint64 TextureLoader::SaveTexture(std::string& fileName)
 	return size;
 }
 
-void TextureLoader::LoadTexture(std::string& path, MaterialComponent* material)
+Texture* TextureLoader::LoadTexture(std::string& path)
 {
 	char* buffer = nullptr;
 
@@ -103,53 +102,31 @@ void TextureLoader::LoadTexture(std::string& path, MaterialComponent* material)
 	std::string p = MATERIALS_FOLDER + path;
 	p += ".dds";
 
-	unsigned int size = app->fs->Load(p.c_str(), &buffer);
-
-	if (size > 0)
+	Texture* tex = ResourceManager::GetInstance()->IsTextureLoaded(p);
+	if (tex == nullptr)
 	{
-		ILuint image;
-		ilGenImages(1, &image);
-		ilBindImage(image);
-		ilLoadL(IL_DDS, buffer, size);
-		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-		int w = ilGetInteger(IL_IMAGE_WIDTH);
-		int h = ilGetInteger(IL_IMAGE_HEIGHT);
+		unsigned int size = app->fs->Load(p.c_str(), &buffer);
 
-		GLubyte* data = ilGetData();
+		if (size > 0)
+		{
+			ILuint image;
+			ilGenImages(1, &image);
+			ilBindImage(image);
+			ilLoadL(IL_DDS, buffer, size);
+			ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+			int w = ilGetInteger(IL_IMAGE_WIDTH);
+			int h = ilGetInteger(IL_IMAGE_HEIGHT);
 
-		material->SetTexture(new Texture(image, w, h, data, p));
+			GLubyte* data = ilGetData();
 
-		ilDeleteImages(1, &image);
+			tex = new Texture(image, w, h, data, p);
+			ResourceManager::GetInstance()->AddTexture(tex);
+
+			ilDeleteImages(1, &image);
+		}
+
+		RELEASE_ARRAY(buffer);
 	}
 
-	RELEASE_ARRAY(buffer);
-}
-
-void TextureLoader::LoadTexture(std::string& path, Texture** checker)
-{
-	char* buffer = nullptr;
-
-	std::string p = MATERIALS_FOLDER + path;
-	p += ".dds";
-
-	unsigned int size = app->fs->Load(p.c_str(), &buffer);
-
-	if (size > 0)
-	{
-		ILuint image;
-		ilGenImages(1, &image);
-		ilBindImage(image);
-		ilLoadL(IL_DDS, buffer, size);
-		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-		int w = ilGetInteger(IL_IMAGE_WIDTH);
-		int h = ilGetInteger(IL_IMAGE_HEIGHT);
-
-		GLubyte* data = ilGetData();
-
-		*checker = new Texture(image, w, h, data, p);
-
-		ilDeleteImages(1, &image);
-	}
-
-	RELEASE_ARRAY(buffer);
+	return tex;
 }

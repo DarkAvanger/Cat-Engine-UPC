@@ -142,6 +142,7 @@
     <ClInclude Include="Source Code\Primitive.h" />
     <ClInclude Include="Source Code\Primitives.h" />
     <ClInclude Include="Source Code\Profiling.h" />
+    <ClInclude Include="Source Code\ResourceManager.h" />
     <ClInclude Include="Source Code\Texture.h" />
     <ClInclude Include="Source Code\TextureBuffer.h" />
     <ClInclude Include="Source Code\TextureLoader.h" />
@@ -192,6 +193,7 @@
     <ClCompile Include="Source Code\ModuleScene.cpp" />
     <ClCompile Include="Source Code\ModuleWindow.cpp" />
     <ClCompile Include="Source Code\Primitive.cpp" />
+    <ClCompile Include="Source Code\ResourceManager.cpp" />
     <ClCompile Include="Source Code\Texture.cpp" />
     <ClCompile Include="Source Code\TextureBuffer.cpp" />
     <ClCompile Include="Source Code\TextureLoader.cpp" />
