@@ -128,11 +128,12 @@
     <ClInclude Include="Source Code\JsonParse.h" />
     <ClInclude Include="Source Code\Light.h" />
     <ClInclude Include="Source Code\Mesh.h" />
-    <ClInclude Include="Source Code\MeshLoader.h" />
     <ClInclude Include="Source Code\MenuBar.h" />
     <ClInclude Include="Source Code\ComponentMaterial.h" />
     <ClInclude Include="Source Code\Menu.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
+    <ClInclude Include="Source Code\MeshImporter.h" />
+    <ClInclude Include="Source Code\ModelImporter.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
     <ClInclude Include="Source Code\ModuleEditor.h" />
@@ -146,7 +147,7 @@
     <ClInclude Include="Source Code\ResourceManager.h" />
     <ClInclude Include="Source Code\Texture.h" />
     <ClInclude Include="Source Code\TextureBuffer.h" />
-    <ClInclude Include="Source Code\TextureLoader.h" />
+    <ClInclude Include="Source Code\TextureImporter.h" />
     <ClInclude Include="Source Code\Timer.h" />
     <ClInclude Include="Source Code\ComponentTransform.h" />
     <ClInclude Include="Source Code\VertexBuffer.h" />
@@ -182,12 +183,13 @@
     <ClCompile Include="Source Code\JsonParse.cpp" />
     <ClCompile Include="Source Code\Light.cpp" />
     <ClCompile Include="Source Code\Mesh.cpp" />
-    <ClCompile Include="Source Code\MeshLoader.cpp" />
     <ClCompile Include="Source Code\log.cpp" />
     <ClCompile Include="Source Code\Main.cpp" />
     <ClCompile Include="Source Code\MenuBar.cpp" />
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
+    <ClCompile Include="Source Code\MeshImporter.cpp" />
+    <ClCompile Include="Source Code\ModelImporter.cpp" />
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
     <ClCompile Include="Source Code\ModuleEditor.cpp" />
     <ClCompile Include="Source Code\ModuleInput.cpp" />
@@ -198,7 +200,7 @@
     <ClCompile Include="Source Code\ResourceManager.cpp" />
     <ClCompile Include="Source Code\Texture.cpp" />
     <ClCompile Include="Source Code\TextureBuffer.cpp" />
-    <ClCompile Include="Source Code\TextureLoader.cpp" />
+    <ClCompile Include="Source Code\TextureImporter.cpp" />
     <ClCompile Include="Source Code\Timer.cpp" />
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\VertexBuffer.cpp" />

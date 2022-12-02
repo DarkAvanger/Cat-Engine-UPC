@@ -93,12 +93,6 @@
     <ClCompile Include="Source Code\Framebuffer.cpp">
       <Filter>Sources\Buffers</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\TextureLoader.cpp">
-      <Filter>Sources\Loaders</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\MeshLoader.cpp">
-      <Filter>Sources\Loaders</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\Primitive.cpp">
       <Filter>Sources\Helpers</Filter>
     </ClCompile>
@@ -146,6 +140,15 @@
     </ClCompile>
     <ClCompile Include="Source Code\GameView.cpp">
       <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MeshImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModelImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\TextureImporter.cpp">
+      <Filter>Sources\Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -268,12 +271,6 @@
     <ClInclude Include="Source Code\Framebuffer.h">
       <Filter>Sources\Buffers</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\TextureLoader.h">
-      <Filter>Sources\Loaders</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\MeshLoader.h">
-      <Filter>Sources\Loaders</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\Primitive.h">
       <Filter>Sources\Helpers</Filter>
     </ClInclude>
@@ -331,6 +328,15 @@
     <ClInclude Include="Source Code\GameView.h">
       <Filter>Sources\Menus</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\MeshImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModelImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TextureImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">
@@ -350,9 +356,6 @@
     </Filter>
     <Filter Include="Sources\Helpers">
       <UniqueIdentifier>{a5c0ced0-75d2-43cc-9b6d-0a953227e14d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources\Loaders">
-      <UniqueIdentifier>{cc8e6ceb-9dea-47d9-9c5e-e1441c40fdfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sources\Menus">
       <UniqueIdentifier>{6446df33-4cf8-4155-87af-ff2d4fa40f9b}</UniqueIdentifier>
@@ -380,6 +383,9 @@
     </Filter>
     <Filter Include="Sources\Resources">
       <UniqueIdentifier>{d9f337d2-2f8e-4b17-a9ef-86670d91ccc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Importers">
+      <UniqueIdentifier>{cc8e6ceb-9dea-47d9-9c5e-e1441c40fdfd}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

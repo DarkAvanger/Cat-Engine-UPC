@@ -3,7 +3,7 @@
 
 #include "Application.h"
 #include "Primitives.h"
-#include "MeshLoader.h"
+#include "ModelImporter.h"
 #include "FileSystem.h"
 
 #include "Profiling.h"
@@ -26,8 +26,8 @@ bool ModuleScene::Start()
 	camera->CreateComponent(ComponentType::CAMERA);
 	camera->SetName("Camera");
 
-	app->fs->ImportFiles(std::string("Assets/"));
-	MeshLoader::GetInstance()->LoadingModel(std::string("Assets/Resources/BakerHouse.fbx"));
+	ModelImporter::ImportModel(std::string("Assets/Resources/BakerHouse.fbx"));
+	ModelImporter::LoadModel(std::string("Assets/Resources/BakerHouse.fbx"));
 
 	return true;
 }

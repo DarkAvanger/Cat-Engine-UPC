@@ -2,7 +2,7 @@
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 
-#include "TextureLoader.h"
+#include "ResourceManager.h"
 #include "Texture.h"
 
 #include "Profiling.h"
@@ -15,7 +15,7 @@ MaterialComponent::MaterialComponent(GameObject* own)
 	owner = own;
 	checker = false;
 
-	//checkerImage = TextureLoader::GetInstance()->LoadTexture(std::string("Library/Materials/Checker.dds")); check
+	//checkerImage = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Materials/Checker.dds")); check
 	active = true;
 }
 
@@ -77,15 +77,12 @@ void MaterialComponent::OnEditor()
 
 void MaterialComponent::SetNewMaterial(int i, int w, int h, std::string& p)
 {
-	/*RELEASE(texBuffer);
-	texBuffer = new TextureBuffer(i, w, h);
-	path = p;
-	texBuffer->Unbind();*/
+
 }
 
 bool MaterialComponent::OnLoad(JsonParsing& node)
 {
-	diffuse = TextureLoader::GetInstance()->LoadTexture(std::string(node.GetJsonString("Path")));
+	diffuse = ResourceManager::GetInstance()->IsTextureLoaded(std::string(node.GetJsonString("Path")));
 	active = node.GetJsonBool("Active");
 
 	return true;
