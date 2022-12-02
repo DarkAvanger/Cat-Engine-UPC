@@ -2,9 +2,9 @@
 #include "Application.h"
 #include "ResourceManager.h"
 
-#include "GameObject.h"
 #include "FileSystem.h"
 #include "Texture.h"
+#include "Component.h"
 
 #include "IL/il.h"
 

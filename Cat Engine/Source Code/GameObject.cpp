@@ -112,10 +112,6 @@ void GameObject::DrawEditor()
 
 void GameObject::DebugColliders()
 {
-	glPushMatrix();
-
-	glMultMatrixf(GetComponent<TransformComponent>()->GetTransform().Transposed().ptr());
-
 	glEnableClientState(GL_VERTEX_ARRAY);
 	vertex->Bind();
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -128,7 +124,35 @@ void GameObject::DebugColliders()
 	vertex->Unbind();
 	index->Unbind();
 	glDisableClientState(GL_VERTEX_ARRAY);
-	glPopMatrix();
+	float3 corners[8];
+	globalAabb.GetCornerPoints(corners);
+
+	unsigned int indices[24] =
+	{
+		0,1,
+		1,3,
+		3,2,
+		2,0,
+
+		1,5,
+		4,6,
+		7,3,
+
+		6,7,
+		6,2,
+
+		7,5,
+		4,5,
+
+		4,0
+	};
+
+	if (index) RELEASE(index);
+	if (vertex) RELEASE(vertex);
+	index = new IndexBuffer(indices, 24);
+	vertex = new VertexBuffer(corners, sizeof(float3) * 8);
+	index->Unbind();
+	vertex->Unbind();
 }
 
 Component* GameObject::CreateComponent(ComponentType type)
@@ -193,8 +217,9 @@ void GameObject::SetTotalAABB()
 	}
 }
 
-void GameObject::SetAABB(AABB newAABB)
+void GameObject::SetAABB(AABB newAABB, bool needToClean)
 {
+	if (needToClean) globalAabb.SetNegativeInfinity();
 	globalObb = newAABB;
 	globalObb.Transform(GetComponent<TransformComponent>()->GetTransform());
 
@@ -237,6 +262,18 @@ void GameObject::SetAABB(AABB newAABB)
 	vertex->Unbind();
 }
 
+void GameObject::SetAABB(OBB newOBB)
+{
+
+	globalAabb.SetNegativeInfinity();
+	globalAabb.Enclose(newOBB);
+
+	if (parent != nullptr && parent != app->scene->GetRoot())
+	{
+		parent->SetAABB(globalAabb);
+	}
+
+}
 
 void GameObject::MoveChildrenUp(GameObject* child)
 {

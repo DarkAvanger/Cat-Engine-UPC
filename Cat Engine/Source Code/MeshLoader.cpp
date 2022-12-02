@@ -8,14 +8,6 @@
 #include "FileSystem.h"
 #include "ResourceManager.h"
 
-#include "ComponentTransform.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
-
-#include "MathGeoLib/src/MathGeoLib.h"
-#include "IL/il.h"
-#include "IL/ilut.h"
-
 #include "Profiling.h"
 
 MeshLoader* MeshLoader::instance = nullptr;
@@ -117,7 +109,7 @@ void MeshLoader::CreatingModel(JsonParsing& json, JSON_Array* array, GameObject*
 		for (int j = 0; j < s; ++j)
 		{
 			JsonParsing component = parsing.GetJsonArrayValue(arr, j);
-			switch ((ComponentType)component.GetJsonNumber("Type"))
+			switch ((ComponentType)(int)component.GetJsonNumber("Type"))
 			{
 			case ComponentType::MESH_RENDERER:
 			{
@@ -139,106 +131,7 @@ void MeshLoader::CreatingModel(JsonParsing& json, JSON_Array* array, GameObject*
 	}
 }
 
-void MeshLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject* obj)
-{
-	LoadingTransform(node, obj);
-	for (unsigned int i = 0; i < node->mNumMeshes; ++i)
-	{
-		aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-		obj->CreateComponent(ComponentType::MESH_RENDERER);
-		MeshComponent* component = obj->GetComponent<MeshComponent>();
-		LoadMesh(mesh->mName.C_Str(), component);
-		aiString str;
-		scene->mMaterials[mesh->mMaterialIndex]->GetTexture(aiTextureType_DIFFUSE, 0, &str);
-		obj->CreateComponent(ComponentType::MATERIAL);
-		MaterialComponent* material = obj->GetComponent<MaterialComponent>();
-		material->SetTexture(TextureLoader::GetInstance()->LoadTexture(std::string(str.C_Str())));
-		obj->SetName(node->mName.C_Str());
-	}
 
-	for (unsigned int i = 0; i < node->mNumChildren; ++i)
-	{
-		if (node->mChildren[i]->mNumMeshes > 0)
-		{
-			GameObject* object = app->scene->CreateGameObject(obj);
-			ProcessNode(node->mChildren[i], scene, object);
-		}
-		else
-		{
-			ProcessNode(node->mChildren[i], scene, obj);
-		}
-	}
-}
-
-MeshComponent* MeshLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* object)
-{
-	RG_PROFILING_FUNCTION("Process Mesh");
-	DEBUG_LOG("Processing mesh...");
-	std::vector<float3> vertices;
-	std::vector<float3> norms;
-	std::vector<unsigned int> indices;
-	std::vector<float2> texCoords;
-
-	int numVertices = mesh->mNumVertices;
-	int numFaces = mesh->mNumFaces;
-
-	vertices.reserve(numVertices);
-	indices.reserve(numFaces * 3);
-	texCoords.reserve(numVertices);
-
-	for (unsigned int i = 0; i < numVertices; ++i)
-	{
-		float3 vertex;
-		vertex.x = mesh->mVertices[i].x;
-		vertex.y = mesh->mVertices[i].y;
-		vertex.z = mesh->mVertices[i].z;
-
-		float3 normals;
-		if (mesh->HasNormals())
-		{
-			normals.x = mesh->mNormals[i].x;
-			normals.y = mesh->mNormals[i].y;
-			normals.z = mesh->mNormals[i].z;
-		}
-
-		float2 coords;
-		coords.x = mesh->mTextureCoords[0][i].x;
-		coords.y = mesh->mTextureCoords[0][i].y;
-
-		norms.push_back(normals);
-		vertices.push_back(vertex);
-		texCoords.push_back(coords);
-	}
-
-	for (unsigned int i = 0; i < numFaces; ++i)
-	{
-		aiFace face = mesh->mFaces[i];
-		for (unsigned int j = 0; j < face.mNumIndices; ++j)
-		{
-			indices.push_back(face.mIndices[j]);
-		}
-	}
-
-	MaterialComponent* diffuse = nullptr;
-	if (mesh->mMaterialIndex >= 0)
-	{
-		DEBUG_LOG("Processing material...");
-		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		//TextureLoader::GetInstance()->ImportTexture(material, aiTextureType_DIFFUSE, "texture_diffuse");
-
-		DEBUG_LOG("Material loading completed!");
-	}
-	MeshComponent* m = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);
-
-	if (diffuse)
-	{
-		m->SetMaterial(diffuse);
-		object->AddComponent(diffuse);
-	}
-
-	DEBUG_LOG("Mesh loading completed!");
-	return m;
-}
 
 void MeshLoader::ProcessNode2(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json)
 {
@@ -346,25 +239,6 @@ void MeshLoader::ProcessMesh2(aiMesh* mesh, const aiScene* scene, JsonParsing& j
 		DEBUG_LOG("Material loading completed!");
 		json.SetValueToArray(array, mat.GetRootValue());
 	}
-}
-
-
-MaterialComponent* MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureType type, const char* typeName)
-{
-	MaterialComponent* material = nullptr;
-
-	for (unsigned int i = 0; i < 1; ++i)
-	{
-		aiString str;
-		mat->GetTexture(type, i, &str);
-		std::string aux = str.C_Str();
-		aux = aux.substr(aux.find_last_of("\\") + 1, aux.length());
-		std::string path = RESOURCES_FOLDER;
-		path += aux;
-		//material = TextureLoader::GetInstance()->LoadTexture(path);
-	}
-
-	return material;
 }
 
 void MeshLoader::LoadingTransform(aiNode* node, GameObject* obj)

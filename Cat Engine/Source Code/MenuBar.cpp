@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "ModuleEditor.h"
 #include "MenuConsole.h"
 #include "MenuConfig.h"
 #include "ModuleScene.h"

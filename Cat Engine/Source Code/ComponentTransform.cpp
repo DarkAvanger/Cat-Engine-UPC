@@ -5,7 +5,6 @@
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_internal.h"
 
-#include "ModuleCamera3D.h"
 #include "Imgui/ImGuizmo.h"
 
 #include "Profiling.h"
@@ -145,6 +144,10 @@ void TransformComponent::RecursiveTransform(GameObject* parent)
 	{
 		children[i]->GetComponent<TransformComponent>()->SetChildTransform(position, rotation, scale);
 		RecursiveTransform(children[i]);
+	}
+	if (owner->GetComponent<MeshComponent>())
+	{
+		owner->SetAABB(owner->GetComponent<MeshComponent>()->GetLocalAABB());
 	}
 }
 

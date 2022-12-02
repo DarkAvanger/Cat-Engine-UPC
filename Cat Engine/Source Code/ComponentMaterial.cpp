@@ -2,7 +2,6 @@
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 
-#include "ComponentMesh.h"
 #include "TextureLoader.h"
 #include "Texture.h"
 
@@ -16,7 +15,7 @@ MaterialComponent::MaterialComponent(GameObject* own)
 	owner = own;
 	checker = false;
 
-	checkerImage = TextureLoader::GetInstance()->LoadTexture(std::string("Library/Materials/Checker.dds"));
+	//checkerImage = TextureLoader::GetInstance()->LoadTexture(std::string("Library/Materials/Checker.dds")); check
 	active = true;
 }
 

@@ -1,11 +1,10 @@
 #include "Application.h"
 #include "ComponentMesh.h"
-#include "GameObject.h"
-#include "ModuleCamera3D.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
+#include "FileSystem.h"
+#include "ResourceManager.h"
 
-#include "Texture.h"
 #include "Mesh.h"
 #include "MeshLoader.h"
 
@@ -20,6 +19,8 @@ MeshComponent::MeshComponent(GameObject* own, TransformComponent* trans) : mater
 	type = ComponentType::MESH_RENDERER;
 	owner = own;
 	mesh = nullptr;
+
+	showMeshMenu = false;
 }
 
 MeshComponent::~MeshComponent()
@@ -54,6 +55,10 @@ void MeshComponent::OnEditor()
 	if (ImGui::CollapsingHeader("Mesh Renderer"))
 	{
 		Checkbox(this, "Active", active);
+		if (ImGui::Button(mesh ? "Cube" : ""))
+		{
+			showMeshMenu = true;
+		}
 		ImGui::Text("Number of vertices: ");
 		ImGui::SameLine();
 		ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%d", mesh ? mesh->GetVerticesSize() : 0);
@@ -66,6 +71,24 @@ void MeshComponent::OnEditor()
 		ImGui::DragFloat3("Normal Color", colorNormal.ptr(), 1.0f, 0.0f, 255.0f);
 		ImGui::Separator();
 	}
+
+	if (showMeshMenu)
+	{
+		ImGui::Begin("Meshes", &showMeshMenu);
+
+		std::vector<std::string> files;
+		app->fs->DiscoverFiles("Library/Meshes/", files);
+		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
+		{
+			if (ImGui::Button((*it).c_str(), { ImGui::GetWindowWidth() - 30, 20 }))
+			{
+				SetMesh(ResourceManager::GetInstance()->IsMeshLoaded(MESHES_FOLDER + (*it)));
+			}
+		}
+
+		ImGui::End();
+	}
+
 
 	ImGui::PopID();
 }
@@ -95,10 +118,13 @@ bool MeshComponent::OnSave(JsonParsing& node, JSON_Array* array)
 void MeshComponent::SetMesh(Mesh* m)
 {
 	mesh = m;
-	localBoundingBox.SetNegativeInfinity();
-	localBoundingBox.Enclose(mesh->GetVerticesData(), mesh->GetVerticesSize());
+	if (mesh)
+	{
+		localBoundingBox.SetNegativeInfinity();
+		localBoundingBox.Enclose(mesh->GetVerticesData(), mesh->GetVerticesSize());
 
-	owner->SetAABB(localBoundingBox);
+		owner->SetAABB(localBoundingBox);
+	}
 }
 
 void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float2>& texCoord, std::vector<float3> norm, std::string& path)

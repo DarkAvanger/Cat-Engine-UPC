@@ -3,7 +3,6 @@
 #include "Component.h"
 #include "IndexBuffer.h"
 #include "VertexBuffer.h"
-#include "TextureBuffer.h"
 #include "MathGeoLib/src/MathGeoLib.h"
 
 #include <vector>
@@ -30,6 +29,7 @@ public:
 	void SetMesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float2>& texCoord, std::vector<float3> norm, std::string& path);
 	inline void SetTransform(TransformComponent* trans) { transform = trans; }
 	inline void SetMaterial(MaterialComponent* mat) { material = mat; }
+	inline AABB GetLocalAABB() { return localBoundingBox; }
 
 private:
 
@@ -39,6 +39,7 @@ private:
 	float normalLength;
 	float3 colorNormal;
 	
+	bool showMeshMenu;
 	bool faceNormals;
 	bool verticesNormals;
 	Mesh* mesh;
@@ -47,4 +48,5 @@ private:
 
 	VertexBuffer* vboAabb;
 	IndexBuffer* eboAabb;
+
 };

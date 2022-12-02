@@ -1,11 +1,8 @@
 #include "Application.h"
-#include "ModuleCamera3D.h"
-#include "ModuleEditor.h"
 #include "GameView.h"
 #include "ModuleRenderer3D.h"
 #include "ModuleScene.h"
-
-#include "FileSystem.h"
+#include "ComponentCamera.h"
 
 #include "Imgui/imgui.h"
 
@@ -33,6 +30,7 @@ void GameView::Draw(Framebuffer* framebuffer)
 		sizeViewport.y = size.y;
 		framebuffer->ResizeFramebuffer(size.x, size.y);
 		app->renderer3D->OnResize(size.x, size.y);
+		app->scene->mainCamera->UpdateFovAndScreen(size.x, size.y);
 	}
 	bounds = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, size.x, size.y };
 	selected = ImGui::IsWindowFocused();

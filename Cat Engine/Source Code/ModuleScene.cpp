@@ -2,14 +2,9 @@
 #include "ModuleEditor.h"
 
 #include "Application.h"
-#include "ModuleCamera3D.h"
-#include "GameObject.h"
-#include "ComponentMesh.h"
-#include "ComponentMaterial.h"
 #include "Primitives.h"
 #include "MeshLoader.h"
 #include "FileSystem.h"
-#include "TextureLoader.h"
 
 #include "Profiling.h"
 

@@ -6,7 +6,6 @@
 
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl.h"
-#include "MeshLoader.h"
 
 #include "Profiling.h"
 
