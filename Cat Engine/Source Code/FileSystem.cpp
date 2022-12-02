@@ -36,7 +36,7 @@ FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 		DEBUG_LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
 	const char* dirs[] = {
-		ASSETS_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, MATERIALS_FOLDER, MESHES_FOLDER, SCENES_FOLDER
+		ASSETS_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, MATERIALS_FOLDER, MESHES_FOLDER, SCENES_FOLDER, MODELS_FOLDER
 	};
 
 	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)
@@ -197,6 +197,29 @@ void FileSystem::LoadFile(std::string& path)
 			return;
 		}
 	}
+}
+
+void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& fileList, std::vector<std::string>& dirList)
+{
+	char** rc = PHYSFS_enumerateFiles(directory);
+	char** i;
+
+	std::string dir(directory);
+
+	for (i = rc; *i != nullptr; ++i)
+	{
+		if (PHYSFS_isDirectory((dir + *i).c_str()))
+			dirList.push_back(dir + *i + "/");
+		else
+			fileList.push_back(dir + *i);
+	}
+
+	PHYSFS_freeList(rc);
+}
+
+void FileSystem::CreateDir(const char* directory)
+{
+	PHYSFS_mkdir(directory);
 }
 
 void FileSystem::CreateAssimpIO()

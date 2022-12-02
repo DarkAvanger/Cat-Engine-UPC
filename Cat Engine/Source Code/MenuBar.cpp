@@ -8,6 +8,7 @@
 #include "MenuAbout.h"
 #include "MenuInspector.h"
 #include "MenuHierarchy.h"
+#include "MenuContentBrowser.h"
 
 #include "Profiling.h"
 
@@ -15,16 +16,27 @@ MenuBar::MenuBar() : Menu(true)
 {
 	showMenu = false;
 
-	menus.reserve(3);
+	menus.reserve(6);
 	menus.emplace_back(new MenuConsole());
 	menus.emplace_back(new MenuConfig());
 	menus.emplace_back(new MenuAbout());
 	menus.emplace_back(new MenuInspector());
 	menus.emplace_back(new MenuHierarchy());
+	menus.emplace_back(new ContentBrowserMenu());
 }
 
 MenuBar::~MenuBar()
 {
+}
+
+bool MenuBar::Start()
+{
+	for (int i = 0; i < menus.size(); ++i)
+	{
+		menus[i]->Start();
+	}
+
+	return true;
 }
 
 bool MenuBar::Update(float dt)
