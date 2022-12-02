@@ -38,6 +38,8 @@ MeshLoader::~MeshLoader()
 
 void MeshLoader::ImportModel(std::string& path)
 {
+	RG_PROFILING_FUNCTION("Importing Model");
+
 	Assimp::Importer import;
 	const aiScene* scene = import.ReadFile(path, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcessPreset_TargetRealtime_MaxQuality);
 
@@ -70,6 +72,8 @@ void MeshLoader::ImportModel(std::string& path)
 
 void MeshLoader::LoadingModel(std::string& path)
 {
+	RG_PROFILING_FUNCTION("Loading Model");
+
 	char* buffer = nullptr;
 
 	path = path.substr(0, path.find_last_of("."));
@@ -355,7 +359,7 @@ MaterialComponent* MeshLoader::LoadMaterialTextures(aiMaterial* mat, aiTextureTy
 		mat->GetTexture(type, i, &str);
 		std::string aux = str.C_Str();
 		aux = aux.substr(aux.find_last_of("\\") + 1, aux.length());
-		std::string path = ASSETS_FOLDER;
+		std::string path = RESOURCES_FOLDER;
 		path += aux;
 		//material = TextureLoader::GetInstance()->LoadTexture(path);
 	}

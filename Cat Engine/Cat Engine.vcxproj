@@ -91,6 +91,7 @@
   <ItemGroup>
     <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
+    <ClInclude Include="Source Code\GameView.h" />
     <ClInclude Include="Source Code\MenuAbout.h" />
     <ClInclude Include="Source Code\Application.h" />
     <ClInclude Include="Source Code\Assimp.h" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
+    <ClCompile Include="Source Code\GameView.cpp" />
     <ClCompile Include="Source Code\MenuAbout.cpp" />
     <ClCompile Include="Source Code\Application.cpp" />
     <ClCompile Include="Source Code\Assimp.cpp" />

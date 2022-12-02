@@ -144,6 +144,9 @@
     <ClCompile Include="Source Code\ResourceManager.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\GameView.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -324,6 +327,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\ResourceManager.h">
       <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\GameView.h">
+      <Filter>Sources\Menus</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

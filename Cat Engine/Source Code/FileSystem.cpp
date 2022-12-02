@@ -37,7 +37,7 @@ FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 		DEBUG_LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
 
 	const char* dirs[] = {
-		ASSETS_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, MATERIALS_FOLDER, MESHES_FOLDER, SCENES_FOLDER, MODELS_FOLDER
+		RESOURCES_FOLDER, SETTINGS_FOLDER, LIBRARY_FOLDER, TEXTURES_FOLDER, MESHES_FOLDER, SCENES_FOLDER, MODELS_FOLDER
 	};
 
 	for (uint i = 0; i < sizeof(dirs) / sizeof(const char*); ++i)
@@ -228,6 +228,31 @@ void FileSystem::ImportFiles(std::string& path)
 	}
 }
 
+void FileSystem::ImportFromOutside(std::string& source, std::string& destination)
+{
+	char buffer[8192];
+	size_t size;
+
+	FILE* file = nullptr;
+	fopen_s(&file, source.c_str(), "rb");
+
+	std::string name = source.substr(source.find_last_of("\\") + 1, source.length());
+
+	name = destination + name;
+	PHYSFS_file* dest = PHYSFS_openWrite(name.c_str());
+
+	if (file && dest)
+	{
+		while (size = fread_s(buffer, 8192, 1, 8192, file))
+		{
+			PHYSFS_write(dest, buffer, 1, size);
+		}
+
+		fclose(file);
+		PHYSFS_close(dest);
+	}
+}
+
 void FileSystem::CheckExtension(std::string& path)
 {
 	std::string extension = path.substr(path.find_last_of(".", path.length()));
@@ -252,6 +277,7 @@ void FileSystem::CheckExtension(std::string& path)
 		{
 			RG_PROFILING_FUNCTION("Importing Texture");
 			TextureLoader::GetInstance()->ImportTexture(path);
+			TextureLoader::GetInstance()->LoadTexture(path);
 			return;
 		}
 	}

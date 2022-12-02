@@ -3,6 +3,7 @@
 #include "Module.h"
 #include "MenuBar.h"
 #include "MenuViewport.h"
+#include "GameView.h"
 
 #include "Imgui/ImGuizmo.h"
 
@@ -20,7 +21,7 @@ public:
 
 	bool Start() override;
 	bool Update(float dt) override;
-	bool Draw(Framebuffer* framebuffer);
+	bool Draw(Framebuffer* editorBuffer, Framebuffer* gameBuffer);
 	bool CleanUp() override;
 
 	inline GameObject* GetSelected() { return selected; }
@@ -33,6 +34,7 @@ public:
 	bool SaveConfig(JsonParsing& node) const override;
 
 	void LogConsole(const char* string);
+	inline std::string& GetCurrentDir() { return mainMenuBar.GetCurrentDir(); }
 
 	inline MenuViewport* GetViewport() { return viewport; }
 
@@ -43,5 +45,6 @@ private:
 	GameObject* selectedParent;
 
 	MenuViewport* viewport;
+	GameView* gameView;
 	ImGuizmo::OPERATION currentOperation;
 };

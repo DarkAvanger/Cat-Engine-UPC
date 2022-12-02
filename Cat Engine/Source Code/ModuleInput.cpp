@@ -2,7 +2,7 @@
 #include "ModuleInput.h"
 #include "FileSystem.h"
 
-#include "ModuleRenderer3D.h"
+#include "ModuleEditor.h"
 
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl.h"
@@ -158,7 +158,7 @@ bool ModuleInput::PreUpdate(float dt)
 			{
 				std::string filePath = e.drop.file;
 
-				app->fs->LoadFile(filePath);
+				app->fs->ImportFromOutside(filePath, app->editor->GetCurrentDir());
 
 				SDL_free(&filePath);
 			}	

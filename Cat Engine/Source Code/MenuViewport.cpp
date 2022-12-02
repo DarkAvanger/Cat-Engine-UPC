@@ -19,10 +19,10 @@ MenuViewport::~MenuViewport()
 {
 }
 
-void MenuViewport::Draw(Framebuffer* framebuffer, int currentOperation)
+void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int currentOperation)
 {
-	ImGui::Begin("Game", &active);
-	if (ImGui::IsItemActive()) app->renderer3D->currentView = CurrentView::GAME;
+	ImGui::Begin("Scene");
+	if (ImGui::IsItemActive()) app->renderer3D->currentView = CurrentView::EDITOR;
 	
 	ImVec2 size = ImGui::GetContentRegionAvail();
 
@@ -36,22 +36,6 @@ void MenuViewport::Draw(Framebuffer* framebuffer, int currentOperation)
 	bounds = { ImGui::GetWindowPos().x, ImGui::GetWindowPos().y, size.x, size.y };
 	selected = ImGui::IsWindowFocused();
 
-
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Content Browser"))
-		{
-			const char* path = (const char*)payload->Data;
-			app->fs->LoadFile(std::string(path));
-		}
-		ImGui::EndDragDropTarget();
-	}
-	ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
-
-	ImGui::End();
-
-	ImGui::Begin("Scene");
-	if (ImGui::IsItemActive()) app->renderer3D->currentView = CurrentView::EDITOR;
 	ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
 
 
@@ -72,6 +56,22 @@ void MenuViewport::Draw(Framebuffer* framebuffer, int currentOperation)
 			app->editor->GetSelected()->GetComponent<TransformComponent>()->SetTransform(tr.Transposed());
 		}
 	}
+
+	if (ImGui::BeginDragDropTarget())
+	{
+		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Content Browser"))
+		{
+			const char* path = (const char*)payload->Data;
+			app->fs->LoadFile(std::string(path));
+		}
+		ImGui::EndDragDropTarget();
+	}
+	ImGui::Begin("Game Preview");
+
+	ImGui::Image((ImTextureID)gameBuffer->GetId(), ImVec2(200, 100), ImVec2(0, 1), ImVec2(1, 0));
+
+	ImGui::End();
+
 	ImGui::End();
 }
 
