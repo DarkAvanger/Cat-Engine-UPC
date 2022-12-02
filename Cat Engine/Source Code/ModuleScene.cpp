@@ -38,6 +38,9 @@ bool ModuleScene::Update(float dt)
 
 	mainCamera->Update(dt);
 
+	for (int i = 0; i < root->GetChilds().size(); ++i)
+		root->GetChilds()[i]->Update(dt);
+
 	return true;
 }
 

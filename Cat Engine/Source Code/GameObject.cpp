@@ -42,6 +42,12 @@ GameObject::~GameObject()
 
 bool GameObject::Update(float dt)
 {
+	for (int i = 0; i < components.size(); ++i)
+		components[i]->Update(dt);
+
+	for (int i = 0; i < children.size(); ++i)
+		children[i]->Update(dt);
+
 	return true;
 }
 
@@ -219,9 +225,8 @@ void GameObject::SetTotalAABB()
 
 void GameObject::SetAABB(AABB newAABB, bool needToClean)
 {
-	if (needToClean) globalAabb.SetNegativeInfinity();
 	globalObb = newAABB;
-	globalObb.Transform(GetComponent<TransformComponent>()->GetTransform());
+	globalObb.Transform(GetComponent<TransformComponent>()->GetGlobalTransform());
 
 	globalAabb.Enclose(globalObb);
 
@@ -267,11 +272,6 @@ void GameObject::SetAABB(OBB newOBB)
 
 	globalAabb.SetNegativeInfinity();
 	globalAabb.Enclose(newOBB);
-
-	if (parent != nullptr && parent != app->scene->GetRoot())
-	{
-		parent->SetAABB(globalAabb);
-	}
 
 }
 

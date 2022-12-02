@@ -46,7 +46,7 @@ public:
 	void SetAABB(OBB newOBB);
 	void SetTotalAABB();
 	inline AABB GetAABB() { return globalAabb; }
-	;
+	inline void ClearAABB() { globalAabb.SetNegativeInfinity(); }
 
 
 	void MoveChildrenUp(GameObject *child);
