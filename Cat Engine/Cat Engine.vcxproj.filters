@@ -1,0 +1,391 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source Code\Application.cpp" />
+    <ClCompile Include="Source Code\Main.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_demo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_draw.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_impl_opengl3.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_impl_sdl.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_tables.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\imgui_widgets.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\json\parson.c">
+      <Filter>Externals\Json</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\mmgr\mmgr.cpp">
+      <Filter>Externals\Mmgr</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleCamera3D.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleEditor.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleInput.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleRenderer3D.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleScene.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModuleWindow.cpp">
+      <Filter>Sources\Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuAbout.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuConfig.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuConsole.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuHierarchy.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuInspector.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuBar.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\log.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Timer.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentMaterial.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentMesh.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentTransform.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\TextureBuffer.cpp">
+      <Filter>Sources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\VertexBuffer.cpp">
+      <Filter>Sources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\IndexBuffer.cpp">
+      <Filter>Sources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Framebuffer.cpp">
+      <Filter>Sources\Buffers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Primitive.cpp">
+      <Filter>Sources\Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\GameObject.cpp">
+      <Filter>Sources\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\glmath.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Color.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Light.cpp">
+      <Filter>Sources\Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\JsonParse.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\FileSystem.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Assimp.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuViewport.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Mesh.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Texture.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MenuContentBrowser.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp">
+      <Filter>Externals\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ResourceManager.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\GameView.cpp">
+      <Filter>Sources\Menus</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\MeshImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ModelImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\TextureImporter.cpp">
+      <Filter>Sources\Importers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source Code\Application.h" />
+    <ClInclude Include="Source Code\Globals.h" />
+    <ClInclude Include="Source Code\External Libraries\glew\include\GL\glew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\glew\include\GL\glxew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\glew\include\GL\wglew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\glew\include\GL\eglew.h">
+      <Filter>Externals\Glew</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imconfig.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imgui.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imgui_impl_opengl3.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imgui_impl_opengl3_loader.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imgui_impl_sdl.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imgui_internal.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\ImguiStyle.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imstb_rectpack.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imstb_textedit.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\imstb_truetype.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\json\parson.h">
+      <Filter>Externals\Json</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\mmgr\mmgr.h">
+      <Filter>Externals\Mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\mmgr\nommgr.h">
+      <Filter>Externals\Mmgr</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Module.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleCamera3D.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleEditor.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleInput.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleRenderer3D.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleScene.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModuleWindow.h">
+      <Filter>Sources\Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuAbout.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuConfig.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuConsole.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuHierarchy.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuInspector.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuBar.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Menu.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Timer.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Component.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentMaterial.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentMesh.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentTransform.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TextureBuffer.h">
+      <Filter>Sources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\VertexBuffer.h">
+      <Filter>Sources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Framebuffer.h">
+      <Filter>Sources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Primitive.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Primitives.h">
+      <Filter>Sources\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\IndexBuffer.h">
+      <Filter>Sources\Buffers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\GameObject.h">
+      <Filter>Sources\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\glmath.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Color.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Light.h">
+      <Filter>Sources\Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\JsonParse.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\FileSystem.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Assimp.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Profiling.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuViewport.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Mesh.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Texture.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentCamera.h">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MenuContentBrowser.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h">
+      <Filter>Externals\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ResourceManager.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\GameView.h">
+      <Filter>Sources\Menus</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\MeshImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ModelImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\TextureImporter.h">
+      <Filter>Sources\Importers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Externals">
+      <UniqueIdentifier>{28ef3f9b-3b2a-47fb-a5b3-9688f8744d04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources">
+      <UniqueIdentifier>{848761de-1ecf-45e6-b1fb-ef5b4f1e251d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Buffers">
+      <UniqueIdentifier>{31da6324-e229-428f-86b5-3e0f655bf750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Containers">
+      <UniqueIdentifier>{c4b60db3-79d1-4732-a894-4f0d30b7f157}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameObject">
+      <UniqueIdentifier>{bb8eb464-20e8-4c7a-a981-798174656527}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Helpers">
+      <UniqueIdentifier>{a5c0ced0-75d2-43cc-9b6d-0a953227e14d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Menus">
+      <UniqueIdentifier>{6446df33-4cf8-4155-87af-ff2d4fa40f9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Modules">
+      <UniqueIdentifier>{d0e6c023-0a81-42e2-9d33-1cce8732b88d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Tools">
+      <UniqueIdentifier>{f105c1c4-e1b4-4f57-a9e8-3a3388a0453c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\Glew">
+      <UniqueIdentifier>{21202b60-456e-4e11-b388-4b8b83f01f57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\ImGui">
+      <UniqueIdentifier>{89a7b39b-9276-4c4f-b356-5315a4c75cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\Json">
+      <UniqueIdentifier>{77f910d5-4a17-4e8e-a7e1-4fac506efc5f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\GameObject\Components">
+      <UniqueIdentifier>{a31274c5-aaf8-400e-b01d-0629916d1456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Externals\Mmgr">
+      <UniqueIdentifier>{77c9d238-1549-424a-bd59-dcef987c0a34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Resources">
+      <UniqueIdentifier>{d9f337d2-2f8e-4b17-a9ef-86670d91ccc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Importers">
+      <UniqueIdentifier>{cc8e6ceb-9dea-47d9-9c5e-e1441c40fdfd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
