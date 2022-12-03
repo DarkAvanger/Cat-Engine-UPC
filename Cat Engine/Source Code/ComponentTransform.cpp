@@ -199,8 +199,7 @@ void TransformComponent::UpdateTransform(GameObject* go)
 		if (go->GetParent() && go->GetParent() != app->scene->GetRoot())
 		{
 			TransformComponent* parentTr = go->GetParent()->GetComponent<TransformComponent>();
-			if (parentTr) transform->globalMatrix = transform->localMatrix * parentTr->globalMatrix;
-			DEBUG_LOG("Parent %s", owner->GetName());
+			if (parentTr) transform->globalMatrix = parentTr->globalMatrix * transform->localMatrix;
 		}
 		else
 		{
@@ -297,11 +296,8 @@ void TransformComponent::ShowTransformationInfo()
 	if (DrawVec3(std::string("Rotation: "), rotationEditor))
 	{
 		Quat quaternionX = quaternionX.RotateX(math::DegToRad(rotationEditor.x));
-		quaternionX.Normalize();
 		Quat quaternionY = quaternionY.RotateY(math::DegToRad(rotationEditor.y));
-		quaternionY.Normalize();
 		Quat quaternionZ = quaternionZ.RotateZ(math::DegToRad(rotationEditor.z));
-		quaternionZ.Normalize();
 		Quat finalQuaternion = quaternionX * quaternionY * quaternionZ;
 		rotation = finalQuaternion;
 

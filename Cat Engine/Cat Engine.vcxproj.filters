@@ -156,6 +156,9 @@
     <ClCompile Include="Source Code\Quadtree.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\GameTimer.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -350,6 +353,9 @@
       <Filter>Sources\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\Resource.h">
+      <Filter>Sources\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\GameTimer.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
   </ItemGroup>

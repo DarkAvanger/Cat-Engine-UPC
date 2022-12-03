@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "GameObject.h"
 #include "Quadtree.h"
-#include "Timer.h"
+#include "GameTimer.h"
 #include <vector>
 
 enum class Object3D
@@ -12,6 +12,13 @@ enum class Object3D
 	PYRAMIDE,
 	SPHERE,
 	CYLINDER
+};
+
+enum class GameState
+{
+	NOT_PLAYING = 0,
+	PLAYING,
+	PAUSE
 };
 
 class CameraComponent;
@@ -36,12 +43,15 @@ public:
 	}
 
 	inline GameObject* GetRoot() const { return root; }
-	inline bool GetGameState() const { return isPlaying; }
+	inline GameState GetGameState() const { return gameState; }
 	GameObject* GetGoByUuid(double uuid) const;
 
 	void SetMainCamera(CameraComponent* camComponent) { mainCamera = camComponent; }
 	void Play();
 	void Stop();
+	void Pause();
+	void Resume();
+	inline void NextFrame() { frameSkip = true; }
 
 	GameObject* Create3DObject(Object3D type, GameObject* parent);
 
@@ -56,13 +66,16 @@ public:
 	void RemoveFromQuadtree(GameObject* go);
 
 	Quadtree& GetQuadtree() { return qTree; }
+	void SetGameDeltaTime(float deltaTime) { gameTimer.SetDesiredDeltaTime(deltaTime); }
 
 	CameraComponent* mainCamera;
 
 private:
 	GameObject* root;
-	bool isPlaying;
+	//bool isPlaying;
 	Quadtree qTree;
+	GameState gameState;
+	bool frameSkip;
 
-	Timer time;
+	GameTimer gameTimer;
 };
