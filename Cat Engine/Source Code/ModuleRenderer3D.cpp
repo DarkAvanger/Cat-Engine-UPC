@@ -1,6 +1,5 @@
 #include "Application.h"
 #include "ModuleRenderer3D.h"
-#include "Globals.h"
 
 #include "ModuleWindow.h"
 #include "ModuleCamera3D.h"
@@ -178,6 +177,16 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 // PreUpdate: clear buffer
 bool ModuleRenderer3D::PreUpdate(float dt)
 {
+
+	/*switch (currentView)
+	{
+	case CurrentView::EDITOR:
+		glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
+		break;
+	case CurrentView::GAME:
+		glLoadMatrixf(app->scene->mainCamera->matrixViewFrustum.Transposed().ptr());
+		break;
+	}*/
 
 	return true;
 }

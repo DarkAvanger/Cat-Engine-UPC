@@ -90,7 +90,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\ComponentCamera.h" />
-    <ClInclude Include="Source Code\EngineTimer.h" />
     <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
     <ClInclude Include="Source Code\GameView.h" />
     <ClInclude Include="Source Code\MenuAbout.h" />
@@ -156,7 +155,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
-    <ClCompile Include="Source Code\EngineTimer.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
     <ClCompile Include="Source Code\GameView.cpp" />
     <ClCompile Include="Source Code\MenuAbout.cpp" />

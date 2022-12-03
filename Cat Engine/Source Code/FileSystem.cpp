@@ -9,7 +9,6 @@
 #include "assimp/cimport.h"
 #include "Assimp.h"
 #include "IL/il.h"
-#include "SDL/include/SDL_filesystem.h"
 
 #include <vector>
 #include <stack>

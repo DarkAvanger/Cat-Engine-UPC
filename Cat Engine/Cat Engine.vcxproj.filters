@@ -150,9 +150,6 @@
     <ClCompile Include="Source Code\TextureImporter.cpp">
       <Filter>Sources\Importers</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\EngineTimer.cpp">
-      <Filter>Sources\Tools</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />
@@ -339,9 +336,6 @@
     </ClInclude>
     <ClInclude Include="Source Code\TextureImporter.h">
       <Filter>Sources\Importers</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\EngineTimer.h">
-      <Filter>Sources\Tools</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

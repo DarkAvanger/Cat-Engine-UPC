@@ -3,8 +3,6 @@
 
 #include "Light.h"
 
-#include "SDL.h"
-
 #include <vector>
 #include "Primitive.h"
 
