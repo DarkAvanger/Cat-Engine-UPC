@@ -14,7 +14,6 @@
 #include <stack>
 
 #include "Profiling.h"
-#include "SDL/include/SDL_filesystem.h"
 
 FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 {

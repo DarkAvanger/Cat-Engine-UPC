@@ -113,6 +113,7 @@ void CameraComponent::SetPlanes()
 
 void CameraComponent::CalculateVerticalFov(float horizontalFovRadians, float width, float height)
 {
+	CompileBuffers();
 	verticalFov = 2 * Atan((Tan(horizontalFovRadians / 2)) * (height / width));
 	camera.SetVerticalFovAndAspectRatio(verticalFov, (width / height));
 	currentScreenHeight = height;

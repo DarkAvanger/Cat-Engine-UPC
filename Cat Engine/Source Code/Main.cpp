@@ -17,7 +17,7 @@ enum class MainState
 
 Application* app = nullptr;
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
 	DEBUG_LOG("Starting game '%s'...", TITLE);
 
