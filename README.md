@@ -6,7 +6,7 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 
 - Download the latest release
 
-- Unzip de file
+- Unzip the file
 
 - Open CatEngine.exe
 
