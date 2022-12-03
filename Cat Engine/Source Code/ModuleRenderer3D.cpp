@@ -193,18 +193,11 @@ bool ModuleRenderer3D::PostUpdate()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(app->camera->matrixProjectionFrustum.Transposed().ptr());
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
-	std::vector<GameObject*> objects;
-	app->scene->GetQuadtree().Intersect(objects, app->scene->mainCamera);
-
-	for (int i = 0; i < objects.size(); ++i)
-	{
-		objects[i]->Draw();
-	}
+	app->scene->Draw();
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -219,18 +212,22 @@ bool ModuleRenderer3D::PostUpdate()
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(app->scene->mainCamera->matrixProjectionFrustum.Transposed().ptr());
-
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->scene->mainCamera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
-	app->scene->Draw();
+	std::set<GameObject*> objects;
+	app->scene->GetQuadtree().Intersect(objects, app->scene->mainCamera);
+
+	for (std::set<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
+	{
+		(*it)->Draw();
+	}
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-
 	glPopMatrix();
 
 	mainCameraFbo->Unbind();
