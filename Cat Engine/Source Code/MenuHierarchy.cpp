@@ -1,5 +1,6 @@
 #include "MenuHierarchy.h"
 
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
@@ -29,11 +30,21 @@ bool MenuHierarchy::Update(float dt)
 	ImGuiTreeNodeFlags flags = ((selected == root) ? ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow;
 	if (ImGui::TreeNodeEx(root, flags, root->GetName()))
 	{
+		if (ImGui::BeginDragDropTarget())
+		{
+			const ImGuiPayload* go = ImGui::AcceptDragDropPayload("HierarchyItem");
+			if (go)
+			{
+				uint goUuid = *(const uint*)(go->Data);
+				app->scene->ReparentGameObjects(goUuid, root);
+			}
+			ImGui::EndDragDropTarget();
+		}
 		ShowChildren(root);
 		ImGui::TreePop();
 	}
 
-	if (ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && (ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1]))
+	if (!gameObjectOptions && ImGui::IsWindowHovered() && ImGui::IsWindowFocused() && (ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1]))
 	{
 		app->editor->SetSelected(nullptr);
 		app->editor->SetSelectedParent(nullptr);
@@ -145,30 +156,54 @@ void MenuHierarchy::ShowChildren(GameObject* parent)
 	for (int i = 0; i < size; ++i)
 	{
 		GameObject* obj = parent->GetChilds()[i];
+		ImGui::PushID(obj->GetName());
 		ImGuiTreeNodeFlags flags = ((selected == obj) ? ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_::ImGuiTreeNodeFlags_OpenOnArrow;
 		bool opened = false;
-		if (obj != nullptr) opened = ImGui::TreeNodeEx((void*)obj, flags, obj->GetName());
-		if (ImGui::IsItemClicked())
+		if (obj != nullptr)
 		{
-			app->editor->SetSelected(obj);
-			app->editor->SetSelectedParent(parent);
-		}
-		else if (ImGui::IsItemClicked(1))
-		{
-			app->editor->SetSelected(obj);
-			app->editor->SetSelectedParent(parent);
-			gameObjectOptions = true;
-		}
+			uint uuid = obj->GetUUID();
+			opened = ImGui::TreeNodeEx((void*)obj, flags, obj->GetName());
+			if (ImGui::BeginDragDropSource())
+			{
+				ImGui::SetDragDropPayload("HierarchyItem", &uuid, sizeof(uint));
 
-		if (opened)
-		{
-			ShowChildren(obj);
-			ImGui::TreePop();
-		}
+				ImGui::EndDragDropSource();
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+				const ImGuiPayload* go = ImGui::AcceptDragDropPayload("HierarchyItem");
+				if (go)
+				{
+					uint goUuid = *(const uint*)(go->Data);
+					app->scene->ReparentGameObjects(goUuid, obj);
+				}
+				ImGui::EndDragDropTarget();
+			}
+			if (ImGui::IsItemClicked())
+			{
+				app->editor->SetSelected(obj);
+				app->editor->SetSelectedParent(parent);
+			}
+			else if (ImGui::IsItemClicked(1))
+			{
+				app->editor->SetSelected(obj);
+				app->editor->SetSelectedParent(parent);
+				gameObjectOptions = true;
+			}
 
-		if (!ImGui::IsAnyItemHovered() && (ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1]))
-		{
+
+			if (opened)
+			{
+				ShowChildren(obj);
+				ImGui::TreePop();
+			}
+
+			if (!ImGui::IsAnyItemHovered() && (ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1]))
+			{
+					
+			}
 
 		}
+		ImGui::PopID();
 	}
 }

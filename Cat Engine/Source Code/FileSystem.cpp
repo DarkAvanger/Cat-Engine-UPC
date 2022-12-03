@@ -3,10 +3,8 @@
 #include "Globals.h"
 #include "ModelImporter.h"
 #include "ResourceManager.h"
-
 #include "ModuleEditor.h"
 #include "GameObject.h"
-
 
 #include "assimp/cimport.h"
 #include "Assimp.h"
@@ -16,6 +14,7 @@
 #include <stack>
 
 #include "Profiling.h"
+#include "SDL/include/SDL_filesystem.h"
 
 FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 {
@@ -30,7 +29,6 @@ FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 
 	DEBUG_LOG("FileSystem Operations base is [%s] plus:", GetBasePath());
 	DEBUG_LOG(GetReadPaths());
-
 
 	if (PHYSFS_setWriteDir(".") == 0)
 		DEBUG_LOG("File System error while creating write dir: %s\n", PHYSFS_getLastError());
@@ -48,9 +46,9 @@ FileSystem::FileSystem(const char* assetsPath) : name("FileSystem")
 	CreateAssimpIO();
 
 	ilInit();
-	
+
 	texExtension = { ".png", ".jpg", ".dds" };
-	modelExtension = { ".obj", ".fbx", ".3DS", ".FBX"};
+	modelExtension = { ".obj", ".fbx", ".3DS", ".FBX" };
 }
 
 FileSystem::~FileSystem()
@@ -66,7 +64,6 @@ bool FileSystem::Init(JsonParsing& node)
 	bool ret = true;
 
 	char* writePath = SDL_GetPrefPath(app->GetOrganizationName(), app->GetAppName());
-
 
 
 	SDL_free(writePath);
@@ -175,7 +172,7 @@ void FileSystem::LoadFile(std::string& path)
 	std::string extension = path.substr(path.find_last_of(".", path.length()));
 	std::list<std::string>::iterator s;
 	std::list<std::string>::iterator end = modelExtension.end();
-	
+
 	for (s = modelExtension.begin(); s != end; ++s)
 	{
 		if (*s == extension)
@@ -211,7 +208,7 @@ void FileSystem::ImportFiles(std::string& path)
 		std::vector<std::string> files;
 		std::vector<std::string> dirs;
 
-		DiscoverFiles(dir.c_str(), files, dirs);
+		DiscoverFilesAndDirs(dir.c_str(), files, dirs);
 
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
@@ -239,7 +236,7 @@ void FileSystem::LoadFiles()
 		std::vector<std::string> files;
 		std::vector<std::string> dirs;
 
-		DiscoverFiles(dir.c_str(), files, dirs);
+		DiscoverFilesAndDirs(dir.c_str(), files, dirs);
 
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
@@ -270,7 +267,8 @@ void FileSystem::ImportFromOutside(std::string& source, std::string& destination
 	FILE* file = nullptr;
 	fopen_s(&file, source.c_str(), "rb");
 
-	std::string name = source.substr(source.find_last_of("\\") + 1, source.length());
+	std::string name = source;
+	GetFilenameWithExtension(name);
 
 	name = destination + name;
 	PHYSFS_file* dest = PHYSFS_openWrite(name.c_str());
@@ -285,6 +283,52 @@ void FileSystem::ImportFromOutside(std::string& source, std::string& destination
 		fclose(file);
 		PHYSFS_close(dest);
 	}
+}
+
+void FileSystem::CheckExtension(std::string& path)
+{
+	std::string extension = path.substr(path.find_last_of(".", path.length()));
+	std::list<std::string>::iterator s;
+	std::list<std::string>::iterator end = modelExtension.end();
+
+	for (s = modelExtension.begin(); s != end; ++s)
+	{
+		if (*s == extension)
+		{
+			RG_PROFILING_FUNCTION("Importing Model");
+			ModelImporter::ImportModel(path);
+			return;
+		}
+	}
+
+	end = texExtension.end();
+
+	for (s = texExtension.begin(); s != end; ++s)
+	{
+		if (*s == extension)
+		{
+			RG_PROFILING_FUNCTION("Importing Texture");
+			return;
+		}
+	}
+}
+
+void FileSystem::DiscoverFilesAndDirs(const char* directory, std::vector<std::string>& fileList, std::vector<std::string>& dirList)
+{
+	char** rc = PHYSFS_enumerateFiles(directory);
+	char** i;
+
+	std::string dir(directory);
+
+	for (i = rc; *i != nullptr; ++i)
+	{
+		if (PHYSFS_isDirectory((dir + *i).c_str()))
+			dirList.push_back(dir + *i + "/");
+		else
+			fileList.push_back(dir + *i);
+	}
+
+	PHYSFS_freeList(rc);
 }
 
 void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& fileList)
@@ -319,51 +363,58 @@ void FileSystem::DiscoverDirs(const char* directory, std::vector<std::string>& d
 	PHYSFS_freeList(rc);
 }
 
-void FileSystem::CheckExtension(std::string& path)
+void FileSystem::NormalizePath(std::string& path)
 {
-	std::string extension = path.substr(path.find_last_of(".", path.length()));
-	std::list<std::string>::iterator s;
-	std::list<std::string>::iterator end = modelExtension.end();
+	for (int i = 0; i < path.length(); ++i)
+		if (path[i] == '\\') path[i] = '/';
+}
 
-	for (s = modelExtension.begin(); s != end; ++s)
+void FileSystem::GetRelativeDirectory(std::string& path)
+{
+	NormalizePath(path);
+
+	if (path.find("/") != std::string::npos)
 	{
-		if (*s == extension)
-		{
-			RG_PROFILING_FUNCTION("Importing Model");
-			ModelImporter::ImportModel(path);
-			return;
-		}
-	}
-
-	end = texExtension.end();
-
-	for (s = texExtension.begin(); s != end; ++s)
-	{
-		if (*s == extension)
-		{
-			RG_PROFILING_FUNCTION("Importing Texture");
-			//TextureImporter::ImportTexture(path);
-			return;
-		}
+		path = path.substr(0, path.length() - 1);
+		path = path.substr(path.find_last_of("/") + 1, path.length());
 	}
 }
 
-void FileSystem::DiscoverFiles(const char* directory, std::vector<std::string>& fileList, std::vector<std::string>& dirList)
+void FileSystem::GetFilenameWithExtension(std::string& path)
 {
-	char** rc = PHYSFS_enumerateFiles(directory);
-	char** i;
+	NormalizePath(path);
 
-	std::string dir(directory);
+	if (path.find("/") != std::string::npos)
+		path = path.substr(path.find_last_of("/") + 1, path.length());
+}
 
-	for (i = rc; *i != nullptr; ++i)
+void FileSystem::GetFilenameWithoutExtension(std::string& path)
+{
+	NormalizePath(path);
+
+	if (path.find("/") != std::string::npos)
 	{
-		if (PHYSFS_isDirectory((dir + *i).c_str()))
-			dirList.push_back(dir + *i + "/");
+		path = path.substr(path.find_last_of("/") + 1, path.length());
+		path = path.substr(0, path.find_last_of("."));
+	}
+}
+
+bool FileSystem::RemoveFile(const char* file)
+{
+	bool ret = false;
+
+	if (file != nullptr)
+	{
+		if (PHYSFS_delete(file) == 0)
+		{
+			LOG("File deleted: [%s]", file);
+			ret = true;
+		}
 		else
-			fileList.push_back(dir + *i);
+			LOG("File System error while trying to delete [%s]: ", file, PHYSFS_getLastError());
 	}
 
-	PHYSFS_freeList(rc);
+	return ret;
 }
 
 void FileSystem::CreateDir(const char* directory)

@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 
+#include "SDL.h"
+
 #include <vector>
 #include <string>
 

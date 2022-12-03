@@ -8,10 +8,13 @@
 #include "MenuInspector.h"
 #include "MenuHierarchy.h"
 #include "MenuContentBrowser.h"
+#include "TextureImporter.h"
+#include "Texture.h"
+#include "ResourceManager.h"
 
 #include "Profiling.h"
 
-MenuBar::MenuBar() : Menu(true)
+MenuBar::MenuBar() : Menu(true), buttonPlay(nullptr), buttonStop(nullptr), buttonNextFrame(nullptr)
 {
 	showMenu = false;
 
@@ -30,6 +33,9 @@ MenuBar::~MenuBar()
 
 bool MenuBar::Start()
 {
+	buttonPlay = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/playButton.dds");
+	buttonStop = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/stopButton.dds");
+	buttonNextFrame = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/frameButton.dds");
 	for (int i = 0; i < menus.size(); ++i)
 	{
 		menus[i]->Start();
@@ -162,6 +168,28 @@ bool MenuBar::Update(float dt)
 
 		ImGui::EndMainMenuBar();
 	}
+	bool ret = true;
+	ImGui::Begin(" ", &ret, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
+	ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
+	ImGui::PushStyleColor(ImGuiCol_Border, { 0, 0, 0, 0 });
+	ImGui::PushStyleColor(ImGuiCol_BorderShadow, { 0, 0, 0, 0 });
+	ImGui::SameLine(ImGui::GetWindowSize().x * 0.5f - 81);
+	if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), { 27,18 }))
+	{
+		if (!app->scene->GetGameState()) app->scene->Play();
+		else (app->scene->Stop());
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton((ImTextureID)buttonStop->GetId(), { 27,18 }))
+	{
+		if (app->scene->GetGameState()) app->scene->Stop();
+	}
+	ImGui::SameLine();
+	if (ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 }))
+	{
+	}
+	ImGui::PopStyleColor(3);
+	ImGui::End();
 
 	if (showMenu)
 	{

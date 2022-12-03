@@ -5,10 +5,13 @@
 #include "Primitives.h"
 #include "ModelImporter.h"
 #include "FileSystem.h"
+#include "Globals.h"
+
+#include <stack>
 
 #include "Profiling.h"
 
-ModuleScene::ModuleScene() : mainCamera(nullptr)
+ModuleScene::ModuleScene() : mainCamera(nullptr), isPlaying(false)
 {
 	root = new GameObject();
 	root->SetName("Scene");
@@ -32,6 +35,12 @@ bool ModuleScene::Start()
 	return true;
 }
 
+bool ModuleScene::PreUpdate(float dt)
+{
+
+	return true;
+}
+
 bool ModuleScene::Update(float dt)
 {
 	RG_PROFILING_FUNCTION("Updating Scene");
@@ -41,6 +50,11 @@ bool ModuleScene::Update(float dt)
 	for (int i = 0; i < root->GetChilds().size(); ++i)
 		root->GetChilds()[i]->Update(dt);
 
+	return true;
+}
+
+bool ModuleScene::PostUpdate()
+{
 	return true;
 }
 
@@ -165,6 +179,18 @@ void ModuleScene::MoveGameObjectDown(GameObject* object)
 	}
 }
 
+void ModuleScene::ReparentGameObjects(uint uuid, GameObject* go)
+{
+	GameObject* gameObj = GetGoByUuid(uuid);
+	GameObject* parentObj = gameObj->GetParent();
+
+	parentObj->RemoveChild(gameObj);
+	gameObj->SetParent(go);
+	go->AddChild(gameObj);
+
+}
+
+
 bool ModuleScene::LoadScene(const char* name)
 {
 	DEBUG_LOG("Loading Scene");
@@ -190,21 +216,11 @@ bool ModuleScene::LoadScene(const char* name)
 				root = new GameObject();
 				root->OnLoad(go);
 			}
-			else if (go.GetJsonNumber("Parent UUID") == root->GetUUID())
-			{
-				GameObject* object = CreateGameObject(root, false);
-				object->OnLoad(go);
-			}
 			else
 			{
-				for (int i = 0; i < root->GetChilds().size(); ++i)
-				{
-					if (go.GetJsonNumber("Parent UUID") == root->GetChilds()[i]->GetUUID())
-					{
-						GameObject* object = CreateGameObject(root->GetChilds()[i], false);
-						object->OnLoad(go);
-					}
-				}
+				GameObject* parent = GetGoByUuid(go.GetJsonNumber("Parent UUID"));
+				GameObject* child = CreateGameObject(parent, false);
+				child->OnLoad(go);
 			}
 		}
 	}
@@ -218,6 +234,28 @@ bool ModuleScene::LoadScene(const char* name)
 	RELEASE_ARRAY(buffer);
 
 	return true;
+}
+
+GameObject* ModuleScene::GetGoByUuid(double uuid) const
+{
+	std::stack<GameObject*> goStack;
+	goStack.push(root);
+
+	while (!goStack.empty())
+	{
+		GameObject* go = goStack.top();
+		goStack.pop();
+		if (go->GetUUID() == uuid)	return go;
+		else
+		{
+			for (int i = 0; i < go->GetChilds().size(); ++i)
+			{
+				goStack.push(go->GetChilds()[i]);
+			}
+		}
+	}
+
+	return nullptr;
 }
 
 bool ModuleScene::SaveScene()
@@ -241,4 +279,33 @@ bool ModuleScene::SaveScene()
 	RELEASE_ARRAY(buf);
 
 	return true;
+}
+
+void ModuleScene::Play()
+{
+	DEBUG_LOG("Saving Scene");
+
+	JsonParsing sceneFile;
+
+	sceneFile = sceneFile.SetChild(sceneFile.GetRootValue(), "Scene");
+	JSON_Array* array = sceneFile.SetNewJsonArray(sceneFile.GetRootValue(), "Game Objects");
+	root->OnSave(sceneFile, array);
+
+	char* buf;
+	uint size = sceneFile.Save(&buf);
+
+	if (app->fs->Save(SCENES_FOLDER "scenePlay.json", buf, size) > 0)
+		DEBUG_LOG("Scene saved succesfully");
+	else
+		DEBUG_LOG("Scene couldn't be saved");
+
+	RELEASE_ARRAY(buf);
+
+	isPlaying = true;
+}
+
+void ModuleScene::Stop()
+{
+	LoadScene("Assets/Scenes/scenePlay.json");
+	isPlaying = false;
 }

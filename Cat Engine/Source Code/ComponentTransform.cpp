@@ -101,7 +101,7 @@ void TransformComponent::SetTransform(float4x4 trMatrix)
 	globalMatrix = trMatrix;
 	globalMatrix.Decompose(position, rotation, scale);
 
-	RecursiveTransform(owner);
+	changeTransform = true;
 }
 
 void TransformComponent::SetTranslation(float3 pos)
@@ -219,7 +219,9 @@ void TransformComponent::SetAABB()
 	}
 	if (owner->GetComponent<MeshComponent>())
 	{
-		owner->SetAABB(owner->GetComponent<MeshComponent>()->GetLocalAABB());
+		OBB newObb = owner->GetComponent<MeshComponent>()->GetLocalAABB().ToOBB();
+		newObb.Transform(globalMatrix);
+		owner->SetAABB(newObb);
 	}
 }
 
