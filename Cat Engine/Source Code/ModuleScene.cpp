@@ -90,12 +90,6 @@ bool ModuleScene::Draw()
 		for (int i = 0; i < go->GetChilds().size(); ++i)
 			stack.push(go->GetChilds()[i]);
 	}
-	//for (int i = 0; i < root->GetChilds().size(); ++i)
-	//{
-	//	GameObject* go = root->GetChilds()[i];
-	//	if (go->GetActive())
-	//		go->Draw();
-	//}
 
 	return true;
 }
@@ -164,7 +158,6 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 	if (!vertices.empty())
 	{
 		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);;
-		//mesh->SetMesh(vertices, indices, texCoords, normals, path);
 	}
 
 	return object;
