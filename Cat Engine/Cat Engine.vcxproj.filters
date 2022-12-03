@@ -156,6 +156,9 @@
     <ClCompile Include="Source Code\GameTimer.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\Application.h" />

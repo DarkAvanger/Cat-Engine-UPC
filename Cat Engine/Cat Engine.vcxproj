@@ -158,6 +158,7 @@
     <ClInclude Include="Source Code\MenuViewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\EngineTimer.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
     <ClCompile Include="Source Code\GameTimer.cpp" />
