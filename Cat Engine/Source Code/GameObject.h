@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "Component.h"
+
 #include "ComponentTransform.h"
 #include "ComponentMesh.h"
 #include "ComponentMaterial.h"
@@ -26,6 +27,7 @@ public:
 	bool Update(float dt);
 	void Draw();
 	void DrawEditor();
+
 	void DebugColliders();
 
 	Component* CreateComponent(ComponentType type);
@@ -47,11 +49,11 @@ public:
 	void SetAABB(OBB newOBB);
 	void SetTotalAABB();
 	inline AABB GetAABB() { return globalAabb; }
+
 	inline void ClearAABB() { globalAabb.SetNegativeInfinity(); }
 
-
-	void MoveChildrenUp(GameObject *child);
-	void MoveChildrenDown(GameObject *child);
+	void MoveChildrenUp(GameObject* child);
+	void MoveChildrenDown(GameObject* child);
 
 	void OnLoad(JsonParsing& node);
 	void OnSave(JsonParsing& node, JSON_Array* array);
@@ -64,13 +66,14 @@ public:
 private:
 	std::string name;
 	bool active;
+	bool staticObj;
+	bool colliders;
 	std::vector<Component*> components;
 
 	GameObject* parent;
 	std::vector<GameObject*> children;
 
 	bool newComponent;
-	bool colliders;
 
 	AABB globalAabb;
 	OBB globalObb;
@@ -85,7 +88,7 @@ template<typename T>
 inline T* GameObject::GetComponent()
 {
 	T* component = nullptr;
-	
+
 	for (std::vector<Component*>::iterator i = components.begin(); i < components.end(); ++i)
 	{
 		component = dynamic_cast<T*>(*i);
@@ -103,7 +106,7 @@ inline std::vector<T*> GameObject::GetAllComponent()
 
 	for (std::vector<Component*>::iterator i = components.begin(); i < components.end(); ++i)
 	{
-		T* c= nullptr;
+		T* c = nullptr;
 		c = dynamic_cast<T*>(*i);
 		if (c != nullptr)
 			component.push_back(c);

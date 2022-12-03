@@ -199,12 +199,16 @@ bool ModuleCamera3D::Update(float dt)
 			Ray rayCast = picking.ToRay();
 			DEBUG_LOG("POSITION X %f, POSITION Y %f", mousePos.x, mousePos.y);
 			bool hit = false;
-			std::vector<GameObject*>::iterator it = app->scene->GetRoot()->GetChilds().begin();
-			for (; it < app->scene->GetRoot()->GetChilds().end(); ++it)
+			std::vector<GameObject*> gameObjects;
+			app->scene->GetQuadtree().CollectGo(gameObjects);
+
+			std::vector<GameObject*>::iterator it = gameObjects.begin();
+			for (; it < gameObjects.end(); ++it)
 			{
-				if ((*it)->GetAABB().IsFinite())
+				TransformComponent* transform = (*it)->GetComponent<TransformComponent>();
+				if ((*it)->GetAABB().IsFinite() && transform)
 				{
-					rayCast.Transform((*it)->GetComponent<TransformComponent>()->GetGlobalTransform().Transposed());
+					rayCast.Transform(transform->GetGlobalTransform().Transposed());
 					hit = rayCast.Intersects((*it)->GetAABB());
 
 					if (hit)
