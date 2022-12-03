@@ -1,27 +1,25 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ComponentTransform.h"
-#include "Globals.h"
 #include "ModuleScene.h"
+#include "Globals.h"
 
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_internal.h"
-
 #include "Imgui/ImGuizmo.h"
-
-#include "Profiling.h"
 
 #include <stack>
 
+#include "Profiling.h"
+
 TransformComponent::TransformComponent(GameObject* own)
 {
+	type = ComponentType::TRANSFORM;
 	owner = own;
 
-	type = ComponentType::TRANSFORM;
-	position = { 0.0f, 0.0f, 0.0f }; 
+	position = { 0.0f, 0.0f, 0.0f };
 	rotation = { 0.0f, 0.0f, 0.0f, 1.0f };
 	scale = { 1.0f, 1.0f, 1.0f };
-	
 	localMatrix = float4x4::FromTRS(position, rotation, scale);
 
 	if (owner->GetParent() != nullptr)
@@ -79,7 +77,7 @@ void TransformComponent::OnEditor()
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 		ImGui::PushItemWidth(90);
-		
+
 		ShowTransformationInfo();
 
 		ImGui::Separator();
@@ -92,8 +90,8 @@ void TransformComponent::SetTransform(float3 pos, Quat rot, float3 sca)
 	rotation = rot;
 	scale = sca;
 
-
 	globalMatrix = float4x4::FromTRS(position, rotation, scale);
+	DEBUG_LOG("This is %s", owner->GetName());
 }
 
 void TransformComponent::SetTransform(float4x4 trMatrix)
@@ -138,6 +136,7 @@ bool TransformComponent::OnLoad(JsonParsing& node)
 	}
 
 	RecursiveTransform(owner);
+
 	return true;
 }
 
@@ -182,6 +181,7 @@ void TransformComponent::RecursiveTransform(GameObject* parent)
 		children[i]->GetComponent<TransformComponent>()->SetChildTransform(position, rotation, scale);
 		RecursiveTransform(children[i]);
 	}
+
 	if (owner->GetComponent<MeshComponent>())
 	{
 		owner->SetAABB(owner->GetComponent<MeshComponent>()->GetLocalAABB());
@@ -194,8 +194,6 @@ void TransformComponent::UpdateTransform(GameObject* go)
 
 	if (transform)
 	{
-		transform->localMatrix = float4x4::FromTRS(position, rotation, scale);
-
 		if (go->GetParent() && go->GetParent() != app->scene->GetRoot())
 		{
 			TransformComponent* parentTr = go->GetParent()->GetComponent<TransformComponent>();
@@ -288,24 +286,36 @@ void TransformComponent::ShowTransformationInfo()
 	float3 rot;
 	float3 sca;
 
-	if (DrawVec3(std::string("Position: "), position))
-	{
-		changeTransform = true;
-	}
+	if (DrawVec3(std::string("Position: "), position)) changeTransform = true;
 
 	if (DrawVec3(std::string("Rotation: "), rotationEditor))
 	{
+		if (rotationEditor.y == 0 && rotationEditor.z == 0) rotationOrder = RotationOrder::XYZ;
+		else if (rotationEditor.x == 0 && rotationEditor.y == 0) rotationOrder = RotationOrder::ZYX;
+		else if (rotationEditor.x == 0 && rotationEditor.z == 0) rotationOrder = RotationOrder::YXZ;
+
 		Quat quaternionX = quaternionX.RotateX(math::DegToRad(rotationEditor.x));
 		Quat quaternionY = quaternionY.RotateY(math::DegToRad(rotationEditor.y));
 		Quat quaternionZ = quaternionZ.RotateZ(math::DegToRad(rotationEditor.z));
-		Quat finalQuaternion = quaternionX * quaternionY * quaternionZ;
-		rotation = finalQuaternion;
+
+		switch (rotationOrder)
+		{
+		case RotationOrder::XYZ:
+			rotation = quaternionX * quaternionY * quaternionZ;
+			break;
+		case RotationOrder::ZYX:
+			rotation = quaternionZ * quaternionY * quaternionX;
+			break;
+		case RotationOrder::YXZ:
+			rotation = quaternionY * quaternionX * quaternionZ;
+			break;
+		}
 
 		changeTransform = true;
 	}
 
-	if (DrawVec3(std::string("Scale: "), scale))
-	{
-		changeTransform = true;
-	}
+	if (DrawVec3(std::string("Scale: "), scale)) changeTransform = true;
+
+	TransformComponent* transform = owner->GetComponent<TransformComponent>();
+	if (transform) transform->localMatrix = float4x4::FromTRS(position, rotation, scale);
 }

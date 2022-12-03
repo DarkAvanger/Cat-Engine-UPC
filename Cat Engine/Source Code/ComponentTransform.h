@@ -3,17 +3,24 @@
 #include "Component.h"
 #include "MathGeoLib/src/MathGeoLib.h"
 
-enum OPERATION
+enum class Operation
 {
 	TRANSLATE,
 	ROTATE,
 	SCALE
 };
 
-enum MODE
+enum class Mode
 {
 	LOCAL,
 	WORLD
+};
+
+enum class RotationOrder
+{
+	XYZ = 0,
+	ZYX,
+	YXZ
 };
 
 typedef float GLfloat;
@@ -60,5 +67,6 @@ private:
 	float4x4 localMatrix;
 
 	float3 rotationEditor;
+	RotationOrder rotationOrder;
 	bool changeTransform;
 };
