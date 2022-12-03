@@ -1,11 +1,11 @@
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
 
 #include "Application.h"
+#include "Globals.h"
+#include "ModuleEditor.h"
 #include "Primitives.h"
 #include "ModelImporter.h"
 #include "FileSystem.h"
-#include "Globals.h"
 
 #include <stack>
 
@@ -39,6 +39,7 @@ bool ModuleScene::Start()
 
 bool ModuleScene::PreUpdate(float dt)
 {
+	gameTimer.Start();
 
 	return true;
 }
@@ -63,6 +64,7 @@ bool ModuleScene::Update(float dt)
 
 bool ModuleScene::PostUpdate()
 {
+	gameTimer.FinishUpdate();
 	return true;
 }
 
@@ -73,7 +75,6 @@ bool ModuleScene::Draw()
 	qTree.DebugDraw();
 
 	std::stack<GameObject*> stack;
-
 
 	for (int i = 0; i < root->GetChilds().size(); ++i)
 		stack.push(root->GetChilds()[i]);
@@ -89,8 +90,12 @@ bool ModuleScene::Draw()
 		for (int i = 0; i < go->GetChilds().size(); ++i)
 			stack.push(go->GetChilds()[i]);
 	}
-
-	gameTimer.FinishUpdate();
+	//for (int i = 0; i < root->GetChilds().size(); ++i)
+	//{
+	//	GameObject* go = root->GetChilds()[i];
+	//	if (go->GetActive())
+	//		go->Draw();
+	//}
 
 	return true;
 }
@@ -118,7 +123,7 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent, bool createTransfo
 		root->AddChild(object);
 		object->SetParent(root);
 	}
-	
+
 	return object;
 }
 
@@ -159,6 +164,7 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 	if (!vertices.empty())
 	{
 		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);;
+		//mesh->SetMesh(vertices, indices, texCoords, normals, path);
 	}
 
 	return object;
@@ -208,9 +214,7 @@ void ModuleScene::ReparentGameObjects(uint uuid, GameObject* go)
 	parentObj->RemoveChild(gameObj);
 	gameObj->SetParent(go);
 	go->AddChild(gameObj);
-
 }
-
 
 bool ModuleScene::LoadScene(const char* name)
 {
