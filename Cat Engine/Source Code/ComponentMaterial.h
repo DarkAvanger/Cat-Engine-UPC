@@ -2,11 +2,13 @@
 
 #include "Component.h"
 #include <string>
+#include <memory>
 
 typedef unsigned int GLuint;
 typedef unsigned char GLubyte;
 
 class Texture;
+class Resource;
 
 class MaterialComponent : public Component
 {
@@ -25,7 +27,7 @@ public:
 
 	void SetTexture(Texture* tex) { diffuse = tex; }
 
-	inline Texture* GetTexture() const { return diffuse; }
+	//inline Texture* GetTexture() const { return diffuse; }
 
 private:
 	bool checker;
@@ -33,4 +35,5 @@ private:
 	Texture* checkerImage;
 
 	Texture* diffuse;
+	std::shared_ptr<Texture> diff;
 };

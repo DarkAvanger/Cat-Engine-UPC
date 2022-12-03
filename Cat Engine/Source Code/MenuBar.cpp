@@ -175,7 +175,7 @@ bool MenuBar::Update(float dt)
 	ImGui::PushStyleColor(ImGuiCol_Border, { 0, 0, 0, 0 });
 	ImGui::PushStyleColor(ImGuiCol_BorderShadow, { 0, 0, 0, 0 });
 	ImGui::SameLine(ImGui::GetWindowSize().x * 0.5f - 81);
-	if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), { 27,18 }))
+	/*if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), {27,18}))
 	{
 		if (app->scene->GetGameState() == GameState::NOT_PLAYING) app->scene->Play();
 		else app->scene->Stop();
@@ -190,7 +190,7 @@ bool MenuBar::Update(float dt)
 	if (ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 }))
 	{
 		if (app->scene->GetGameState() == GameState::PAUSE) app->scene->NextFrame();
-	}
+	}*/
 	ImGui::PopStyleColor(3);
 	ImGui::End();
 
