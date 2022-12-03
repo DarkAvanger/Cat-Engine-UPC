@@ -7,6 +7,8 @@
 #include <map>
 #include <memory>
 
+enum class ResourceType;
+
 class Texture;
 class Mesh;
 class Resource;
@@ -17,6 +19,8 @@ public:
 	static ResourceManager* GetInstance();
 	static void ReleaseInstance();
 	~ResourceManager();
+
+	Resource* CreateResource(ResourceType type);
 
 	void AddTexture(Texture* tex);
 	Texture* IsTextureLoaded(std::string path);

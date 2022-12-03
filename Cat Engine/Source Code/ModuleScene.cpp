@@ -66,11 +66,22 @@ bool ModuleScene::Draw()
 
 	qTree.DebugDraw();
 
+	std::stack<GameObject*> stack;
+
+
 	for (int i = 0; i < root->GetChilds().size(); ++i)
+		stack.push(root->GetChilds()[i]);
+
+	while (!stack.empty())
 	{
-		GameObject* go = root->GetChilds()[i];
-		if (go->GetActive())
-			go->Draw();
+		GameObject* go = stack.top();
+
+		go->Draw();
+
+		stack.pop();
+
+		for (int i = 0; i < go->GetChilds().size(); ++i)
+			stack.push(go->GetChilds()[i]);
 	}
 
 	return true;

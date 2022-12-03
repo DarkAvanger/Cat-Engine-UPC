@@ -15,7 +15,7 @@ MaterialComponent::MaterialComponent(GameObject* own)
 	owner = own;
 	checker = false;
 
-	//checkerImage = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Materials/Checker.dds")); check
+	//checkerImage = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Textures/Checker.dds")); check
 	active = true;
 }
 

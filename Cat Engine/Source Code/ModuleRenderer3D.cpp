@@ -179,16 +179,6 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 bool ModuleRenderer3D::PreUpdate(float dt)
 {
 
-	/*switch (currentView)
-	{
-	case CurrentView::EDITOR:
-		glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
-		break;
-	case CurrentView::GAME:
-		glLoadMatrixf(app->scene->mainCamera->matrixViewFrustum.Transposed().ptr());
-		break;
-	}*/
-
 	return true;
 }
 
@@ -208,7 +198,13 @@ bool ModuleRenderer3D::PostUpdate()
 	glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
-	app->scene->Draw();
+	std::vector<GameObject*> objects;
+	app->scene->GetQuadtree().Intersect(objects, app->scene->mainCamera);
+
+	for (int i = 0; i < objects.size(); ++i)
+	{
+		objects[i]->Draw();
+	}
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
