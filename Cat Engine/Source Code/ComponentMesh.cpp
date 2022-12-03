@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Globals.h"
 #include "ComponentMesh.h"
+
 #include "ModuleScene.h"
 #include "ComponentCamera.h"
 #include "FileSystem.h"
@@ -33,7 +34,6 @@ void MeshComponent::Draw()
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glPushMatrix();
-	
 	glMultMatrixf(transform->GetGlobalTransform().Transposed().ptr());
 
 	if (material != nullptr) material->BindTexture();
@@ -89,13 +89,13 @@ void MeshComponent::OnEditor()
 		ImGui::End();
 	}
 
-
 	ImGui::PopID();
 }
 
 bool MeshComponent::OnLoad(JsonParsing& node)
 {
 	mesh = ResourceManager::GetInstance()->IsMeshLoaded(std::string(node.GetJsonString("Path")));
+
 	active = node.GetJsonBool("Active");
 
 	return true;
@@ -117,6 +117,7 @@ bool MeshComponent::OnSave(JsonParsing& node, JSON_Array* array)
 void MeshComponent::SetMesh(Mesh* m)
 {
 	mesh = m;
+
 	if (mesh)
 	{
 		localBoundingBox.SetNegativeInfinity();
@@ -124,14 +125,4 @@ void MeshComponent::SetMesh(Mesh* m)
 
 		owner->SetAABB(localBoundingBox);
 	}
-}
-
-void MeshComponent::SetMesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float2>& texCoord, std::vector<float3> norm, std::string& path)
-{
-	mesh = new Mesh(vert, ind, norm, texCoord, path);
-
-	localBoundingBox.SetNegativeInfinity();
-	localBoundingBox.Enclose(vert.data(), vert.size());
-
-	owner->SetAABB(localBoundingBox);
 }
