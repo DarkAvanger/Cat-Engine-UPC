@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ComponentMesh.h"
 #include "ModuleScene.h"
 #include "ComponentCamera.h"

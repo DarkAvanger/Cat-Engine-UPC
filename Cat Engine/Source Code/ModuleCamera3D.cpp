@@ -1,10 +1,13 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleCamera3D.h"
 
 #include "ModuleInput.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
+
+#include "SDL.h"
 
 #include "Profiling.h"
 

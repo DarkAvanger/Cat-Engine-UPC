@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleInput.h"
 #include "FileSystem.h"
 
