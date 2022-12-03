@@ -2,7 +2,7 @@
 
 #include "Module.h"
 #include "GameObject.h"
-#include "Timer.h"
+#include "EngineTimer.h"
 #include <vector>
 
 enum class Object3D
@@ -57,5 +57,5 @@ private:
 	GameObject* root;
 	bool isPlaying;
 
-	Timer time;
+	EngineTimer time;
 };

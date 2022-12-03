@@ -4,6 +4,7 @@
 #include "MenuConfig.h"
 #include "ModuleScene.h"
 #include "MenuBar.h"
+#include "Globals.h"
 #include "MenuAbout.h"
 #include "MenuInspector.h"
 #include "MenuHierarchy.h"
@@ -168,6 +169,7 @@ bool MenuBar::Update(float dt)
 
 		ImGui::EndMainMenuBar();
 	}
+
 	bool ret = true;
 	ImGui::Begin(" ", &ret, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar);
 	ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });

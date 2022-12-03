@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
@@ -29,7 +30,7 @@ Application::Application()
 	AddModule(window);
 	AddModule(camera);
 	AddModule(input);
-	
+
 	// Scenes
 	AddModule(scene);
 	AddModule(editor);
@@ -67,8 +68,7 @@ bool Application::Init()
 		JsonParsing jsonFile((const char*)buffer);
 		jsonFile.ValueToObject(jsonFile.GetRootValue());
 
-		ReadConfiguration(jsonFile.GetChild(jsonFile.GetRootValue(), "App"));
-
+		engineTimer.ReadConfig(jsonFile.GetChild(jsonFile.GetRootValue(), "App"));
 		std::list<Module*>::iterator item;
 
 		for (item = listModules.begin(); item != listModules.end() && ret; ++item)
@@ -81,7 +81,6 @@ bool Application::Init()
 
 	//// Call Init() in all modules
 	std::list<Module*>::iterator item;
-
 
 	// After all Init calls we call Start() in all modules
 	DEBUG_LOG("Application Start --------------");
@@ -98,11 +97,7 @@ bool Application::Init()
 // ---------------------------------------------
 void Application::PrepareUpdate()
 {
-	frameCount++;
-	lastSecFrameCount++;
-
-	dt = (float)msTimer.Read() / 1000.0f;
-	msTimer.Start();
+	engineTimer.Start();
 
 	if (resizeRequested)
 	{
@@ -119,29 +114,9 @@ void Application::FinishUpdate()
 	if (loadRequested) LoadConfig();
 	if (saveRequested) SaveConfig();
 
-	if (lastSecFrameTime.Read() > 1000)
-	{
-		prevLastSecFrameCount = lastSecFrameCount;
-		lastSecFrameCount = 0;
-		lastSecFrameTime.Start();
-	}
+	engineTimer.FinishUpdate();
 
-	unsigned int lastFrameMs = msTimer.Read();
-
-	if ((cappedMs > 0) && (lastFrameMs < cappedMs))
-	{
-		SDL_Delay(cappedMs - lastFrameMs);
-	}
-}
-
-void Application::ReadConfiguration(JsonParsing& node)
-{
-	cappedMs = node.GetJsonNumber("FPS");
-}
-
-void Application::SaveConfiguration(JsonParsing& node)
-{
-	node.SetNewJsonNumber(node.ValueToObject(node.GetRootValue()), "FPS", cappedMs);
+	DEBUG_LOG("Timer %f", engineTimer.GetDeltaTime());
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules
@@ -149,17 +124,17 @@ bool Application::Update()
 {
 	bool ret = true;
 	PrepareUpdate();
-	
+
 	std::list<Module*>::iterator item = listModules.begin();
-	
+
 	for (item = listModules.begin(); item != listModules.end() && ret; ++item)
 	{
-		ret = (*item)->PreUpdate(dt);
+		ret = (*item)->PreUpdate(engineTimer.GetDeltaTime());
 	}
 
 	for (item = listModules.begin(); item != listModules.end() && ret; ++item)
 	{
-		ret = (*item)->Update(dt);
+		ret = (*item)->Update(engineTimer.GetDeltaTime());
 	}
 
 	for (item = listModules.begin(); item != listModules.end() && ret; ++item)
@@ -201,17 +176,22 @@ void Application::LogConsole(const char* string)
 
 void Application::SetFPSLimit(const int fps)
 {
-	if (fps > 0) cappedMs = 1000 / fps;
-	else cappedMs = 0;
+	/*if (fps > 0) cappedMs = 1000 / fps;
+	else cappedMs = 0;*/
+	if (fps > 0) engineTimer.SetDesiredCappedMs(1000 / fps);
+	else engineTimer.SetDesiredCappedMs(0);
 }
 
 void Application::SaveConfig()
 {
 	DEBUG_LOG("Saving configuration");
 
+	/*JSON_Value* root = jsonFile.GetRootValue();
+	JsonParsing application = jsonFile.SetChild(root, "App");*/
+
 	JsonParsing jsonFile;
 
-	SaveConfiguration(jsonFile.SetChild(jsonFile.GetRootValue(), "App"));
+	engineTimer.SaveConfig(jsonFile.SetChild(jsonFile.GetRootValue(), "App"));
 
 	// Call Init() in all modules
 	std::list<Module*>::iterator item;
@@ -244,7 +224,7 @@ void Application::LoadConfig()
 		JsonParsing jsonFile((const char*)buffer);
 		jsonFile.ValueToObject(jsonFile.GetRootValue());
 
-		ReadConfiguration(jsonFile.GetChild(jsonFile.GetRootValue(), "App"));
+		engineTimer.ReadConfig(jsonFile.GetChild(jsonFile.GetRootValue(), "App"));
 
 		std::list<Module*>::iterator item;
 

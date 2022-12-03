@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleInput.h"
 #include "FileSystem.h"
 
@@ -6,6 +7,7 @@
 
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl.h"
+#include "SDL.h"
 
 #include "Profiling.h"
 
