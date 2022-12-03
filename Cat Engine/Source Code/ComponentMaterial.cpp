@@ -34,7 +34,7 @@ void MaterialComponent::OnEditor()
 		{
 			ImGui::Text("Path: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", checkerImage->GetAssetsPath().c_str());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", checkerImage->GetPath().c_str());
 			ImGui::Text("Width: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", checkerImage->GetWidth());
@@ -48,7 +48,7 @@ void MaterialComponent::OnEditor()
 		{
 			ImGui::Text("Path: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", diffuse->GetAssetsPath().c_str());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", diffuse->GetPath().c_str());
 			ImGui::Text("Width: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diffuse->GetWidth());
@@ -93,7 +93,7 @@ bool MaterialComponent::OnSave(JsonParsing& node, JSON_Array* array)
 	JsonParsing file = JsonParsing();
 
 	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
-	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", diffuse->GetLibraryPath().c_str());
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Path", diffuse->GetPath().c_str());
 	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Active", active);
 
 	node.SetValueToArray(array, file.GetRootValue());

@@ -42,7 +42,7 @@ ResourceManager::~ResourceManager()
 	meshes.clear();
 }
 
-std::shared_ptr<Resource> ResourceManager::CreateResource(ResourceType type, uint uid, std::string& assets, std::string& library)
+std::shared_ptr<Resource> ResourceManager::CreateResource(ResourceType type, uint uid)
 {
 	std::shared_ptr<Resource> resource = nullptr;
 
@@ -51,10 +51,10 @@ std::shared_ptr<Resource> ResourceManager::CreateResource(ResourceType type, uin
 	case ResourceType::NONE:
 		break;
 	case ResourceType::TEXTURE:
-		resource = std::make_shared<Texture>(uid, assets, library);
+		resource = std::make_shared<Texture>(uid);
 		break;
 	case ResourceType::MESH:
-		resource = std::make_shared<Mesh>(uid, assets, library);
+		resource = std::make_shared<Mesh>(uid);
 		break;
 	case ResourceType::MODEL:
 		break;
@@ -64,15 +64,6 @@ std::shared_ptr<Resource> ResourceManager::CreateResource(ResourceType type, uin
 	if (resource != nullptr) map[uid] = resource;
 
 	return resource;
-}
-
-std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
-{
-	std::shared_ptr<Resource> res = map[uid];
-
-	if (res != nullptr) res->Load();
-
-	return res;
 }
 
 void ResourceManager::AddTexture(Texture* tex)
@@ -94,7 +85,7 @@ Texture* ResourceManager::IsTextureLoaded(std::string path)
 		if (textures[i]->GetPath() == p)
 			return textures[i];
 	}
-	return nullptr;
+	return TextureImporter::LoadTexture(p.c_str());
 }
 
 void ResourceManager::RemoveTexture(Texture* tex)
@@ -129,7 +120,7 @@ Mesh* ResourceManager::IsMeshLoaded(std::string path)
 		if (meshes[i]->GetPath() == p)
 			return meshes[i];
 	}
-	return nullptr;
+	return MeshImporter::LoadMesh(p.c_str());
 }
 
 void ResourceManager::RemoveMesh(Mesh* mesh)

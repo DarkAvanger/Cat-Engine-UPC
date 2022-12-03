@@ -126,6 +126,9 @@
     <ClCompile Include="Source Code\Texture.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
     <ClCompile Include="Source Code\MenuContentBrowser.cpp">
       <Filter>Sources\Menus</Filter>
     </ClCompile>
@@ -155,9 +158,6 @@
     </ClCompile>
     <ClCompile Include="Source Code\GameTimer.cpp">
       <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\ComponentCamera.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

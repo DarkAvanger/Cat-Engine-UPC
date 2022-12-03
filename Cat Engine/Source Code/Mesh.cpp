@@ -1,13 +1,24 @@
 #include "Mesh.h"
-#include "MeshImporter.h"
 #include "Globals.h"
 
 #include "glew/include/GL/glew.h"
 
 #include "Profiling.h"
 
-Mesh::Mesh(uint uid, std::string& assets, std::string& library) : vbo(nullptr), ebo(nullptr), tbo(0), Resource(uid, ResourceType::MESH, assets, library)
+Mesh::Mesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float3>& norm, std::vector<float2>& texCoord, std::string& p)
+	: vertices(vert), indices(ind), normals(norm), texCoords(texCoord), path(p), Resource(0, ResourceType::MESH)
 {
+
+	vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
+	ebo = new IndexBuffer(indices.data(), indices.size());
+
+	glGenBuffers(1, &tbo);
+	glBindBuffer(GL_ARRAY_BUFFER, tbo);
+	glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float2), texCoords.data(), GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	vbo->Unbind();
+	ebo->Unbind();
 }
 
 Mesh::~Mesh()
@@ -22,25 +33,6 @@ Mesh::~Mesh()
 	glDeleteBuffers(1, &tbo);
 }
 
-void Mesh::Load()
-{
-	if (vertices.empty())
-	{
-		MeshImporter::LoadMesh(vertices, indices, normals, texCoords, libraryPath);
-
-		vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
-		ebo = new IndexBuffer(indices.data(), indices.size());
-
-		glGenBuffers(1, &tbo);
-		glBindBuffer(GL_ARRAY_BUFFER, tbo);
-		glBufferData(GL_ARRAY_BUFFER, texCoords.size() * sizeof(float2), texCoords.data(), GL_STATIC_DRAW);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
-		vbo->Unbind();
-		ebo->Unbind();
-	}
-}
-
 void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float& colorLength)
 {
 	vbo->Bind();
@@ -49,7 +41,9 @@ void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, f
 	glBindBuffer(GL_ARRAY_BUFFER, tbo);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
 
+
 	if (ebo != nullptr) ebo->Bind();
+
 
 	if (verticesNormals)
 		ShowVertexNormals(colorNormal, colorLength);
