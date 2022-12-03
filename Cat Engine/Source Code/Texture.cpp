@@ -3,7 +3,8 @@
 
 #include "glew/include/GL/glew.h"
 
-Texture::Texture(unsigned int& i, int& w, int& h, GLubyte* d, std::string& p) : id(i), width(w), height(h), path(p), data(d)
+Texture::Texture(unsigned int& i, int& w, int& h, GLubyte* d, std::string& p)
+	: id(i), width(w), height(h), path(p), data(d), Resource(0, ResourceType::TEXTURE)
 {
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_2D, id);

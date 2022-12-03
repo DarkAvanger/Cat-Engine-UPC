@@ -117,8 +117,6 @@ void Application::FinishUpdate()
 	if (saveRequested) SaveConfig();
 
 	engineTimer.FinishUpdate();
-
-	DEBUG_LOG("Timer %f", engineTimer.GetDeltaTime());
 }
 
 // Call PreUpdate, Update and PostUpdate on all modules

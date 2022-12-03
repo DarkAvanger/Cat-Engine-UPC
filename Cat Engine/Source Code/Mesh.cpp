@@ -6,12 +6,8 @@
 #include "Profiling.h"
 
 Mesh::Mesh(std::vector<float3>& vert, std::vector<unsigned int>& ind, std::vector<float3>& norm, std::vector<float2>& texCoord, std::string& p)
+	: vertices(vert), indices(ind), normals(norm), texCoords(texCoord), path(p), Resource(0, ResourceType::MESH)
 {
-	vertices = vert;
-	indices = ind;
-	normals = norm;
-	texCoords = texCoord;
-	path = p;
 
 	vbo = new VertexBuffer(vertices.data(), vertices.size() * sizeof(float3));
 	ebo = new IndexBuffer(indices.data(), indices.size());
