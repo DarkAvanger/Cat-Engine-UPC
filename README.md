@@ -19,8 +19,10 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 - F: Select and object and focus the camera on that object.
 - Key R: Camera Reset.
 - Right click: Open hierarchy menu options.
+- W, E, R to swap guizmos
+- Hold left click to reparent objecs in the hierarchy menu
 
-## Features
+## Features v0.1
 
 - Camera movement.
 - Drag and drop textures and models.
@@ -35,6 +37,31 @@ Video Game Engine created for Game Engine subject at CITM UPC.
 - Basic shapes(Some are missing).
 - Saving images to DDS for lower size.
 - Windows docking
+
+## Features v0.5
+
+- Raycast (Mouse Picking)
+- Stencil Border
+- Own File Formats
+- Own Timers
+- Resource Manager
+- Play/Stop buttons
+- Guizmo added (Selected objects have Guizmos)
+- Camera Component (Game camera preview)
+- Frustum culling
+- Game and Scene viewport
+- AABB for GameObjects
+- Shortcuts
+
+## To Do
+
+Shortcuts for menus and delete objects through hierarchy menu
+
+Invert camera controls
+
+Remove glMath
+
+Improve UI/UX
 
 ## License
 
