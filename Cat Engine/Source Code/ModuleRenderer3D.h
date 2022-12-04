@@ -10,12 +10,6 @@
 
 #define MAX_LIGHTS 8
 
-enum class CurrentView
-{
-	EDITOR,
-	GAME,
-};
-
 typedef unsigned int GLuint;
 class Framebuffer;
 
@@ -66,7 +60,6 @@ public:
 
 	Framebuffer* fbo;
 	Framebuffer* mainCameraFbo;
-	CurrentView currentView;
 
 	bool depthTest;
 	bool cullFace;

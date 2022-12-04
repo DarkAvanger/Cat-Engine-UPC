@@ -40,7 +40,8 @@ bool ModuleScene::Start()
 
 bool ModuleScene::PreUpdate(float dt)
 {
-	gameTimer.Start();
+	if (gameState == GameState::PLAYING)
+		gameTimer.Start();
 
 	return true;
 }
@@ -65,7 +66,8 @@ bool ModuleScene::Update(float dt)
 
 bool ModuleScene::PostUpdate()
 {
-	gameTimer.FinishUpdate();
+	if (gameState == GameState::PLAYING)
+		gameTimer.FinishUpdate();
 	return true;
 }
 
@@ -334,6 +336,7 @@ void ModuleScene::Play()
 	RELEASE_ARRAY(buf);
 
 	gameState = GameState::PLAYING;
+	gameTimer.ResetTimer();
 }
 
 void ModuleScene::Stop()

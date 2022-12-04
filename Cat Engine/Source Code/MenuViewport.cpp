@@ -1,4 +1,5 @@
 #include "ModuleCamera3D.h"
+#include "Globals.h"
 #include "MenuViewport.h"
 #include "Application.h"
 #include "ModuleRenderer3D.h"
@@ -23,8 +24,14 @@ MenuViewport::~MenuViewport()
 
 void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int currentOperation)
 {
-	ImGui::Begin("Scene");
-	if (ImGui::IsItemActive()) app->renderer3D->currentView = CurrentView::EDITOR;
+	if (ImGui::Begin("Scene"))
+	{
+		app->camera->canBeUpdated = true;
+	}
+	else
+	{
+		app->camera->canBeUpdated = false;
+	}
 	
 	ImVec2 size = ImGui::GetContentRegionAvail();
 

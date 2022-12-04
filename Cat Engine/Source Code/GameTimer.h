@@ -22,6 +22,7 @@ public:
 
 	void ReadConfig(JsonParsing& node);
 	void SaveConfig(JsonParsing& node);
+	void ResetTimer();
 private:
 	int timer;
 	float deltaTime;
@@ -30,7 +31,7 @@ private:
 	int cappedMs;
 
 	int gameTimer;
-	bool engineStarted;
+	bool gameStarted;
 
 	JsonParsing jsonFile;
 };
