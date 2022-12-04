@@ -7,6 +7,7 @@
 #include "Texture.h"
 #include "TextureImporter.h"
 #include "ResourceManager.h"
+#include "ModuleEditor.h"
 
 #include "Imgui/imgui.h"
 
@@ -103,6 +104,7 @@ bool ContentBrowserMenu::Update(float dt)
 		ImGui::ImageButton(dirIcon ? (ImTextureID)dirIcon->GetId() : 0, { cell, cell });
 		if (ImGui::IsItemClicked())
 		{
+			app->editor->SetResource(ResourceManager::GetInstance()->GetResource((*it)));
 			currentFile = (*it);
 		}
 		if (ImGui::BeginDragDropSource())

@@ -191,7 +191,7 @@ void FileSystem::LoadFile(std::string& path)
 		if (*s == extension)
 		{
 			RG_PROFILING_FUNCTION("Loading Texture");
-			app->editor->GetSelected()->GetComponent<MaterialComponent>()->SetTexture(ResourceManager::GetInstance()->IsTextureLoaded(path));
+			app->editor->GetGO()->GetComponent<MaterialComponent>()->SetTexture(ResourceManager::GetInstance()->IsTextureLoaded(path));
 			return;
 		}
 	}

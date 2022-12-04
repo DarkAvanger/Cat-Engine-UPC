@@ -24,6 +24,9 @@ MenuViewport::~MenuViewport()
 
 void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int currentOperation)
 {
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowPadding = ImVec2(0.0f, 0.0f);
+
 	if (ImGui::Begin("Scene"))
 	{
 		app->camera->canBeUpdated = true;
@@ -49,7 +52,7 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 	ImGui::Image((ImTextureID)framebuffer->GetId(), ImVec2(size.x, size.y), ImVec2(0, 1), ImVec2(1, 0));
 
 
-	if (app->editor->GetSelected())
+	if (app->editor->GetGO())
 	{
 		ImGuizmo::Enable(true);
 		ImGuizmo::SetGizmoSizeClipSpace(0.3f);
@@ -58,11 +61,11 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 
 		math::float4x4 view = app->camera->cameraFrustum.ViewMatrix();
 
-		math::float4x4 tr = app->editor->GetSelected()->GetComponent<TransformComponent>()->GetLocalTransform().Transposed();
+		math::float4x4 tr = app->editor->GetGO()->GetComponent<TransformComponent>()->GetLocalTransform().Transposed();
 		ImGuizmo::Manipulate(view.Transposed().ptr(), app->camera->cameraFrustum.ProjectionMatrix().Transposed().ptr(), (ImGuizmo::OPERATION)currentOperation, ImGuizmo::MODE::LOCAL, tr.ptr());
 		if (ImGuizmo::IsUsing())
 		{
-			app->editor->GetSelected()->GetComponent<TransformComponent>()->SetTransform(tr.Transposed());
+			app->editor->GetGO()->GetComponent<TransformComponent>()->SetTransform(tr.Transposed());
 		}
 	}
 
@@ -75,7 +78,7 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 		}
 		ImGui::EndDragDropTarget();
 	}
-	GameObject* camera = app->editor->GetSelected();
+	GameObject* camera = app->editor->GetGO();
 	if (camera && camera->GetComponent<CameraComponent>())
 	{
 		ImGui::SetNextWindowSize(ImVec2(225, 150));
@@ -89,5 +92,6 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 	}
 
 	ImGui::End();
+	style.WindowPadding = ImVec2(8.0f, 8.0f);
 }
 

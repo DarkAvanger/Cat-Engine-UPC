@@ -357,12 +357,14 @@
     <ClInclude Include="Source Code\Resource.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\Model.h" />
     <ClInclude Include="Source Code\Quadtree.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\GameTimer.h">
       <Filter>Sources\Resources\Extra</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\Model.h">
+      <Filter>Sources\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -253,7 +253,7 @@ bool ModuleScene::LoadScene(const char* name)
 	qTree.Clear();
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
-	app->editor->SetSelected(nullptr);
+	app->editor->SetGO(nullptr);
 
 	RELEASE_ARRAY(buffer);
 
