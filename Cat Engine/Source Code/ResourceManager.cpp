@@ -5,10 +5,13 @@
 #include "Globals.h"
 #include "TextureImporter.h"
 #include "MeshImporter.h"
+#include "ModelImporter.h"
 
 #include "Texture.h"
 #include "Mesh.h"
 #include "Model.h"
+
+#include <stack>
 
 #include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
@@ -81,6 +84,11 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 	return uid;
 }
 
+void ResourceManager::CreateResourceCreated(ResourceType type, std::string& assets, std::string& library)
+{
+
+}
+
 std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
 {
 	std::shared_ptr<Resource> res = map[uid];
@@ -90,14 +98,17 @@ std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
 	return res;
 }
 
-void ResourceManager::LoadResource(std::string& path)
+std::shared_ptr<Resource> ResourceManager::LoadResource(std::string& path)
 {
 	std::map<uint, std::shared_ptr<Resource>>::iterator it;
 	for (it = map.begin(); it != map.end(); ++it)
 	{
 		std::shared_ptr<Resource> res = (*it).second;
 		if (res->GetAssetsPath() == path)
+		{
 			res->Load();
+			return res;
+		}
 	}
 }
 
@@ -110,6 +121,75 @@ bool ResourceManager::CheckResource(std::string& path)
 			return true;
 	}
 	return false;
+}
+
+void ResourceManager::ImportResourcesFromLibrary()
+{
+	std::vector<std::string> dirs;
+	std::vector<std::string> files;
+
+	std::stack<std::string> directories;
+
+	app->fs->DiscoverFilesAndDirs("Library/", files, dirs);
+
+	for (int i = 0; i < dirs.size(); ++i)
+	{
+		directories.push(dirs[i]);
+	}
+
+	dirs.clear();
+
+	while (!directories.empty())
+	{
+		std::string dir = directories.top();
+
+		for (int i = 0; i < files.size(); ++i)
+		{
+			std::string extension = files[i].substr(files[i].find_last_of("."), files[i].length());
+
+			// TODO: Find a solution to get the assets path
+			if (extension.data() == ".rgmodel") CreateResourceCreated(ResourceType::MODEL, std::string(""), files[i]);
+			else if (extension.data() == ".rgtexture") CreateResourceCreated(ResourceType::TEXTURE, std::string(""), files[i]);
+			else if (extension.data() == ".rgmesh") CreateResourceCreated(ResourceType::MESH, std::string(""), files[i]);
+		}
+	}
+}
+
+void ResourceManager::ImportAllResources()
+{
+	std::stack<std::string> dirsStack;
+	dirsStack.push("Assets/");
+
+	while (!dirsStack.empty())
+	{
+		std::string dir = dirsStack.top();
+
+		std::vector<std::string> files;
+		std::vector<std::string> dirs;
+
+		app->fs->DiscoverFilesAndDirs(dir.c_str(), files, dirs);
+
+		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
+		{
+			ResourceType type = app->fs->CheckExtension(*it);
+			switch (type)
+			{
+			case ResourceType::MODEL:
+				ModelImporter::ImportModel(*it);
+				break;
+			case ResourceType::TEXTURE:
+				ModelImporter::ImportModel(*it);
+				break;
+			}
+		}
+
+		dirsStack.pop();
+
+		for (std::vector<std::string>::iterator it = dirs.begin(); it != dirs.end(); ++it)
+		{
+			dirsStack.push(*it);
+		}
+	}
 }
 
 void ResourceManager::AddTexture(Texture* tex)

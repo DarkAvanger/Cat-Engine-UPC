@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include "ModuleEditor.h"
 #include "GameObject.h"
+#include "Resource.h"
 
 #include "assimp/cimport.h"
 #include "Assimp.h"
@@ -285,7 +286,7 @@ void FileSystem::ImportFromOutside(std::string& source, std::string& destination
 	}
 }
 
-void FileSystem::CheckExtension(std::string& path)
+ResourceType FileSystem::CheckExtension(std::string& path)
 {
 	std::string extension = path.substr(path.find_last_of(".", path.length()));
 	std::list<std::string>::iterator s;
@@ -296,8 +297,7 @@ void FileSystem::CheckExtension(std::string& path)
 		if (*s == extension)
 		{
 			RG_PROFILING_FUNCTION("Importing Model");
-			ModelImporter::ImportModel(path);
-			return;
+			return ResourceType::MODEL;
 		}
 	}
 
@@ -308,9 +308,11 @@ void FileSystem::CheckExtension(std::string& path)
 		if (*s == extension)
 		{
 			RG_PROFILING_FUNCTION("Importing Texture");
-			return;
+			return ResourceType::TEXTURE;
 		}
 	}
+
+	return ResourceType::NONE;
 }
 
 void FileSystem::DiscoverFilesAndDirs(const char* directory, std::vector<std::string>& fileList, std::vector<std::string>& dirList)

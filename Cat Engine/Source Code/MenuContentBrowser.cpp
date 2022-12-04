@@ -5,6 +5,7 @@
 #include "FileSystem.h"
 
 #include "Texture.h"
+#include "TextureImporter.h"
 #include "ResourceManager.h"
 
 #include "Imgui/imgui.h"
@@ -22,7 +23,6 @@ ContentBrowserMenu::~ContentBrowserMenu()
 
 bool ContentBrowserMenu::Start()
 {
-	dirIcon = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Textures/folder.dds"));
 
 	return true;
 }
