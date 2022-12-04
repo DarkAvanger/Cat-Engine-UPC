@@ -20,7 +20,7 @@ MenuHierarchy::~MenuHierarchy()
 
 bool MenuHierarchy::Update(float dt)
 {
-	ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("Hierarchy", &active);
 	if (ImGui::Button("+"))
 	{
 		createGameObject = true;

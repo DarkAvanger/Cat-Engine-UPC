@@ -10,7 +10,6 @@
 
 #include "glew/include/GL/glew.h"
 #include "Imgui/imgui.h"
-#include "Imgui/imgui_internal.h"
 
 
 #include "Profiling.h"
@@ -85,15 +84,9 @@ void GameObject::DrawOutline()
 
 void GameObject::DrawEditor()
 {
-	ImGui::PushMultiItemsWidths(3, ImGui::GetWindowWidth());
 	ImGui::Checkbox("Active", &active);
-	ImGui::PopItemWidth();
 	ImGui::SameLine();
 	ImGui::InputText("Name", &name[0], 20);
-	ImGui::PopItemWidth();
-	ImGui::SameLine();
-	ImGui::Checkbox("Static", &staticObj);
-	ImGui::PopItemWidth();
 	ImGui::Checkbox("Colliders", &colliders);
 	ImGui::Separator();
 	for (int i = 0; i < components.size(); ++i)
@@ -104,24 +97,9 @@ void GameObject::DrawEditor()
 	ImGui::NewLine();
 	float x = ImGui::GetWindowSize().x;
 	ImGui::SameLine((x / 2) - 50);
-	ImGui::SetNextItemWidth(120);
-	if (ImGui::BeginCombo(" ", "New Component"))
+	if (ImGui::Button("New Component", ImVec2(100, 20)))
 	{
-		if (ImGui::Selectable("Mesh Component"))
-		{
-			CreateComponent(ComponentType::MESH_RENDERER);
-			newComponent = false;
-		}
-		if (ImGui::Selectable("Material Component"))
-		{
-			CreateComponent(ComponentType::MATERIAL);
-			newComponent = false;
-		}
-		else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
-		{
-			newComponent = false;
-		}
-		ImGui::EndCombo();
+		newComponent = true;
 	}
 
 	if (newComponent)

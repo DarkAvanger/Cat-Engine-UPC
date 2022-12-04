@@ -1,13 +1,12 @@
 #include "ComponentMaterial.h"
-
 #include "Application.h"
 #include "GameObject.h"
-#include "ResourceManager.h"
-#include "Texture.h"
+#include "Imgui/imgui.h"
 
 #include "FileSystem.h"
 
-#include "Imgui/imgui.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 
 #include "Profiling.h"
 
@@ -17,19 +16,19 @@ MaterialComponent::MaterialComponent(GameObject* own) : diff(nullptr), showTexMe
 	checkerImage = nullptr;
 	owner = own;
 	checker = false;
-	//checkerImage = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Checker.png")));
 
+	//checkerImage = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Checker.png")));
 	active = true;
+}
+
+MaterialComponent::~MaterialComponent()
+{
 }
 
 MaterialComponent::MaterialComponent(MaterialComponent* mat) : showTexMenu(false), checkerImage(nullptr)
 {
 	checker = mat->checker;
 	diff = mat->diff;
-}
-
-MaterialComponent::~MaterialComponent()
-{
 }
 
 void MaterialComponent::OnEditor()
@@ -80,7 +79,7 @@ void MaterialComponent::OnEditor()
 		}
 		else
 		{
-			if (ImGui::Button(""))
+			if(ImGui::Button(""))
 			{
 				showTexMenu = true;
 			}
@@ -95,11 +94,9 @@ void MaterialComponent::OnEditor()
 		}
 		ImGui::Separator();
 	}
-
 	if (showTexMenu)
 	{
 		ImGui::Begin("Textures", &showTexMenu);
-
 		std::vector<std::string> files;
 		app->fs->DiscoverFiles("Library/Textures/", files);
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
@@ -172,3 +169,4 @@ void MaterialComponent::SetTexture(std::shared_ptr<Resource> tex)
 {
 	diff = std::static_pointer_cast<Texture>(tex);
 }
+

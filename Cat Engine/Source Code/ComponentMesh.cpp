@@ -89,7 +89,7 @@ void MeshComponent::OnEditor()
 	if (ImGui::CollapsingHeader("Mesh Renderer"))
 	{
 		Checkbox(this, "Active", active);
-		if (ImGui::Button(mesh ? mesh->GetName().c_str() : " "))
+		if (ImGui::Button(mesh ? "Cube" : ""))
 		{
 			showMeshMenu = true;
 		}
@@ -121,7 +121,7 @@ void MeshComponent::OnEditor()
 			*it = (*it).substr((*it).find_last_of("_") + 1, (*it).length());
 			uint uid = std::stoll(*it);
 			std::shared_ptr<Resource> res = ResourceManager::GetInstance()->LoadResource(uid);
-			if (ImGui::Selectable("", res->GetName().c_str(), ImGuiSelectableFlags_::ImGuiSelectableFlags_DontClosePopups))
+			if (ImGui::Button((*it).c_str(), { ImGui::GetWindowWidth() - 30, 20 }))
 			{
 				SetMesh(res);
 			}

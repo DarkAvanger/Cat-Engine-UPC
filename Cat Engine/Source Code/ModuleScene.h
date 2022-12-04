@@ -63,7 +63,6 @@ public:
 	bool SaveScene(const char* name);
 
 	void DuplicateGO(GameObject* go, GameObject* parent);
-	void ImportPrimitives();
 
 	inline void ResetQuadtree() { resetQuadtree = true; }
 
