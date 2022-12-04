@@ -5,9 +5,9 @@
 #include "ModuleEditor.h"
 #include "Primitives.h"
 #include "MeshImporter.h"
+#include "FileSystem.h"
 #include "Resource.h"
 #include "ResourceManager.h"
-#include "FileSystem.h"
 
 #include <stack>
 
@@ -153,7 +153,6 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent, bool createTransfo
 GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 {
 	GameObject* object = CreateGameObject(parent);
-
 	std::string path;
 
 	switch (type)
@@ -183,54 +182,6 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 	}
 
 	return object;
-}
-
-void ModuleScene::ImportPrimitives()
-{
-	std::vector<float3> vertices;
-	std::vector<unsigned int> indices;
-	std::vector<float3> normals;
-	std::vector<float2> texCoords;
-
-	RCube::CreateCube(vertices, indices, texCoords);
-	std::string library;
-	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cube.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
-
-	vertices.clear();
-	indices.clear();
-	normals.clear();
-	texCoords.clear();
-	library.clear();
-
-	RPyramide::CreatePyramide(vertices, indices, texCoords);
-	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Pyramide.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
-
-	vertices.clear();
-	indices.clear();
-	normals.clear();
-	texCoords.clear();
-	library.clear();
-
-	RSphere::CreateSphere(vertices, normals, indices, texCoords);
-	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Sphere.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
-
-	vertices.clear();
-	indices.clear();
-	normals.clear();
-	texCoords.clear();
-	library.clear();
-
-	RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
-	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cylinder.mesh"), library);
-	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
-
-	vertices.clear();
-	indices.clear();
-	normals.clear();
-	texCoords.clear();
 }
 
 void ModuleScene::MoveGameObjectUp(GameObject* object)
@@ -348,6 +299,10 @@ bool ModuleScene::SaveScene(const char* name)
 {
 	DEBUG_LOG("Saving Scene");
 
+	std::string rootName = name;
+	app->fs->GetFilenameWithoutExtension(rootName);
+	root->SetName(rootName.c_str());
+
 	JsonParsing sceneFile;
 
 	sceneFile = sceneFile.SetChild(sceneFile.GetRootValue(), "Scene");
@@ -383,14 +338,57 @@ void ModuleScene::DuplicateGO(GameObject* go, GameObject* parent)
 	}
 }
 
+void ModuleScene::ImportPrimitives()
+{
+	std::vector<float3> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<float3> normals;
+	std::vector<float2> texCoords;
+
+	RCube::CreateCube(vertices, indices, texCoords);
+	std::string library;
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cube.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RPyramide::CreatePyramide(vertices, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Pyramide.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RSphere::CreateSphere(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Sphere.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cylinder.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+}
 
 void ModuleScene::Play()
 {
 	DEBUG_LOG("Saving Scene");
-
-	std::string rootName = name;
-	app->fs->GetFilenameWithoutExtension(rootName);
-	root->SetName(rootName.c_str());
 
 	JsonParsing sceneFile;
 
