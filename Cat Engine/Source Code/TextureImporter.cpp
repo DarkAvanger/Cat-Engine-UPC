@@ -22,22 +22,18 @@ void TextureImporter::ImportTexture(aiMaterial* material, aiTextureType type, co
 		material->GetTexture(type, i, &str);
 		std::string aux = str.C_Str();
 		app->fs->GetFilenameWithExtension(aux);
-		std::string libraryPath = RESOURCES_FOLDER;
-		libraryPath += aux;
+		std::string assetsPath = RESOURCES_FOLDER;
+		assetsPath += aux;
 
 		ILuint image;
 		ilGenImages(1, &image);
 		ilBindImage(image);
-		ilLoadImage(libraryPath.c_str());
+		ilLoadImage(assetsPath.c_str());
 		ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
-		LCG random;
-		uint number = random.IntFast();
-		app->fs->GetFilenameWithoutExtension(libraryPath);
-		libraryPath = TEXTURES_FOLDER + std::to_string(number) + ".dds";
+		std::string libraryPath;
 
-		std::shared_ptr<Resource> res = ResourceManager::GetInstance()->CreateResource(ResourceType::TEXTURE, number, path, libraryPath);
-		res->SetPaths(path, libraryPath);
+		ResourceManager::GetInstance()->CreateResource(ResourceType::TEXTURE, assetsPath, libraryPath);
 
 		json.SetNewJsonNumber(json.ValueToObject(json.GetRootValue()), "Type", (int)ComponentType::MATERIAL);
 		json.SetNewJsonString(json.ValueToObject(json.GetRootValue()), "Texture Path", libraryPath.c_str());

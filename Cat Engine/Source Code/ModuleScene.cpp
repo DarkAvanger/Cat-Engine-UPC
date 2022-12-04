@@ -5,6 +5,7 @@
 #include "ModuleEditor.h"
 #include "Primitives.h"
 #include "ModelImporter.h"
+#include "ResourceManager.h"
 #include "FileSystem.h"
 
 #include <stack>
@@ -32,7 +33,8 @@ bool ModuleScene::Start()
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
 	ModelImporter::ImportModel(std::string("Assets/Resources/BakerHouse.fbx"));
-	ModelImporter::LoadModel(std::string("Assets/Resources/BakerHouse.fbx"));
+	ModelImporter::ImportModel(std::string("Assets/Resources/BakerHouse.fbx"));
+	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/BakerHouse.fbx"));
 
 	return true;
 }
@@ -246,6 +248,9 @@ bool ModuleScene::LoadScene(const char* name)
 	{
 		DEBUG_LOG("Scene couldn't be loaded");
 	}
+
+	qTree.Clear();
+	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
 	app->editor->SetSelected(nullptr);
 

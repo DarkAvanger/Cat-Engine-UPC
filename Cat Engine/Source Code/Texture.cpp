@@ -1,4 +1,5 @@
 #include "Texture.h"
+#include "Globals.h"
 #include "TextureImporter.h"
 #include "DevIL/include/IL/il.h"
 

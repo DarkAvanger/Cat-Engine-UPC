@@ -135,6 +135,7 @@
     <ClInclude Include="Source Code\Menu.h" />
     <ClInclude Include="Source Code\ComponentMesh.h" />
     <ClInclude Include="Source Code\MeshImporter.h" />
+    <ClInclude Include="Source Code\Model.h" />
     <ClInclude Include="Source Code\ModelImporter.h" />
     <ClInclude Include="Source Code\Module.h" />
     <ClInclude Include="Source Code\ModuleCamera3D.h" />
@@ -195,6 +196,7 @@
     <ClCompile Include="Source Code\ComponentMaterial.cpp" />
     <ClCompile Include="Source Code\ComponentMesh.cpp" />
     <ClCompile Include="Source Code\MeshImporter.cpp" />
+    <ClCompile Include="Source Code\Model.cpp" />
     <ClCompile Include="Source Code\ModelImporter.cpp" />
     <ClCompile Include="Source Code\ModuleCamera3D.cpp" />
     <ClCompile Include="Source Code\ModuleEditor.cpp" />

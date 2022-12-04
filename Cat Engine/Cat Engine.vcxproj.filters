@@ -2,7 +2,6 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="Source Code\Application.cpp" />
-    <ClCompile Include="Source Code\Main.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\imgui.cpp">
       <Filter>Externals\ImGui</Filter>
     </ClCompile>
@@ -139,25 +138,31 @@
       <Filter>Sources\Menus</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\MeshImporter.cpp">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\ModelImporter.cpp">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\TextureImporter.cpp">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClCompile>
     <ClCompile Include="Source Code\EngineTimer.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\Quadtree.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\GameTimer.cpp">
-      <Filter>Sources\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\ComponentCamera.cpp">
       <Filter>Sources\GameObject\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Model.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Main.cpp">
+      <Filter>Sources\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\Quadtree.cpp">
+      <Filter>Sources\Tools</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\GameTimer.cpp">
+      <Filter>Sources\Resources\Extra</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -338,25 +343,26 @@
       <Filter>Sources\Menus</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\MeshImporter.h">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\ModelImporter.h">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\TextureImporter.h">
-      <Filter>Sources\Importers</Filter>
+      <Filter>Sources\Resources\Importers</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\EngineTimer.h">
       <Filter>Sources\Tools</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\Quadtree.h">
-      <Filter>Sources\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\Resource.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\Model.h" />
+    <ClInclude Include="Source Code\Quadtree.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
     <ClInclude Include="Source Code\GameTimer.h">
-      <Filter>Sources\Resources</Filter>
+      <Filter>Sources\Resources\Extra</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -405,8 +411,11 @@
     <Filter Include="Sources\Resources">
       <UniqueIdentifier>{d9f337d2-2f8e-4b17-a9ef-86670d91ccc2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sources\Importers">
+    <Filter Include="Sources\Resources\Importers">
       <UniqueIdentifier>{cc8e6ceb-9dea-47d9-9c5e-e1441c40fdfd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sources\Resources\Extra">
+      <UniqueIdentifier>{48bcd55c-86bf-4760-8784-cd660afe0d88}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -8,6 +8,9 @@
 
 #include "Texture.h"
 #include "Mesh.h"
+#include "Model.h"
+
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 ResourceManager* ResourceManager::instance = nullptr;
 
@@ -42,28 +45,40 @@ ResourceManager::~ResourceManager()
 	meshes.clear();
 }
 
-std::shared_ptr<Resource> ResourceManager::CreateResource(ResourceType type, uint uid, std::string& assets, std::string& library)
+void ResourceManager::CheckForNewResources()
+{
+
+}
+
+uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std::string& library)
 {
 	std::shared_ptr<Resource> resource = nullptr;
+
+	LCG random;
+	uint uid = random.IntFast();
 
 	switch (type)
 	{
 	case ResourceType::NONE:
 		break;
 	case ResourceType::TEXTURE:
+		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".dds";
 		resource = std::make_shared<Texture>(uid, assets, library);
 		break;
 	case ResourceType::MESH:
+		library = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".rgmesh";
 		resource = std::make_shared<Mesh>(uid, assets, library);
 		break;
 	case ResourceType::MODEL:
+		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".rgmodel";
+		resource = std::make_shared<Model>(uid, assets, library);
 		break;
 	}
 
 
 	if (resource != nullptr) map[uid] = resource;
 
-	return resource;
+	return uid;
 }
 
 std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
@@ -73,6 +88,28 @@ std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
 	if (res != nullptr) res->Load();
 
 	return res;
+}
+
+void ResourceManager::LoadResource(std::string& path)
+{
+	std::map<uint, std::shared_ptr<Resource>>::iterator it;
+	for (it = map.begin(); it != map.end(); ++it)
+	{
+		std::shared_ptr<Resource> res = (*it).second;
+		if (res->GetAssetsPath() == path)
+			res->Load();
+	}
+}
+
+bool ResourceManager::CheckResource(std::string& path)
+{
+	std::map<uint, std::shared_ptr<Resource>>::iterator it;
+	for (it = map.begin(); it != map.end(); ++it)
+	{
+		if ((*it).second->GetAssetsPath() == path)
+			return true;
+	}
+	return false;
 }
 
 void ResourceManager::AddTexture(Texture* tex)
