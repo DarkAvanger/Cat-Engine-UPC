@@ -67,7 +67,7 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 	case ResourceType::NONE:
 		break;
 	case ResourceType::TEXTURE:
-		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".dds";
+		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".rgtexture";
 		resource = std::make_shared<Texture>(uid, assets, library);
 		break;
 	case ResourceType::MESH:
@@ -149,7 +149,6 @@ void ResourceManager::ImportResourcesFromLibrary()
 		{
 			std::string extension = files[i].substr(files[i].find_last_of("."), files[i].length());
 
-			// TODO: Find a solution to get the assets path
 			if (extension.data() == ".rgmodel") CreateResourceCreated(ResourceType::MODEL, std::string(""), files[i]);
 			else if (extension.data() == ".rgtexture") CreateResourceCreated(ResourceType::TEXTURE, std::string(""), files[i]);
 			else if (extension.data() == ".rgmesh") CreateResourceCreated(ResourceType::MESH, std::string(""), files[i]);
@@ -180,7 +179,7 @@ void ResourceManager::ImportAllResources()
 				ModelImporter::ImportModel(*it);
 				break;
 			case ResourceType::TEXTURE:
-				ModelImporter::ImportModel(*it);
+				TextureImporter::ImportTexture(*it);
 				break;
 			}
 		}
