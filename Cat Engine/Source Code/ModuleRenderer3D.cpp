@@ -31,7 +31,7 @@ ModuleRenderer3D::ModuleRenderer3D(bool startEnabled) : Module(startEnabled), ma
 	colorMaterial = true;
 	lighting = true;
 	texture2D = true;
-	stencil = false;
+	stencil = true;
 	blending = false;
 	wireMode = false;
 	vsync = false;
@@ -191,7 +191,7 @@ bool ModuleRenderer3D::PostUpdate()
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	fbo->Bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(app->camera->matrixProjectionFrustum.Transposed().ptr());
@@ -199,7 +199,24 @@ bool ModuleRenderer3D::PostUpdate()
 	glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
+
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilMask(0xFF);
 	app->scene->Draw();
+
+	if (stencil)
+	{
+		glColor3f(0.25f, 0.87f, 0.81f);
+		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+		glStencilMask(0x00);
+		glDisable(GL_DEPTH_TEST);
+		if (app->editor->GetGO()) app->editor->GetGO()->DrawOutline();
+
+		glStencilMask(0xFF);
+		glStencilFunc(GL_ALWAYS, 0, 0xFF);
+		if (depthTest) glEnable(GL_DEPTH_TEST);
+		glColor3f(1.0f, 1.0f, 1.0f);
+	}
 
 	math::Line line = app->camera->rayCast.ToLine();
 	glLineWidth(2.5f);
@@ -223,7 +240,7 @@ bool ModuleRenderer3D::PostUpdate()
 	fbo->Unbind();
 
 	mainCameraFbo->Bind();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadMatrixf(app->scene->mainCamera->matrixProjectionFrustum.Transposed().ptr());
@@ -358,7 +375,11 @@ void ModuleRenderer3D::SetTexture2D()
 
 void ModuleRenderer3D::SetStencil()
 {
-	if (stencil) glEnable(GL_STENCIL_TEST);
+	if (stencil)
+	{
+		glEnable(GL_STENCIL_TEST);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	}
 	else glDisable(GL_STENCIL_TEST);
 }
 

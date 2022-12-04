@@ -66,6 +66,22 @@ void GameObject::Draw()
 	}
 }
 
+void GameObject::DrawOutline()
+{
+	for (int i = 0; i < components.size(); ++i)
+	{
+		Component* component = components[i];
+		if (component->GetActive())
+			component->DrawOutline();
+	}
+
+	for (int i = 0; i < children.size(); ++i)
+	{
+		children[i]->DrawOutline();
+	}
+}
+
+
 void GameObject::DrawEditor()
 {
 	ImGui::Checkbox("Active", &active);

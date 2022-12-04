@@ -15,7 +15,7 @@
 
 #include "Profiling.h"
 
-MenuBar::MenuBar() : Menu(true), buttonPlay(nullptr), buttonStop(nullptr), buttonNextFrame(nullptr)
+MenuBar::MenuBar() : Menu(true), buttonPlay(nullptr), buttonPause(nullptr), buttonNextFrame(nullptr), buttonStop(nullptr), buttonPauseBlue(nullptr)
 {
 	showMenu = false;
 
@@ -37,10 +37,16 @@ bool MenuBar::Start()
 	buttonPlay = new Texture(-4, std::string("Settings/EngineResources/PlayButton.rgtexture"));
 	buttonPlay->Load();
 
-	buttonStop = new Texture(-5, std::string("Settings/EngineResources/PauseButton.rgtexture"));
+	buttonStop = new Texture(-5, std::string("Settings/EngineResources/StopButton.rgtexture"));
 	buttonStop->Load();
 
-	buttonNextFrame = new Texture(-6, std::string("Settings/EngineResources/NextFrame.rgtexture"));
+	buttonPause = new Texture(-6, std::string("Settings/EngineResources/PauseButton.rgtexture"));
+	buttonPause->Load();
+
+	buttonPauseBlue = new Texture(-6, std::string("Settings/EngineResources/PauseButtonActive.rgtexture"));
+	buttonPauseBlue->Load();
+
+	buttonNextFrame = new Texture(-8, std::string("Settings/EngineResources/NextFrame.rgtexture"));
 	buttonNextFrame->Load();
 	for (int i = 0; i < menus.size(); ++i)
 	{
@@ -66,7 +72,7 @@ bool MenuBar::Update(float dt)
 
 			if (ImGui::MenuItem("Load", "Ctrl + L", &ret))
 			{
-				app->scene->LoadScene("Assets/Scenes/scene.cat"); //Checkuwu
+				app->scene->LoadScene("Assets/Scenes/scene.cat");
 			}
 			if (ImGui::MenuItem("Save", "Ctrl + S", &ret))
 			{
@@ -180,22 +186,36 @@ bool MenuBar::Update(float dt)
 	ImGui::PushStyleColor(ImGuiCol_Border, { 0, 0, 0, 0 });
 	ImGui::PushStyleColor(ImGuiCol_BorderShadow, { 0, 0, 0, 0 });
 	ImGui::SameLine(ImGui::GetWindowSize().x * 0.5f - 81);
-	if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), {27,18}))
+
+	if (app->scene->GetGameState() == GameState::NOT_PLAYING)
 	{
-		if (app->scene->GetGameState() == GameState::NOT_PLAYING) app->scene->Play();
-		else app->scene->Stop();
+		if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), { 27,18 })) app->scene->Play();
+
+		ImGui::SameLine();
+		ImGui::ImageButton((ImTextureID)buttonPause->GetId(), { 27,18 });
+
+		ImGui::SameLine();
+		ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 });
+
 	}
-	ImGui::SameLine();
-	if (ImGui::ImageButton((ImTextureID)buttonStop->GetId(), { 27,18 }))
+	else if (app->scene->GetGameState() == GameState::PLAYING || app->scene->GetGameState() == GameState::PAUSE)
 	{
-		if (app->scene->GetGameState() == GameState::PLAYING) app->scene->Pause();
-		else if (app->scene->GetGameState() != GameState::NOT_PLAYING) app->scene->Resume();
+		if (ImGui::ImageButton((ImTextureID)buttonStop->GetId(), { 27,18 })) app->scene->Stop();
+		ImGui::SameLine();
+
+		if (app->scene->GetGameState() == GameState::PAUSE)
+		{
+			if (ImGui::ImageButton((ImTextureID)buttonPauseBlue->GetId(), { 27,18 })) app->scene->Resume();
+		}
+		else
+			if (ImGui::ImageButton((ImTextureID)buttonPause->GetId(), { 27,18 })) app->scene->Pause();
+
+
+		ImGui::SameLine();
+		if (ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 })) if (app->scene->GetGameState() == GameState::PAUSE) app->scene->NextFrame();
+
 	}
-	ImGui::SameLine();
-	if (ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 }))
-	{
-		if (app->scene->GetGameState() == GameState::PAUSE) app->scene->NextFrame();
-	}
+
 	ImGui::PopStyleColor(3);
 	ImGui::End();
 
@@ -221,7 +241,7 @@ bool MenuBar::CleanUp()
 	}
 
 	RELEASE(buttonPlay);
-	RELEASE(buttonStop);
+	RELEASE(buttonPause);
 	RELEASE(buttonNextFrame);
 
 	menus.clear();
