@@ -30,6 +30,8 @@ public:
 	MenuConsole* GetConsole();
 	std::string& GetCurrentDir();
 
+	void StyleTheme();
+
 private:
 	bool showMenu;
 

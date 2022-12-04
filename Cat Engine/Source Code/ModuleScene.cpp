@@ -4,7 +4,8 @@
 #include "Globals.h"
 #include "ModuleEditor.h"
 #include "Primitives.h"
-#include "ModelImporter.h"
+#include "MeshImporter.h"
+#include "Resource.h"
 #include "ResourceManager.h"
 #include "FileSystem.h"
 
@@ -34,6 +35,7 @@ bool ModuleScene::Start()
 
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
+	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/BakerHouse.fbx"));
 
 	return true;
@@ -151,10 +153,6 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent, bool createTransfo
 GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 {
 	GameObject* object = CreateGameObject(parent);
-	std::vector<float3> vertices;
-	std::vector<float3> normals;
-	std::vector<unsigned int> indices;
-	std::vector<float2> texCoords;
 
 	std::string path;
 
@@ -162,32 +160,77 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 	{
 	case Object3D::CUBE:
 		object->SetName("Cube");
-		RCube::CreateCube(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cube.rgmesh");
+		path = "Settings/EngineResources/Cube.mesh";
 		break;
 	case Object3D::PYRAMIDE:
 		object->SetName("Pyramide");
-		RPyramide::CreatePyramide(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Pyramide.rgmesh");
+		path = "Settings/EngineResources/Pyramide.mesh";
 		break;
 	case Object3D::SPHERE:
 		object->SetName("Sphere");
-		RSphere::CreateSphere(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Sphere.rgmesh");
+		path = "Settings/EngineResources/Sphere.mesh";
 		break;
 	case Object3D::CYLINDER:
 		object->SetName("Cylinder");
-		RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cylinder.rgmesh");
+		path = "Settings/EngineResources/Cylinder.mesh";
 		break;
 	}
 
-	if (!vertices.empty())
+	if (!path.empty())
 	{
 		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);
+		mesh->SetMesh(ResourceManager::GetInstance()->LoadResource(path));
 	}
 
 	return object;
+}
+
+void ModuleScene::ImportPrimitives()
+{
+	std::vector<float3> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<float3> normals;
+	std::vector<float2> texCoords;
+
+	RCube::CreateCube(vertices, indices, texCoords);
+	std::string library;
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cube.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RPyramide::CreatePyramide(vertices, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Pyramide.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RSphere::CreateSphere(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Sphere.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/Cylinder.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
 }
 
 void ModuleScene::MoveGameObjectUp(GameObject* object)
