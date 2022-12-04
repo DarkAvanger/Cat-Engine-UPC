@@ -17,13 +17,13 @@ JsonParsing::JsonParsing(const char* string)
 	}
 }
 
-JsonParsing::~JsonParsing()
-{
-}
-
 JsonParsing::JsonParsing(JSON_Value* value)
 {
 	rootObject = value;
+}
+
+JsonParsing::~JsonParsing()
+{
 }
 
 size_t JsonParsing::Save(char** buf)
@@ -40,7 +40,6 @@ size_t JsonParsing::SaveFile(const char* name)
 	json_serialize_to_file(rootObject, name);
 	return written;
 }
-
 
 JSON_Value* JsonParsing::InitObject()
 {
@@ -124,8 +123,8 @@ size_t JsonParsing::ParseFile(const char* fileName)
 JSON_Object* JsonParsing::ValueToObject(JSON_Value* value) const
 {
 	JSON_Object* object = json_value_get_object(value);
-	
-	if(object != NULL)
+
+	if (object != NULL)
 		return object;
 
 	DEBUG_LOG("Couldn't retrieve the object");
@@ -160,10 +159,10 @@ bool JsonParsing::GetJsonBool(const char* name) const
 
 JsonParsing JsonParsing::GetChild(JSON_Value* parent, const char* name)
 {
-	JsonParsing child; 
-	
+	JsonParsing child;
+
 	child.rootObject = json_object_get_value(ValueToObject(rootObject), name);
-	
+
 	return child;
 }
 
