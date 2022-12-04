@@ -149,9 +149,6 @@
     <ClCompile Include="Source Code\EngineTimer.cpp">
       <Filter>Sources\Tools</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\ComponentCamera.cpp">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\Model.cpp">
       <Filter>Sources\Resources</Filter>
     </ClCompile>
@@ -163,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="Source Code\GameTimer.cpp">
       <Filter>Sources\Resources\Extra</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\ComponentCamera.cpp">
+      <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -327,9 +327,6 @@
     <ClInclude Include="Source Code\Texture.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\ComponentCamera.h">
-      <Filter>Sources\GameObject\Components</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\MenuContentBrowser.h">
       <Filter>Sources\Menus</Filter>
     </ClInclude>
@@ -368,6 +365,9 @@
     </ClInclude>
     <ClInclude Include="Source Code\Dialogs.h">
       <Filter>Sources\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\ComponentCamera.h">
+      <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

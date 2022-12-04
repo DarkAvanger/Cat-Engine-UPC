@@ -34,7 +34,7 @@ bool ModuleScene::Start()
 
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
-	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/BakerHouse.fbx"));
+	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
 
 	return true;
 }
