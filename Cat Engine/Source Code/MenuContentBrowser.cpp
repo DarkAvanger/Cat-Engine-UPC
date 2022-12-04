@@ -3,14 +3,13 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "FileSystem.h"
-
-#include "Texture.h"
-#include "TextureImporter.h"
 #include "ResourceManager.h"
 #include "ModuleEditor.h"
 
-#include "Imgui/imgui.h"
+#include "Texture.h"
+#include "TextureImporter.h"
 
+#include "Imgui/imgui.h"
 #include <iostream>
 #include <thread>
 
@@ -20,6 +19,7 @@ ContentBrowserMenu::ContentBrowserMenu() : Menu(true)
 {
 	mainDirectory = "Assets/";
 	currentDirectory = mainDirectory;
+
 	dirIcon = nullptr;
 }
 
@@ -40,6 +40,7 @@ bool ContentBrowserMenu::Start()
 
 	modelIcon = new Texture(-3, std::string("Settings/EngineResources/model.rgtexture"));
 	modelIcon->Load();
+
 	return true;
 }
 
@@ -90,6 +91,7 @@ bool ContentBrowserMenu::Update(float dt)
 	int columns = (int)(width / cell);
 	if (columns < 1)
 		columns = 1;
+
 	ImGui::Columns(columns, 0, false);
 
 	ImGui::PushStyleColor(ImGuiCol_Button, { 0, 0, 0, 0 });
@@ -104,7 +106,6 @@ bool ContentBrowserMenu::Update(float dt)
 		ImGui::ImageButton(dirIcon ? (ImTextureID)dirIcon->GetId() : 0, { cell, cell });
 		if (ImGui::IsItemClicked())
 		{
-			app->editor->SetResource(ResourceManager::GetInstance()->GetResource((*it)));
 			currentFile = (*it);
 		}
 		if (ImGui::BeginDragDropSource())
@@ -135,13 +136,11 @@ bool ContentBrowserMenu::Update(float dt)
 		if (item.find(".png") != std::string::npos) ImGui::ImageButton(picIcon ? (ImTextureID)picIcon->GetId() : "", { cell, cell });
 		else if (item.find(".fbx") != std::string::npos) ImGui::ImageButton(modelIcon ? (ImTextureID)modelIcon->GetId() : "", { cell, cell });
 		else ImGui::ImageButton("", { cell, cell });
-
 		if (ImGui::IsItemClicked())
 		{
 			app->editor->SetResource(ResourceManager::GetInstance()->GetResource((*it)).get());
 			currentFile = (*it);
 		}
-
 		if (ImGui::BeginDragDropSource())
 		{
 			const wchar_t* path = (const wchar_t*)(*it).c_str();
@@ -183,6 +182,7 @@ void ContentBrowserMenu::DrawRecursive(std::vector<std::string>& dirs)
 	{
 		std::string name = (*it);
 		app->fs->GetRelativeDirectory(name);
+
 		ImGuiTreeNodeFlags flags = (currentDirectory == (*it) ? ImGuiTreeNodeFlags_Selected : 0) | ImGuiTreeNodeFlags_OpenOnArrow;
 
 		bool opened = ImGui::TreeNodeEx(name.c_str(), flags);
