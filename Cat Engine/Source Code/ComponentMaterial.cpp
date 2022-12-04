@@ -7,7 +7,7 @@
 
 #include "Profiling.h"
 
-MaterialComponent::MaterialComponent(GameObject* own)
+MaterialComponent::MaterialComponent(GameObject* own) : diff(nullptr)
 {
 	type = ComponentType::MATERIAL;
 	diffuse = nullptr;
@@ -15,7 +15,7 @@ MaterialComponent::MaterialComponent(GameObject* own)
 	owner = own;
 	checker = false;
 
-	//checkerImage = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Textures/Checker.dds")); check
+	checkerImage = ResourceManager::GetInstance()->IsTextureLoaded(std::string("Library/Textures/Checker.dds"));
 	active = true;
 }
 
@@ -44,19 +44,22 @@ void MaterialComponent::OnEditor()
 			ImGui::Checkbox("Checker Image", &checker);
 			ImGui::Image((ImTextureID)checkerImage->GetId(), ImVec2(128, 128));
 		}
-		else if (diffuse != nullptr)
+		else if (diff != nullptr)
 		{
 			ImGui::Text("Path: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", diffuse->GetAssetsPath().c_str());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", diff->GetAssetsPath().c_str());
 			ImGui::Text("Width: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diffuse->GetWidth());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diff->GetWidth());
 			ImGui::Text("Height: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diffuse->GetHeight());
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diff->GetHeight());
+			ImGui::Text("Reference Count: ");
+			ImGui::SameLine();
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diff.use_count());
 			ImGui::Checkbox("Checker Image", &checker);
-			ImGui::Image((ImTextureID)diffuse->GetId(), ImVec2(128, 128));
+			ImGui::Image((ImTextureID)diff->GetId(), ImVec2(128, 128));
 		}
 		else
 		{
@@ -109,7 +112,7 @@ void MaterialComponent::BindTexture()
 	}
 	else
 	{
-		if (diffuse) diffuse->Bind();
+		if (diff) diff->Bind();
 	}
 }
 
@@ -121,7 +124,12 @@ void MaterialComponent::UnbindTexture()
 	}
 	else
 	{
-		if (diffuse) diffuse->Unbind();
+		if (diff) diff->Unbind();
 	}
+}
+
+void MaterialComponent::SetTexture(std::shared_ptr<Resource> tex)
+{
+	diff = std::static_pointer_cast<Texture>(tex);
 }
 

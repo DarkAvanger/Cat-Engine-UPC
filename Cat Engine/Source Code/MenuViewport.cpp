@@ -27,7 +27,7 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 	ImGuiStyle& style = ImGui::GetStyle();
 	style.WindowPadding = ImVec2(0.0f, 0.0f);
 
-	if (ImGui::Begin("Scene"))
+	if (ImGui::Begin("Scene", &active, ImGuiWindowFlags_NoScrollbar))
 	{
 		app->camera->canBeUpdated = true;
 	}
@@ -36,7 +36,7 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 		app->camera->canBeUpdated = false;
 	}
 	
-	ImVec2 size = ImGui::GetWindowContentRegionMax();
+	ImVec2 size = ImGui::GetContentRegionAvail();
 
 	if (sizeViewport.x != size.x || sizeViewport.y != size.y)
 	{

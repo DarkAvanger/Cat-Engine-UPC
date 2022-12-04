@@ -32,6 +32,7 @@ bool ModuleScene::Start()
 
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
+	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/BakerHouse.fbx"));
 

@@ -26,7 +26,7 @@ public:
 
 	std::shared_ptr<Resource> LoadResource(uint uid);
 	std::shared_ptr<Resource> LoadResource(std::string& path);
-	void CreateResourceCreated(ResourceType type, std::string& assets, std::string& library);
+	void CreateResourceCreated(ResourceType type, uint uid, std::string& assets, std::string& library);
 
 	bool CheckResource(std::string& path);
 	void ImportResourcesFromLibrary();

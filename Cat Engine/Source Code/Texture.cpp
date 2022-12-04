@@ -13,7 +13,12 @@ Texture::Texture(uint uid, std::string& assets, std::string& library)
 	: data(nullptr), width(0), height(0), id(0), Resource(uid, ResourceType::TEXTURE, assets, library), parameters({})
 {
 	std::string metaConfig = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".meta";
-	TextureImporter::CreateMetaTexture(metaConfig, parameters);
+	TextureImporter::CreateMetaTexture(metaConfig, parameters, assets, uid);
+}
+
+Texture::Texture(uint uid, std::string& library)
+	: data(nullptr), width(0), height(0), id(0), Resource(uid, ResourceType::TEXTURE, std::string(""), library), parameters({})
+{
 }
 
 Texture::~Texture()
@@ -45,7 +50,7 @@ void Texture::DrawOnEditor()
 			ImGui::DragFloat("Gamma Correct Curve", &parameters.gammaCorrectCurve);
 			ImGui::Checkbox("Negative", &parameters.negative);
 			ImGui::DragFloat("Noise", &parameters.noise);
-			ImGui::Button("Apply changes");
+			if (ImGui::Button("Apply changes")) Reimport();
 		}
 	}
 	ImGui::PopID();
@@ -59,4 +64,16 @@ void Texture::Bind()
 void Texture::Unbind()
 {
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void Texture::Reimport()
+{
+	if (id != 0) glDeleteTextures(1, &id);
+
+	width = 0;
+	height = 0;
+
+	std::string metaConfig = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".meta";
+	TextureImporter::CreateMetaTexture(metaConfig, parameters, assetsPath, uid);
+	TextureImporter::LoadTexture(libraryPath.c_str(), id, width, height, data, parameters);
 }

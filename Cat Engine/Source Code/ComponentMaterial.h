@@ -27,7 +27,7 @@ public:
 
 	void SetTexture(Texture* tex) { diffuse = tex; }
 
-	//inline Texture* GetTexture() const { return diffuse; }
+	void SetTexture(std::shared_ptr<Resource> tex);
 
 private:
 	bool checker;

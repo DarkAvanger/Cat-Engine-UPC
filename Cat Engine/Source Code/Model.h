@@ -19,6 +19,12 @@ public:
 
 	void Load() override;
 
+	void DrawOnEditor() override;
+
 private:
+
+	void Reimport();
+
+	ModelParameters parameters;
 
 };

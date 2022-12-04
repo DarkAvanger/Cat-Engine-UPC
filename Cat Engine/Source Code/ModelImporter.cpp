@@ -86,13 +86,6 @@ void ModelImporter::LoadModel(std::string& path)
 	RELEASE_ARRAY(buffer);
 }
 
-void ModelImporter::CreateImportSettings()
-{
-	JsonParsing importSettings = JsonParsing();
-
-	importSettings.SetNewJsonBool(importSettings.ValueToObject(importSettings.GetRootValue()), "", true);
-}
-
 void ModelImporter::ProcessNode(aiNode* node, const aiScene* scene, JsonParsing& nodeJ, JSON_Array* json, std::string& path)
 {
 	if (node == scene->mRootNode || node->mNumMeshes > 0)
@@ -177,7 +170,7 @@ void ModelImporter::CreatingModel(JsonParsing& json, JSON_Array* array, GameObje
 				std::string path = component.GetJsonString("Texture Path");
 				app->fs->GetFilenameWithoutExtension(path);
 				path = path.substr(path.find_last_of("_") + 1, path.length());
-				material->SetTexture((Texture*)ResourceManager::GetInstance()->LoadResource(std::stoll(path)).get());
+				material->SetTexture(ResourceManager::GetInstance()->LoadResource(std::stoll(path)));
 				break;
 			}
 			}

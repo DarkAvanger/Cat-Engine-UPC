@@ -22,6 +22,7 @@ class Texture : public Resource
 {
 public:
 	Texture(uint uid, std::string& assets, std::string& library);
+	Texture(uint uid, std::string& library);
 
 	~Texture();
 
@@ -36,6 +37,8 @@ public:
 	inline const int& GetHeight() const { return height; }
 
 private:
+	void Reimport();
+
 	unsigned int id;
 	int width;
 	int height;
