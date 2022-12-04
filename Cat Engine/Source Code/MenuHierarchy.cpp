@@ -6,6 +6,8 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 
+#include "Profiling.h"
+
 MenuHierarchy::MenuHierarchy() : Menu(true)
 {
 	gameObjectOptions = false;
@@ -151,9 +153,8 @@ bool MenuHierarchy::Update(float dt)
 
 void MenuHierarchy::ShowChildren(GameObject* parent)
 {
-	int size = parent->GetChilds().size();
 	GameObject* selected = app->editor->GetSelected();
-	for (int i = 0; i < size; ++i)
+	for (int i = 0; i < parent->GetChilds().size(); ++i)
 	{
 		GameObject* obj = parent->GetChilds()[i];
 		ImGui::PushID(obj->GetName());

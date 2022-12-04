@@ -12,6 +12,8 @@
 #include "Model.h"
 
 #include <stack>
+#include "Profiling.h"
+
 
 #include "MathGeoLib/src/Algorithm/Random/LCG.h"
 

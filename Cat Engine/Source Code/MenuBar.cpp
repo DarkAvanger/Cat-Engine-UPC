@@ -34,9 +34,14 @@ MenuBar::~MenuBar()
 
 bool MenuBar::Start()
 {
-	buttonPlay = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/playButton.dds");
-	buttonStop = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/stopButton.dds");
-	buttonNextFrame = ResourceManager::GetInstance()->IsTextureLoaded("Library/Textures/frameButton.dds");
+	buttonPlay = new Texture(-4, std::string(""), std::string("Settings/EngineResources/PlayButton.rgtexture"));
+	buttonPlay->Load();
+
+	buttonStop = new Texture(-5, std::string(""), std::string("Settings/EngineResources/PauseButton.rgtexture"));
+	buttonStop->Load();
+
+	buttonNextFrame = new Texture(-6, std::string(""), std::string("Settings/EngineResources/NextFrame.rgtexture"));
+	buttonNextFrame->Load();
 	for (int i = 0; i < menus.size(); ++i)
 	{
 		menus[i]->Start();
@@ -175,7 +180,7 @@ bool MenuBar::Update(float dt)
 	ImGui::PushStyleColor(ImGuiCol_Border, { 0, 0, 0, 0 });
 	ImGui::PushStyleColor(ImGuiCol_BorderShadow, { 0, 0, 0, 0 });
 	ImGui::SameLine(ImGui::GetWindowSize().x * 0.5f - 81);
-	/*if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), {27,18}))
+	if (ImGui::ImageButton((ImTextureID)buttonPlay->GetId(), {27,18}))
 	{
 		if (app->scene->GetGameState() == GameState::NOT_PLAYING) app->scene->Play();
 		else app->scene->Stop();
@@ -190,7 +195,7 @@ bool MenuBar::Update(float dt)
 	if (ImGui::ImageButton((ImTextureID)buttonNextFrame->GetId(), { 27,18 }))
 	{
 		if (app->scene->GetGameState() == GameState::PAUSE) app->scene->NextFrame();
-	}*/
+	}
 	ImGui::PopStyleColor(3);
 	ImGui::End();
 

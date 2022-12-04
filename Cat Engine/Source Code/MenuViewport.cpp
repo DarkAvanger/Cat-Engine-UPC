@@ -9,6 +9,8 @@
 #include "Imgui/imgui.h"
 #include "Imgui/ImGuizmo.h"
 
+#include "Profiling.h"
+
 MenuViewport::MenuViewport()
 {
 	sizeViewport = float2(0,0);

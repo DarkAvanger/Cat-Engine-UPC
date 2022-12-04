@@ -3,6 +3,8 @@
 #include "TextureImporter.h"
 #include "DevIL/include/IL/il.h"
 
+#include "Profiling.h"
+
 #include "glew/include/GL/glew.h"
 
 Texture::Texture(uint uid, std::string& assets, std::string& library)

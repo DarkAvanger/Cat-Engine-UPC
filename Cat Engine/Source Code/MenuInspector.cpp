@@ -5,6 +5,8 @@
 
 #include "GameObject.h"
 
+#include "Profiling.h"
+
 MenuInspector::MenuInspector() : Menu(true)
 {
 }

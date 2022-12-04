@@ -10,6 +10,11 @@
 
 #include "Imgui/imgui.h"
 
+#include <iostream>
+#include <thread>
+
+#include "Profiling.h"
+
 ContentBrowserMenu::ContentBrowserMenu() : Menu(true)
 {
 	mainDirectory = "Assets/";
@@ -19,18 +24,36 @@ ContentBrowserMenu::ContentBrowserMenu() : Menu(true)
 
 ContentBrowserMenu::~ContentBrowserMenu()
 {
+	RELEASE(dirIcon);
+	RELEASE(picIcon);
+	RELEASE(modelIcon);
 }
 
 bool ContentBrowserMenu::Start()
 {
+	dirIcon = new Texture(-1, std::string(""), std::string("Settings/EngineResources/folder.rgtexture"));
+	dirIcon->Load();
 
+	picIcon = new Texture(-2, std::string(""), std::string("Settings/EngineResources/pic.rgtexture"));
+	picIcon->Load();
+
+	modelIcon = new Texture(-3, std::string(""), std::string("Settings/EngineResources/model.rgtexture"));
+	modelIcon->Load();
 	return true;
+}
+
+static void UpdatingResources()
+{
+	ResourceManager::GetInstance()->ImportAllResources();
 }
 
 bool ContentBrowserMenu::Update(float dt)
 {
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
+
+	if (resource.joinable()) resource.join();
+	resource = std::thread(UpdatingResources);
 
 	app->fs->DiscoverFilesAndDirs("Assets/", files, dirs);
 
@@ -108,8 +131,9 @@ bool ContentBrowserMenu::Update(float dt)
 
 		app->fs->GetFilenameWithExtension(item);
 
-		Texture* texture = ResourceManager::GetInstance()->IsTextureLoaded(item);
-		ImGui::ImageButton(texture ? (ImTextureID)texture->GetId() : "", { cell, cell });
+		if (item.find(".png") != std::string::npos) ImGui::ImageButton(picIcon ? (ImTextureID)picIcon->GetId() : "", { cell, cell });
+		else if (item.find(".fbx") != std::string::npos) ImGui::ImageButton(modelIcon ? (ImTextureID)modelIcon->GetId() : "", { cell, cell });
+		else ImGui::ImageButton("", { cell, cell });
 
 		if (ImGui::IsItemClicked())
 		{
