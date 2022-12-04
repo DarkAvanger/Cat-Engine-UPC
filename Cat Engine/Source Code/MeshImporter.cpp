@@ -7,10 +7,9 @@
 #include "TextureImporter.h"
 #include "Mesh.h"
 #include "Model.h"
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 #include "Globals.h"
-
-#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 #include "Profiling.h"
 
@@ -125,7 +124,6 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 			coords.y = mesh->mTextureCoords[0][i].y;
 		}
 
-
 		norms.push_back(normals);
 		vertices.push_back(vertex);
 		texCoords.push_back(coords);
@@ -147,6 +145,7 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 
 	uint uid = ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, assetsPath, meshName);
 	uids.push_back(uid);
+
 	SaveMesh(meshName, vertices, indices, norms, texCoords);
 
 	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");
@@ -240,6 +239,21 @@ void MeshImporter::LoadMesh(std::vector<float3>& vertices, std::vector<unsigned 
 	}
 	else
 		DEBUG_LOG("Mesh file not found!");
+
+	RELEASE_ARRAY(buffer);
+}
+
+void MeshImporter::CreateMetaMesh(std::string& library, std::string& assets, uint uid)
+{
+	JsonParsing metaFile;
+
+	metaFile.SetNewJsonString(metaFile.ValueToObject(metaFile.GetRootValue()), "Assets Path", assets.c_str());
+	metaFile.SetNewJsonNumber(metaFile.ValueToObject(metaFile.GetRootValue()), "Uuid", uid);
+
+	char* buffer = nullptr;
+	size_t size = metaFile.Save(&buffer);
+
+	app->fs->Save(library.c_str(), buffer, size);
 
 	RELEASE_ARRAY(buffer);
 }

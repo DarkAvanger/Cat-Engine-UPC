@@ -2,18 +2,17 @@
 
 #include <string>
 
-struct ModelParameters;
-
 #include "MathGeoLib/src/Math/float2.h"
 #include "MathGeoLib/src/Math/float3.h"
 
 #include "assimp/mesh.h"
 #include "assimp/scene.h"
 
-typedef unsigned int uint;
-
 class JsonParsing;
 class Mesh;
+struct ModelParameters;
+
+typedef unsigned int uint;
 
 namespace MeshImporter
 {
