@@ -60,10 +60,9 @@ public:
 	void ReparentGameObjects(uint uuid, GameObject* go);
 
 	bool LoadScene(const char* name);
-	bool SaveScene();
+	bool SaveScene(const char* name);
 
-	void AddToQuadtree(GameObject* go);
-	void RemoveFromQuadtree(GameObject* go);
+	inline void ResetQuadtree() { resetQuadtree = true; }
 
 	Quadtree& GetQuadtree() { return qTree; }
 	void SetGameDeltaTime(float deltaTime) { gameTimer.SetDesiredDeltaTime(deltaTime); }
@@ -72,10 +71,11 @@ public:
 
 private:
 	GameObject* root;
-	//bool isPlaying;
+
 	Quadtree qTree;
 	GameState gameState;
 	bool frameSkip;
+	bool resetQuadtree;
 
 	GameTimer gameTimer;
 };

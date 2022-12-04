@@ -366,6 +366,9 @@
     <ClInclude Include="Source Code\Model.h">
       <Filter>Sources\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\Dialogs.h">
+      <Filter>Sources\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Externals">

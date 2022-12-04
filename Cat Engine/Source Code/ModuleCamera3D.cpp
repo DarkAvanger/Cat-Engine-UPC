@@ -15,7 +15,7 @@
 #include "GL/glew.h"
 
 
-ModuleCamera3D::ModuleCamera3D(bool startEnabled) : horizontalFov(DegToRad(70.0f)), verticalFov(0.0f), nearPlane(0.5f), farPlane(200.0f), Module(startEnabled), canBeUpdated(true)
+ModuleCamera3D::ModuleCamera3D(bool startEnabled) : horizontalFov(DegToRad(70.0f)), verticalFov(0.0f), nearPlane(0.5f), farPlane(777.0f), Module(startEnabled), canBeUpdated(true)
 {
 	name = "Camera3D";
 
@@ -202,7 +202,8 @@ bool ModuleCamera3D::Update(float dt)
 				mousePos.y = -(2 * ((mousePos.y - (size.y + 10.0f)) / (size.w)) - 1.0f);
 
 				LineSegment picking = cameraFrustum.UnProjectLineSegment(mousePos.x, mousePos.y);
-				rayCast = picking.ToRay();
+				LineSegment prevLine = picking;
+				rayCastToDraw = picking.ToLine();
 
 				DEBUG_LOG("POSITION X %f, POSITION Y %f", mousePos.x, mousePos.y);
 				DEBUG_LOG("SIZE X %f, SIZE Y %f", size.x, size.y);
@@ -219,8 +220,8 @@ bool ModuleCamera3D::Update(float dt)
 					if ((*it)->GetAABB().IsFinite() && transform)
 					{
 
-						//rayCast.Transform(transform->GetGlobalTransform());
-						hit = rayCast.Intersects((*it)->GetAABB());
+						picking = prevLine;
+						hit = picking.Intersects((*it)->GetAABB());
 
 						if (hit)
 						{
@@ -236,10 +237,11 @@ bool ModuleCamera3D::Update(float dt)
 								int size = meshComponent->GetMesh()->GetIndicesSize();
 
 								int hits = 0;
+								picking.Transform(transform->GetGlobalTransform().Inverted());
 								for (int i = 0; i < size; i += 3)
 								{
 									const math::Triangle tri(meshVertices[meshIndices[i]], meshVertices[meshIndices[i + 1]], meshVertices[meshIndices[i + 2]]);
-									if (rayCast.Intersects(tri, &distance, &hitPoint))
+									if (picking.Intersects(tri, &distance, &hitPoint))
 									{
 										closestDistance = distance;
 										triangleMap[distance] = (*it);
@@ -254,6 +256,11 @@ bool ModuleCamera3D::Update(float dt)
 					}
 				}
 				if (!triangleMap.empty()) app->editor->SetGO((*triangleMap.begin()).second);
+				else if (triangleMap.empty() && !ImGuizmo::IsUsing())
+				{
+					app->editor->SetGO(nullptr);
+					app->editor->SetSelectedParent(nullptr);
+				}
 			}
 		}
 		cameraFrustum.SetFrame(newPos, newFront, newUp);

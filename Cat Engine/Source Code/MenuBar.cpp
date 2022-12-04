@@ -12,6 +12,7 @@
 #include "TextureImporter.h"
 #include "Texture.h"
 #include "ResourceManager.h"
+#include "Dialogs.h"
 
 #include "Profiling.h"
 
@@ -43,7 +44,7 @@ bool MenuBar::Start()
 	buttonPause = new Texture(-6, std::string("Settings/EngineResources/PauseButton.rgtexture"));
 	buttonPause->Load();
 
-	buttonPauseBlue = new Texture(-6, std::string("Settings/EngineResources/PauseButtonActive.rgtexture"));
+	buttonPauseBlue = new Texture(-7, std::string("Settings/EngineResources/PauseButtonActive.rgtexture"));
 	buttonPauseBlue->Load();
 
 	buttonNextFrame = new Texture(-8, std::string("Settings/EngineResources/NextFrame.rgtexture"));
@@ -72,11 +73,13 @@ bool MenuBar::Update(float dt)
 
 			if (ImGui::MenuItem("Load", "Ctrl + L", &ret))
 			{
-				app->scene->LoadScene("Assets/Scenes/scene.cat");
+				std::string filePath = Dialogs::OpenFile("Cat Scene (*.cat)\0*.cat\0");
+				if (!filePath.empty()) app->scene->LoadScene(filePath.c_str());
 			}
 			if (ImGui::MenuItem("Save", "Ctrl + S", &ret))
 			{
-				app->scene->SaveScene();
+				std::string filePath = Dialogs::SaveFile("Cat Scene (*.cat)\0*.cat\0");
+				if (!filePath.empty()) app->scene->SaveScene(filePath.c_str());
 			}
 			if (ImGui::MenuItem("Exit", "ESC", &ret))
 			{

@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\ComponentCamera.h" />
+    <ClInclude Include="Source Code\Dialogs.h" />
     <ClInclude Include="Source Code\EngineTimer.h" />
     <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
     <ClInclude Include="Source Code\GameTimer.h" />
