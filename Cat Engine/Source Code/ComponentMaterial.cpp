@@ -25,6 +25,12 @@ MaterialComponent::~MaterialComponent()
 {
 }
 
+MaterialComponent::MaterialComponent(MaterialComponent* mat) : showTexMenu(false), checkerImage(nullptr)
+{
+	checker = mat->checker;
+	diff = mat->diff;
+}
+
 void MaterialComponent::OnEditor()
 {
 	ImGui::PushID(this);

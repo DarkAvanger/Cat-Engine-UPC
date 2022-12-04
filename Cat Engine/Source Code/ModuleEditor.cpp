@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "ModuleWindow.h"
 #include "ModuleInput.h"
+#include "ModuleScene.h"
 #include "GameObject.h"
 
 #include "MenuConsole.h"
@@ -58,6 +59,11 @@ bool ModuleEditor::Update(float dt)
 		app->input->GetKey(SDL_SCANCODE_RETURN) == KeyState::KEY_DOWN)
 	{
 		app->window->SetFullscreen();
+	}
+	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT &&
+		app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_DOWN)
+	{
+		if (selected) app->scene->DuplicateGO(selected, selectedParent);
 	}
 
 	return ret;

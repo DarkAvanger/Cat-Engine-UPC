@@ -226,6 +226,31 @@ void GameObject::RemoveChild(GameObject* object)
 	}
 }
 
+void GameObject::CopyComponent(Component* component)
+{
+	Component* c = nullptr;
+	switch (component->type)
+	{
+	case ComponentType::TRANSFORM:
+		c = new TransformComponent(dynamic_cast<TransformComponent*>(component));
+		break;
+	case ComponentType::MESH_RENDERER:
+		c = new MeshComponent(dynamic_cast<MeshComponent*>(component), GetComponent<TransformComponent>());
+		break;
+	case ComponentType::MATERIAL:
+		c = new MaterialComponent(dynamic_cast<MaterialComponent*>(component));
+		MeshComponent* m = GetComponent<MeshComponent>();
+		if (m != nullptr) m->SetMaterial((MaterialComponent*)c);
+		break;
+	}
+
+	if (c != nullptr)
+	{
+		c->SetOwner(this);
+		components.push_back(c);
+	}
+}
+
 void GameObject::SetAABB(AABB newAABB, bool needToClean)
 {
 	globalObb = newAABB;

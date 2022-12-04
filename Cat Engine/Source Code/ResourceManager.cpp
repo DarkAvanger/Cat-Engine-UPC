@@ -100,7 +100,7 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 
 void ResourceManager::CreateResourceCreated(ResourceType type, uint uid, std::string& assets, std::string& library)
 {
-	std::shared_ptr<Resource> resource;
+	std::shared_ptr<Resource> resource = nullptr;
 	switch (type)
 	{
 	case ResourceType::TEXTURE:
@@ -114,7 +114,7 @@ void ResourceManager::CreateResourceCreated(ResourceType type, uint uid, std::st
 		break;
 	}
 
-	if (resource != nullptr) map[uid] = resource;
+	if (resource != nullptr && resource) map[uid] = resource;
 }
 
 std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)

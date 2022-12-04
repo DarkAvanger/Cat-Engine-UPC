@@ -52,9 +52,12 @@ public:
 
 	void MoveChildrenUp(GameObject* child);
 	void MoveChildrenDown(GameObject* child);
+	void CopyComponent(Component* component);
 
 	void OnLoad(JsonParsing& node);
 	void OnSave(JsonParsing& node, JSON_Array* array);
+
+	inline const std::vector<Component*> GetComponents() const { return components; }
 
 	template<typename T>
 	T* GetComponent();

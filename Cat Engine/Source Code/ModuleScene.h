@@ -62,6 +62,8 @@ public:
 	bool LoadScene(const char* name);
 	bool SaveScene(const char* name);
 
+	void DuplicateGO(GameObject* go, GameObject* parent);
+
 	inline void ResetQuadtree() { resetQuadtree = true; }
 
 	Quadtree& GetQuadtree() { return qTree; }
