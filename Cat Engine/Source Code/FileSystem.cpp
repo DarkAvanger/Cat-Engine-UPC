@@ -241,7 +241,7 @@ void FileSystem::LoadFiles()
 
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
-			if ((*it).find(".rgmesh") != std::string::npos)
+			if ((*it).find(".catmesh") != std::string::npos)
 			{
 
 			}

@@ -79,15 +79,15 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 	case ResourceType::NONE:
 		break;
 	case ResourceType::TEXTURE:
-		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".rgtexture";
+		library = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".cattexture";
 		resource = std::make_shared<Texture>(uid, assets, library);
 		break;
 	case ResourceType::MESH:
-		library = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".rgmesh";
+		library = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".catmesh";
 		resource = std::make_shared<Mesh>(uid, assets, library);
 		break;
 	case ResourceType::MODEL:
-		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".rgmodel";
+		library = MODELS_FOLDER + std::string("model_") + std::to_string(uid) + ".catmodel";
 		resource = std::make_shared<Model>(uid, assets, library);
 		break;
 	}
@@ -187,9 +187,9 @@ void ResourceManager::ImportResourcesFromLibrary()
 					std::string assets(metaInfo.GetJsonString("Assets Path"));
 					uint uid = metaInfo.GetJsonNumber("Uuid");
 
-					if (files[i].find(".rgmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
-					else if (files[i].find(".rgtexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
-					else if (files[i].find(".rgmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
+					if (files[i].find(".catmodel") != std::string::npos) CreateResourceCreated(ResourceType::MODEL, uid, assets, dir + files[i]);
+					else if (files[i].find(".cattexture") != std::string::npos) CreateResourceCreated(ResourceType::TEXTURE, uid, assets, dir + files[i]);
+					else if (files[i].find(".catmesh") != std::string::npos) CreateResourceCreated(ResourceType::MESH, uid, assets, dir + files[i]);
 
 					RELEASE_ARRAY(buffer);
 				}
@@ -317,7 +317,7 @@ void ResourceManager::AddMesh(Mesh* mesh)
 Mesh* ResourceManager::IsMeshLoaded(std::string path)
 {
 	std::string p = path;
-	if (p.find(".rgmesh") == std::string::npos)
+	if (p.find(".catmesh") == std::string::npos)
 	{
 		app->fs->GetFilenameWithoutExtension(p);
 		p = MESHES_FOLDER + p + ".dds";

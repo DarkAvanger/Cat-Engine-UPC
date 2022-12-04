@@ -35,19 +35,19 @@ MenuBar::~MenuBar()
 
 bool MenuBar::Start()
 {
-	buttonPlay = new Texture(-4, std::string("Settings/EngineResources/PlayButton.rgtexture"));
+	buttonPlay = new Texture(-4, std::string("Settings/EngineResources/PlayButton.cattexture"));
 	buttonPlay->Load();
 
-	buttonStop = new Texture(-5, std::string("Settings/EngineResources/StopButton.rgtexture"));
+	buttonStop = new Texture(-5, std::string("Settings/EngineResources/StopButton.cattexture"));
 	buttonStop->Load();
 
-	buttonPause = new Texture(-6, std::string("Settings/EngineResources/PauseButton.rgtexture"));
+	buttonPause = new Texture(-6, std::string("Settings/EngineResources/PauseButton.cattexture"));
 	buttonPause->Load();
 
-	buttonPauseBlue = new Texture(-7, std::string("Settings/EngineResources/PauseButtonActive.rgtexture"));
+	buttonPauseBlue = new Texture(-7, std::string("Settings/EngineResources/PauseButtonActive.cattexture"));
 	buttonPauseBlue->Load();
 
-	buttonNextFrame = new Texture(-8, std::string("Settings/EngineResources/NextFrame.rgtexture"));
+	buttonNextFrame = new Texture(-8, std::string("Settings/EngineResources/NextFrame.cattexture"));
 	buttonNextFrame->Load();
 	for (int i = 0; i < menus.size(); ++i)
 	{

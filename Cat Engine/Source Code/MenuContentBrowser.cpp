@@ -32,13 +32,13 @@ ContentBrowserMenu::~ContentBrowserMenu()
 
 bool ContentBrowserMenu::Start()
 {
-	dirIcon = new Texture(-1, std::string("Settings/EngineResources/folder.rgtexture"));
+	dirIcon = new Texture(-1, std::string("Settings/EngineResources/folder.cattexture"));
 	dirIcon->Load();
 
-	picIcon = new Texture(-2, std::string("Settings/EngineResources/pic.rgtexture"));
+	picIcon = new Texture(-2, std::string("Settings/EngineResources/pic.cattexture"));
 	picIcon->Load();
 
-	modelIcon = new Texture(-3, std::string("Settings/EngineResources/model.rgtexture"));
+	modelIcon = new Texture(-3, std::string("Settings/EngineResources/model.cattexture"));
 	modelIcon->Load();
 
 	return true;

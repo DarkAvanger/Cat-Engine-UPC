@@ -163,22 +163,22 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 	case Object3D::CUBE:
 		object->SetName("Cube");
 		RCube::CreateCube(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cube.rgmesh");
+		path = MESHES_FOLDER + std::string("Cube.catmesh");
 		break;
 	case Object3D::PYRAMIDE:
 		object->SetName("Pyramide");
 		RPyramide::CreatePyramide(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Pyramide.rgmesh");
+		path = MESHES_FOLDER + std::string("Pyramide.catmesh");
 		break;
 	case Object3D::SPHERE:
 		object->SetName("Sphere");
 		RSphere::CreateSphere(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Sphere.rgmesh");
+		path = MESHES_FOLDER + std::string("Sphere.catmesh");
 		break;
 	case Object3D::CYLINDER:
 		object->SetName("Cylinder");
 		RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cylinder.rgmesh");
+		path = MESHES_FOLDER + std::string("Cylinder.catmesh");
 		break;
 	}
 

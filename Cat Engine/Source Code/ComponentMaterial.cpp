@@ -101,7 +101,7 @@ void MaterialComponent::OnEditor()
 		app->fs->DiscoverFiles("Library/Textures/", files);
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
 		{
-			if ((*it).find(".rgtexture") != std::string::npos)
+			if ((*it).find(".cattexture") != std::string::npos)
 			{
 				app->fs->GetFilenameWithoutExtension(*it);
 				*it = (*it).substr((*it).find_last_of("_") + 1, (*it).length());

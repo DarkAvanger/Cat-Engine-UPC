@@ -74,7 +74,7 @@ void TextureImporter::ImportTexture2(std::string& fileName)
 	ilLoadImage(fileName.c_str());
 	ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 	app->fs->GetFilenameWithoutExtension(fileName);
-	std::string libraryPath = SETTINGS_FOLDER + std::string("EngineResources/") + fileName + ".rgtexture";
+	std::string libraryPath = SETTINGS_FOLDER + std::string("EngineResources/") + fileName + ".cattexture";
 
 	SaveTexture(libraryPath);
 	ilDeleteImages(1, &image);
