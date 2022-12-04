@@ -6,6 +6,7 @@
 #include "ModuleEditor.h"
 #include "FileSystem.h"
 #include "GameObject.h"
+#include "ResourceManager.h"
 
 #include "Imgui/imgui.h"
 #include "Imgui/ImGuizmo.h"
@@ -74,7 +75,7 @@ void MenuViewport::Draw(Framebuffer* framebuffer, Framebuffer* gameBuffer, int c
 		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("Content Browser"))
 		{
 			const char* path = (const char*)payload->Data;
-			app->fs->LoadFile(std::string(path));
+			ResourceManager::GetInstance()->LoadResource(std::string(path));
 		}
 		ImGui::EndDragDropTarget();
 	}

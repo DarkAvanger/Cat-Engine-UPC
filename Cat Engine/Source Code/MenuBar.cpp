@@ -66,7 +66,7 @@ bool MenuBar::Update(float dt)
 
 			if (ImGui::MenuItem("Load", "Ctrl + L", &ret))
 			{
-				app->scene->LoadScene("Assets/Scenes/scene.json");
+				app->scene->LoadScene("Assets/Scenes/scene.cat"); //Checkuwu
 			}
 			if (ImGui::MenuItem("Save", "Ctrl + S", &ret))
 			{
@@ -219,6 +219,10 @@ bool MenuBar::CleanUp()
 	{
 		RELEASE(menus[i]);
 	}
+
+	RELEASE(buttonPlay);
+	RELEASE(buttonStop);
+	RELEASE(buttonNextFrame);
 
 	menus.clear();
 

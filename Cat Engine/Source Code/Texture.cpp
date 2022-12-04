@@ -3,6 +3,9 @@
 #include "TextureImporter.h"
 #include "DevIL/include/IL/il.h"
 
+#include "Application.h"
+#include "FileSystem.h"
+
 #include "Imgui/imgui.h"
 
 #include "Profiling.h"
@@ -14,6 +17,8 @@ Texture::Texture(uint uid, std::string& assets, std::string& library)
 {
 	std::string metaConfig = TEXTURES_FOLDER + std::string("texture_") + std::to_string(uid) + ".meta";
 	TextureImporter::CreateMetaTexture(metaConfig, parameters, assets, uid);
+	name = assets;
+	app->fs->GetFilenameWithExtension(name);
 }
 
 Texture::Texture(uint uid, std::string& library)

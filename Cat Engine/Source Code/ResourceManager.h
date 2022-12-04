@@ -31,7 +31,11 @@ public:
 	bool CheckResource(std::string& path);
 	void ImportResourcesFromLibrary();
 	void ImportAllResources();
-	Resource* GetResource(std::string path);
+	
+	std::shared_ptr<Resource> GetResource(uint uid);
+	std::shared_ptr<Resource> GetResource(std::string path);
+
+	void DeleteResource(std::string& path);
 
 	void AddTexture(Texture* tex);
 	Texture* IsTextureLoaded(std::string path);

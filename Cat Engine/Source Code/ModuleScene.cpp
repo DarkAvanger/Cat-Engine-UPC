@@ -41,8 +41,7 @@ bool ModuleScene::Start()
 
 bool ModuleScene::PreUpdate(float dt)
 {
-	if (gameState == GameState::PLAYING)
-		gameTimer.Start();
+	if (gameState == GameState::PLAYING) gameTimer.Start();
 
 	return true;
 }
@@ -67,8 +66,7 @@ bool ModuleScene::Update(float dt)
 
 bool ModuleScene::PostUpdate()
 {
-	if (gameState == GameState::PLAYING)
-		gameTimer.FinishUpdate();
+	if (gameState == GameState::PLAYING) gameTimer.FinishUpdate();
 	return true;
 }
 
@@ -161,7 +159,7 @@ GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 
 	if (!vertices.empty())
 	{
-		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);;
+		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);
 	}
 
 	return object;
@@ -296,7 +294,7 @@ bool ModuleScene::SaveScene()
 	char* buf;
 	uint size = sceneFile.Save(&buf);
 
-	if (app->fs->Save(SCENES_FOLDER "scene.json", buf, size) > 0)
+	if (app->fs->Save(SCENES_FOLDER "scene.cat", buf, size) > 0) //checkuwu
 		DEBUG_LOG("Scene saved succesfully");
 	else
 		DEBUG_LOG("Scene couldn't be saved");
@@ -329,7 +327,7 @@ void ModuleScene::Play()
 	char* buf;
 	uint size = sceneFile.Save(&buf);
 
-	if (app->fs->Save(SCENES_FOLDER "scenePlay.json", buf, size) > 0)
+	if (app->fs->Save(SCENES_FOLDER "scenePlay.cat", buf, size) > 0) //checkuwu
 		DEBUG_LOG("Scene saved succesfully");
 	else
 		DEBUG_LOG("Scene couldn't be saved");
@@ -342,8 +340,8 @@ void ModuleScene::Play()
 
 void ModuleScene::Stop()
 {
-	LoadScene("Assets/Scenes/scenePlay.json");
-	app->fs->RemoveFile("Assets/Scenes/scenePlay.json");
+	LoadScene("Assets/Scenes/scenePlay.cat"); //checkuwu
+	app->fs->RemoveFile("Assets/Scenes/scenePlay.cat"); //checkuwu
 	qTree.Clear();
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 	gameState = GameState::NOT_PLAYING;

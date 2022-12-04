@@ -138,6 +138,7 @@ bool ContentBrowserMenu::Update(float dt)
 
 		if (ImGui::IsItemClicked())
 		{
+			app->editor->SetResource(ResourceManager::GetInstance()->GetResource((*it)).get());
 			currentFile = (*it);
 		}
 
@@ -156,8 +157,12 @@ bool ContentBrowserMenu::Update(float dt)
 
 	if (app->input->GetKey(SDL_SCANCODE_DELETE) == KeyState::KEY_UP)
 	{
-		app->fs->RemoveFile(currentFile.c_str());
-		currentFile.clear();
+		if (!currentFile.empty())
+		{
+			ResourceManager::GetInstance()->DeleteResource(currentFile);
+			app->editor->SetResource(nullptr);
+			currentFile.clear();
+		}
 	}
 
 	ImGui::Columns(1);

@@ -143,6 +143,7 @@ void TextureImporter::LoadTexture(const char* path, unsigned int& id, int& width
 	}
 
 	RELEASE_ARRAY(buffer);
+	RELEASE_ARRAY(bufferMeta);
 }
 
 void TextureImporter::CreateMetaTexture(std::string& path, TextureParameters& data, std::string& assets, uint uid)
@@ -170,6 +171,7 @@ void TextureImporter::CreateMetaTexture(std::string& path, TextureParameters& da
 	size_t size = metaTexture.Save(&buffer);
 
 	app->fs->Save(path.c_str(), buffer, size);
+	RELEASE_ARRAY(buffer);
 }
 
 void TextureImporter::SetIluParameters(TextureParameters& data)

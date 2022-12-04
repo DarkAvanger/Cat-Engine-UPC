@@ -13,7 +13,7 @@
 
 #include "Profiling.h"
 
-void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonParsing& json, std::string& path)
+void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonParsing& json, std::string& path, std::vector<uint>& uids)
 {
 	RG_PROFILING_FUNCTION("Importing mesh");
 
@@ -45,7 +45,7 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 		}
 
 		float2 coords;
-		if (mesh->HasTextureCoords(mesh->mMaterialIndex))
+		if (mesh->mTextureCoords[0])
 		{
 			coords.x = mesh->mTextureCoords[0][i].x;
 			coords.y = mesh->mTextureCoords[0][i].y;
@@ -71,7 +71,8 @@ void MeshImporter::ImportMesh(const aiMesh* mesh, const aiScene* scene, JsonPars
 
 	assetsPath.insert(assetsPath.find_last_of("."), mesh->mName.C_Str());
 
-	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, assetsPath, meshName);
+	uint uid = ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, assetsPath, meshName);
+	uids.push_back(uid);
 	SaveMesh(meshName, vertices, indices, norms, texCoords);
 
 	JSON_Array* array = json.SetNewJsonArray(json.GetRootValue(), "Components");

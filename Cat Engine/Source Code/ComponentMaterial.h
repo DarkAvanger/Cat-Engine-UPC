@@ -25,15 +25,13 @@ public:
 	void BindTexture();
 	void UnbindTexture();
 
-	void SetTexture(Texture* tex) { diffuse = tex; }
-
 	void SetTexture(std::shared_ptr<Resource> tex);
 
 private:
 	bool checker;
+	bool showTexMenu;
 
 	Texture* checkerImage;
 
-	Texture* diffuse;
 	std::shared_ptr<Texture> diff;
 };
