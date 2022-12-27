@@ -8,9 +8,18 @@
 #include "ResourceManager.h"
 #include "FileSystem.h"
 
+#include <AK/SoundEngine/Common/AkMemoryMgr.h>
+#include "AK/SoundEngine/Common/AkModule.h"
+
+#include <AK/SoundEngine/Common/AkStreamMgrModule.h>
+#include <AK/Tools/Common/AkPlatformFuncs.h>  
+#include <AK/SoundEngine/Win32/AkFilePackageLowLevelIOBlocking.h>
+
 #include <stack>
 
 #include "Profiling.h"
+
+CAkFilePackageLowLevelIOBlocking lowLevelIO;
 
 ModuleScene::ModuleScene() : mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true)
 {
@@ -25,6 +34,33 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Start()
 {
 	RG_PROFILING_FUNCTION("Starting Scene");
+
+	AkMemSettings memSettings;
+	AK::MemoryMgr::GetDefaultSettings(memSettings);
+
+	if (AK::MemoryMgr::Init(&memSettings) != AK_Success)
+	{
+		DEBUG_LOG("Couldn't create the Memory Manager");
+		return false;
+	}
+
+	AkStreamMgrSettings streamSettings;
+	AK::StreamMgr::GetDefaultSettings(streamSettings);
+
+	if (!AK::StreamMgr::Create(streamSettings))
+	{
+		DEBUG_LOG("Couldn't create the Stream Manager");
+		return false;
+	}
+
+	AkDeviceSettings devSettings;
+	AK::StreamMgr::GetDefaultDeviceSettings(devSettings);
+
+	if (lowLevelIO.Init(devSettings) != AK_Success)
+	{
+		DEBUG_LOG("Couldn't create the streaming device and Low-Level I/O system");
+		return false;
+	}
 
 	GameObject* camera = CreateGameObject(nullptr);
 	camera->CreateComponent(ComponentType::CAMERA);
