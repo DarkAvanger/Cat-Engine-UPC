@@ -48,6 +48,12 @@ bool ModuleScene::Start()
 	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
 
+	AkAuxSendValue aEnvs[1];
+	AkReal32 fObstruction = 0.05f;
+	AkReal32 fOcclusion = 0.0f;
+
+	AK::SoundEngine::SetObjectObstructionAndOcclusion(camera->GetUUID(), camera->GetUUID(), fObstruction, fOcclusion);
+
 	return true;
 }
 
