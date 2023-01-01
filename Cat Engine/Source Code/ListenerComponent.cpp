@@ -11,8 +11,12 @@ ListenerComponent::ListenerComponent(GameObject* own, TransformComponent* trans)
 	owner = own;
 	type = ComponentType::AUDIO_LISTENER;
 
-	AkGameObjectID cameraID = owner->GetUUID();
-	AudioManager::Get()->RegisterGameObject(cameraID);
+	if (!owner->CheckAudioRegister())
+	{
+		AkGameObjectID cameraID = owner->GetUUID();
+		AudioManager::Get()->RegisterGameObject(cameraID);
+		owner->SetAudioRegister(true);
+	}
 }
 
 ListenerComponent::~ListenerComponent()
@@ -25,7 +29,7 @@ void ListenerComponent::OnEditor()
 	ImGui::PushID(this);
 	if (ImGui::CollapsingHeader("Listener"))
 	{
-		ImGui::Text("AudioClip");
+		ImGui::Text("##AudioClip");
 		ImGui::SameLine(ImGui::GetWindowWidth() * 0.65f);
 		ImGui::Checkbox(" ", &activeListener);
 		ImGui::SameLine();

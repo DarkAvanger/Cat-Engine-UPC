@@ -46,6 +46,9 @@ public:
 	inline GameObject* GetParent() const { return parent; }
 	inline const bool& GetActive() const { return active; }
 	inline std::vector<GameObject*>& GetChilds() { return children; }
+	inline void SetAudioRegister(bool check) { audioRegistered = check; }
+	inline bool CheckAudioRegister() { return audioRegistered; }
+
 	void SetAABB(AABB newAABB, bool needToClean = false);
 	void SetAABB(OBB newOBB);
 	void SetNewAABB();
@@ -84,6 +87,8 @@ private:
 	IndexBuffer* index;
 
 	uint uuid;
+
+	bool audioRegistered;
 };
 
 template<typename T>
