@@ -8,6 +8,7 @@
 #include "ModuleEditor.h"
 #include "FileSystem.h"
 #include "ResourceManager.h"
+#include "AudioManager.h"
 
 #include "Profiling.h"
 
@@ -25,6 +26,8 @@ Application::Application()
 	// The order of calls is very important!
 	// Modules will Init() Start() and Update in this order
 	// They will CleanUp() in reverse order
+
+	AudioManager::Create();
 
 	// Main Modules
 	AddModule(window);
@@ -52,6 +55,7 @@ Application::~Application()
 
 	RELEASE(fs);
 	ResourceManager::ReleaseInstance();
+	AudioManager::Release();
 
 	listModules.clear();
 }
@@ -79,6 +83,8 @@ bool Application::Init()
 
 		RELEASE_ARRAY(buffer);
 	}
+
+	AudioManager::Get()->Init();
 
 	//// Call Init() in all modules
 	std::list<Module*>::iterator item;

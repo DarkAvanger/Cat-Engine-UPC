@@ -90,10 +90,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source Code\AudioManager.h" />
     <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\Dialogs.h" />
     <ClInclude Include="Source Code\EngineTimer.h" />
     <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileHelpersBase.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.h" />
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h" />
@@ -167,9 +175,15 @@
     <ClInclude Include="Source Code\MenuViewport.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source Code\AudioManager.cpp" />
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\EngineTimer.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.cpp" />
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\stdafx.cpp" />
@@ -225,6 +239,9 @@
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\VertexBuffer.cpp" />
     <ClCompile Include="Source Code\MenuViewport.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

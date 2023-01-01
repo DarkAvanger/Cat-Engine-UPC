@@ -1,6 +1,7 @@
 #include "ModuleScene.h"
 
 #include "Application.h"
+#include "ModuleInput.h"
 #include "Globals.h"
 #include "ModuleEditor.h"
 #include "Primitives.h"
@@ -9,20 +10,13 @@
 #include "Resource.h"
 #include "ResourceManager.h"
 
-#include <AK/SoundEngine/Common/AkMemoryMgr.h>
-#include "AK/SoundEngine/Common/AkModule.h"
-
-#include <AK/SoundEngine/Common/AkStreamMgrModule.h>
-#include <AK/Tools/Common/AkPlatformFuncs.h>  
-#include <AK/SoundEngine/Win32/AkFilePackageLowLevelIOBlocking.h>
+#include "AudioManager.h"
 
 #include <stack>
 
 
 
 #include "Profiling.h"
-
-CAkFilePackageLowLevelIOBlocking lowLevelIO;
 
 ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
 {
@@ -38,36 +32,14 @@ bool ModuleScene::Start()
 {
 	RG_PROFILING_FUNCTION("Starting Scene");
 
-	AkMemSettings memSettings;
-	AK::MemoryMgr::GetDefaultSettings(memSettings);
-
-	if (AK::MemoryMgr::Init(&memSettings) != AK_Success)
-	{
-		DEBUG_LOG("Couldn't create the Memory Manager");
-		return false;
-	}
-
-	AkStreamMgrSettings streamSettings;
-	AK::StreamMgr::GetDefaultSettings(streamSettings);
-
-	if (!AK::StreamMgr::Create(streamSettings))
-	{
-		DEBUG_LOG("Couldn't create the Stream Manager");
-		return false;
-	}
-
-	AkDeviceSettings devSettings;
-	AK::StreamMgr::GetDefaultDeviceSettings(devSettings);
-
-	if (lowLevelIO.Init(devSettings) != AK_Success)
-	{
-		DEBUG_LOG("Couldn't create the streaming device and Low-Level I/O system");
-		return false;
-	}
-
 	GameObject* camera = CreateGameObject(nullptr);
 	camera->CreateComponent(ComponentType::CAMERA);
 	camera->SetName("Camera");
+
+	AkGameObjectID cameraID = camera->GetUUID();
+	AudioManager::Get()->RegisterGameObject(cameraID);
+
+	AudioManager::Get()->SetDefaultListener(&cameraID);
 
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
@@ -75,6 +47,7 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->ImportAllResources();
 	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
+	AudioManager::Get()->RegisterGameObject(root->GetChilds()[1]->GetUUID());
 
 	return true;
 }
@@ -90,6 +63,16 @@ bool ModuleScene::Update(float dt)
 {
 	RG_PROFILING_FUNCTION("Updating Scene");
 
+	AkSoundPosition position;
+	AkVector vector;
+	float3 pos = root->GetChilds()[0]->GetComponent<TransformComponent>()->GetPosition();
+	vector.X = pos.x;
+	vector.Y = pos.y;
+	vector.Z = pos.z;
+	position.SetPosition(vector);
+	position.SetOrientation({ 0,0,1 }, { 0,1,0 });
+	AudioManager::Get()->SetPosition(root->GetChilds()[0]->GetUUID(), position);
+
 	if (mainCamera != nullptr) mainCamera->Update(gameTimer.GetDeltaTime());
 
 	for (int i = 0; i < root->GetChilds().size(); ++i)
@@ -101,6 +84,21 @@ bool ModuleScene::Update(float dt)
 		DEBUG_LOG("Seconds passed since game startup %d", gameTimer.GetEngineTimeStartup() / 1000);
 		frameSkip = false;
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_UP)
+	{
+		AkSoundPosition positionEmitter;
+		AkVector vectorEmitter;
+		float3 posEmitter = root->GetChilds()[1]->GetComponent<TransformComponent>()->GetPosition();
+		vectorEmitter.X = posEmitter.x;
+		vectorEmitter.Y = posEmitter.y;
+		vectorEmitter.Z = posEmitter.z;
+		positionEmitter.SetPosition(vectorEmitter);
+		positionEmitter.SetOrientation({ 0,0,1 }, { 0,1,0 });
+		AudioManager::Get()->SetPosition(root->GetChilds()[1]->GetUUID(), positionEmitter);
+		AudioManager::Get()->PostEvent("checkpoint", root->GetChilds()[1]->GetUUID());
+	}
+
 
 	if (goToRecalculate && goToRecalculate->GetParent() != root)
 	{
@@ -143,6 +141,8 @@ bool ModuleScene::Update(float dt)
 		resetQuadtree = false;
 	}
 
+	AudioManager::Get()->Render();
+
 	return true;
 }
 
@@ -184,6 +184,7 @@ bool ModuleScene::Draw()
 
 bool ModuleScene::CleanUp()
 {
+	AudioManager::Get()->UnregisterGameObject(root->GetChilds()[1]->GetUUID());
 	RELEASE(root);
 
 	return true;

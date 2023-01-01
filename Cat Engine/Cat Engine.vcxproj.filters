@@ -170,8 +170,26 @@
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.cpp">
       <Filter>Externals\WWise</Filter>
     </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.cpp">
+      <Filter>Externals\WWise</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.cpp">
+      <Filter>Externals\WWise</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.cpp">
+      <Filter>Externals\WWise</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.cpp">
+      <Filter>Externals\WWise</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.cpp">
+      <Filter>Externals\WWise</Filter>
+    </ClCompile>
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\stdafx.cpp">
       <Filter>Externals\WWise</Filter>
+    </ClCompile>
+    <ClCompile Include="Source Code\AudioManager.cpp">
+      <Filter>Sources\Resources\Audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,7 +402,19 @@
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.h">
       <Filter>Externals\WWise</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h">
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileHelpersBase.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.h">
       <Filter>Externals\WWise</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFilePackageLowLevelIOBlocking.h">
@@ -393,8 +423,20 @@
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFilePackageLowLevelIODeferred.h">
       <Filter>Externals\WWise</Filter>
     </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\stdafx.h">
       <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\AudioManager.h">
+      <Filter>Sources\Resources\Audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -452,5 +494,13 @@
     <Filter Include="Externals\WWise">
       <UniqueIdentifier>{1ea7072a-f9d4-44ec-b94b-47496a039593}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sources\Resources\Audio">
+      <UniqueIdentifier>{6465c2db-6d4e-4f4b-b5db-525e4e7860d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.inl">
+      <Filter>Externals\WWise</Filter>
+    </None>
   </ItemGroup>
 </Project>
