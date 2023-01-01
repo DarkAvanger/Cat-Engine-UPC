@@ -2,7 +2,6 @@
 #include "Globals.h"
 #include "ModuleInput.h"
 #include "FileSystem.h"
-
 #include "ModuleEditor.h"
 
 #include "Imgui/imgui.h"
@@ -34,7 +33,7 @@ bool ModuleInput::Init(JsonParsing& node)
 	bool ret = true;
 	SDL_Init(0);
 
-	if(SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
+	if (SDL_InitSubSystem(SDL_INIT_EVENTS) < 0)
 	{
 		DEBUG_LOG("SDL_EVENTS could not initialize! SDL_Error: %s\n", SDL_GetError());
 		return false;
@@ -51,11 +50,11 @@ bool ModuleInput::PreUpdate(float dt)
 	SDL_PumpEvents();
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
-	
-	for(int i = 0; i < MAX_KEYS; ++i)
+
+	for (int i = 0; i < MAX_KEYS; ++i)
 	{
 		std::string string;
-		if(keys[i] == 1)
+		if (keys[i] == 1)
 		{
 			if (keyboard[i] == KeyState::KEY_IDLE)
 			{
@@ -94,10 +93,10 @@ bool ModuleInput::PreUpdate(float dt)
 	mouseY /= SCREEN_SIZE;
 	mouseZ = 0;
 
-	for(int i = 0; i < 5; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		std::string string;
-		if(buttons & SDL_BUTTON(i))
+		if (buttons & SDL_BUTTON(i))
 		{
 			if (mouseButtons[i] == KeyState::KEY_IDLE)
 			{
@@ -137,16 +136,16 @@ bool ModuleInput::PreUpdate(float dt)
 	bool quit = false;
 	SDL_Event e;
 
-	while(SDL_PollEvent(&e))
+	while (SDL_PollEvent(&e))
 	{
 		ImGui_ImplSDL2_ProcessEvent(&e);
-		switch(e.type)
+		switch (e.type)
 		{
-			case SDL_MOUSEWHEEL:
+		case SDL_MOUSEWHEEL:
 			mouseZ = e.wheel.y;
 			break;
 
-			case SDL_MOUSEMOTION:
+		case SDL_MOUSEMOTION:
 			mouseX = e.motion.x / SCREEN_SIZE;
 			mouseY = e.motion.y / SCREEN_SIZE;
 
@@ -154,29 +153,27 @@ bool ModuleInput::PreUpdate(float dt)
 			mouseYMotion = e.motion.yrel / SCREEN_SIZE;
 			break;
 
-			case SDL_DROPFILE:
-			{
-				std::string filePath = e.drop.file;
+		case SDL_DROPFILE:
+		{
+			std::string filePath = e.drop.file;
+			app->fs->ImportFromOutside(filePath, app->editor->GetCurrentDir());
+			SDL_free(&filePath);
+		}
+		break;
 
-				app->fs->ImportFromOutside(filePath, app->editor->GetCurrentDir());
-
-				SDL_free(&filePath);
-			}	
-			break;
-
-			case SDL_QUIT:
+		case SDL_QUIT:
 			quit = true;
 			break;
 
-			case SDL_WINDOWEVENT:
-			{
-				if(e.window.event == SDL_WINDOWEVENT_RESIZED)
-					app->ResizeRequest();
-			}
+		case SDL_WINDOWEVENT:
+		{
+			if (e.window.event == SDL_WINDOWEVENT_RESIZED)
+				app->ResizeRequest();
+		}
 		}
 	}
 
-	if(quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KeyState::KEY_UP)
+	if (quit == true || keyboard[SDL_SCANCODE_ESCAPE] == KeyState::KEY_UP)
 		return false;
 
 	return true;

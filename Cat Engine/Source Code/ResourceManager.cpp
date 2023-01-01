@@ -7,15 +7,15 @@
 #include "MeshImporter.h"
 #include "ModelImporter.h"
 
+#include "MathGeoLib/src/Algorithm/Random/LCG.h"
+
 #include "Texture.h"
 #include "Mesh.h"
 #include "Model.h"
 
 #include <stack>
+
 #include "Profiling.h"
-
-
-#include "MathGeoLib/src/Algorithm/Random/LCG.h"
 
 ResourceManager* ResourceManager::instance = nullptr;
 
@@ -33,6 +33,7 @@ void ResourceManager::ReleaseInstance()
 
 ResourceManager::ResourceManager()
 {
+
 }
 
 ResourceManager::~ResourceManager()
@@ -70,7 +71,6 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 		}
 	}
 
-
 	LCG random;
 	uint uid = random.IntFast();
 
@@ -92,7 +92,6 @@ uint ResourceManager::CreateResource(ResourceType type, std::string& assets, std
 		break;
 	}
 
-
 	if (resource != nullptr) map[uid] = resource;
 
 	return uid;
@@ -107,8 +106,10 @@ void ResourceManager::CreateResourceCreated(ResourceType type, uint uid, std::st
 		resource = std::make_shared<Texture>(uid, assets, library);
 		break;
 	case ResourceType::MESH:
+		resource = std::make_shared<Mesh>(uid, assets, library);
 		break;
 	case ResourceType::MODEL:
+		resource = std::make_shared<Model>(uid, assets, library);
 		break;
 	default:
 		break;
@@ -119,9 +120,14 @@ void ResourceManager::CreateResourceCreated(ResourceType type, uint uid, std::st
 
 std::shared_ptr<Resource> ResourceManager::LoadResource(uint uid)
 {
-	std::shared_ptr<Resource> res = map[uid];
-
-	if (res != nullptr) res->Load();
+	std::shared_ptr<Resource> res = nullptr;
+	std::map<uint, std::shared_ptr<Resource>>::iterator it;
+	it = map.find(uid);
+	if (it != map.end())
+	{
+		res = map[uid];
+		if (res != nullptr) res->Load();
+	}
 
 	return res;
 }
@@ -169,6 +175,7 @@ void ResourceManager::ImportResourcesFromLibrary()
 	while (!directories.empty())
 	{
 		std::string dir = directories.top();
+
 		std::vector<std::string> files;
 		app->fs->DiscoverFiles(dir.c_str(), files);
 
@@ -195,6 +202,7 @@ void ResourceManager::ImportResourcesFromLibrary()
 				}
 			}
 		}
+
 		directories.pop();
 	}
 }
@@ -292,6 +300,7 @@ Texture* ResourceManager::IsTextureLoaded(std::string path)
 		if (textures[i]->GetPath() == p)
 			return textures[i];
 	}
+
 	return nullptr;
 }
 
@@ -322,6 +331,7 @@ Mesh* ResourceManager::IsMeshLoaded(std::string path)
 		app->fs->GetFilenameWithoutExtension(p);
 		p = MESHES_FOLDER + p + ".dds";
 	}
+
 	for (int i = 0; i < meshes.size(); ++i)
 	{
 		if (meshes[i]->GetPath() == p)

@@ -1,6 +1,9 @@
 #include "Mesh.h"
-#include "MeshImporter.h"
 #include "Globals.h"
+
+#include "MeshImporter.h"
+#include "Application.h"
+#include "FileSystem.h"
 
 #include "glew/include/GL/glew.h"
 
@@ -8,6 +11,11 @@
 
 Mesh::Mesh(uint uid, std::string& assets, std::string& library) : vbo(nullptr), ebo(nullptr), tbo(0), Resource(uid, ResourceType::MESH, assets, library)
 {
+	std::string metaPath = MESHES_FOLDER + std::string("mesh_") + std::to_string(uid) + ".meta";
+	MeshImporter::CreateMetaMesh(metaPath, assets, uid);
+	name = assets;
+	app->fs->GetFilenameWithoutExtension(name);
+	name = name.substr(name.find_first_of("__") + 2, name.length());
 }
 
 Mesh::~Mesh()
@@ -41,6 +49,21 @@ void Mesh::Load()
 	}
 }
 
+void Mesh::UnLoad()
+{
+	if (!vertices.empty())
+	{
+		vertices.clear();
+		indices.clear();
+		normals.clear();
+		texCoords.clear();
+
+		glDeleteBuffers(1, &tbo);
+		RELEASE(vbo);
+		RELEASE(ebo);
+	}
+}
+
 void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float& colorLength)
 {
 	vbo->Bind();
@@ -51,6 +74,7 @@ void Mesh::Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, f
 
 	if (ebo != nullptr) ebo->Bind();
 
+	// Debug normals
 	if (verticesNormals)
 		ShowVertexNormals(colorNormal, colorLength);
 	else if (faceNormals)
@@ -87,7 +111,10 @@ void Mesh::ShowFaceNormals(float3& colorNormal, float& normalLength)
 {
 	glBegin(GL_LINES);
 	glColor3f(colorNormal.x / 255, colorNormal.y / 255, colorNormal.z / 255);
-	for (int i = 0; i < vertices.size(); i += 3)
+	int result = vertices.size() % 3;
+	int size = vertices.size();
+	if (result != 0) size -= result;
+	for (int i = 0; i < size; i += 3)
 	{
 		float3 line1 = -(vertices[i] - vertices[i + 1]);
 		float3 line2 = (vertices[i + 1] - vertices[i + 2]);

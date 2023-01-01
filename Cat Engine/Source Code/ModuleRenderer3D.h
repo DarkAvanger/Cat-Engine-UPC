@@ -1,18 +1,17 @@
 #pragma once
 #include "Module.h"
 
-#include "SDL.h"
-
 #include "Light.h"
 
 #include <vector>
 #include "Primitive.h"
+#include "SDL.h"
 
 #define MAX_LIGHTS 8
 
 typedef unsigned int GLuint;
-class Framebuffer;
 
+class Framebuffer;
 class ModuleRenderer3D : public Module
 {
 public:
@@ -48,6 +47,7 @@ public:
 	inline bool* GetBlending() { return &blending; }
 	inline bool* GetWireMode() { return &wireMode; }
 	inline bool* GetVsync() { return &vsync; }
+	inline bool* GetRayCast() { return &rayCast; }
 
 	void DrawCubeDirectMode();
 
@@ -70,4 +70,5 @@ public:
 	bool blending;
 	bool wireMode;
 	bool vsync;
+	bool rayCast;
 };

@@ -61,6 +61,7 @@ bool TransformComponent::Update(float dt)
 	if (changeTransform)
 	{
 		std::stack<GameObject*> stack;
+
 		UpdateTransform();
 
 		for (int i = 0; i < owner->GetChilds().size(); ++i)
@@ -88,10 +89,12 @@ bool TransformComponent::Update(float dt)
 
 void TransformComponent::OnEditor()
 {
-	ImGui::SetNextTreeNodeOpen(true);
 	if (ImGui::CollapsingHeader("Transform"))
 	{
 		ImGui::PushItemWidth(90);
+		//std::string test = std::to_string(position.x);
+		//char* pos = new char[test.length()];
+		//strcpy(pos, test.c_str());
 
 		ShowTransformationInfo();
 
@@ -165,10 +168,11 @@ void TransformComponent::UpdateTransform()
 void TransformComponent::UpdateChildTransform(GameObject* go)
 {
 	TransformComponent* transform = go->GetComponent<TransformComponent>();
-
+	GameObject* parent = go->GetParent();
+	TransformComponent* parentTrans = parent->GetComponent<TransformComponent>();
 	if (transform)
 	{
-		transform->globalMatrix = globalMatrix * transform->localMatrix;
+		transform->globalMatrix = parentTrans->GetGlobalTransform() * transform->localMatrix;
 	}
 }
 
@@ -176,10 +180,13 @@ void TransformComponent::SetAABB()
 {
 	std::vector<GameObject*> goList = owner->GetChilds();
 	owner->ClearAABB();
+	OBB childOBB;
 	for (int i = 0; i < goList.size(); ++i)
 	{
 		TransformComponent* tr = goList[i]->GetComponent<TransformComponent>();
 		tr->SetAABB();
+		childOBB = tr->owner->GetAABB();
+		owner->SetAABB(childOBB);
 	}
 	if (owner->GetComponent<MeshComponent>())
 	{
@@ -187,6 +194,7 @@ void TransformComponent::SetAABB()
 		newObb.Transform(globalMatrix);
 		owner->SetAABB(newObb);
 	}
+	app->scene->RecalculateAABB(owner);
 	app->scene->ResetQuadtree();
 }
 

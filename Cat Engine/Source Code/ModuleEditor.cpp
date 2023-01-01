@@ -51,8 +51,8 @@ bool ModuleEditor::Update(float dt)
 		else if (app->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_UP) currentOperation = ImGuizmo::OPERATION::SCALE;
 	}
 
+
 	ImGui::DockSpaceOverViewport();
-	
 	ret = mainMenuBar.Update(dt);
 
 	if (app->input->GetKey(SDL_SCANCODE_LALT) == KeyState::KEY_REPEAT &&
@@ -60,10 +60,29 @@ bool ModuleEditor::Update(float dt)
 	{
 		app->window->SetFullscreen();
 	}
+
+	if (app->input->GetKey(SDL_SCANCODE_DELETE) == KeyState::KEY_UP)
+	{
+		if (selected && selected->GetComponent<CameraComponent>() == nullptr)
+		{
+			for (std::vector<GameObject*>::iterator i = selectedParent->GetChilds().begin(); i != selectedParent->GetChilds().end(); ++i)
+			{
+				if (selected == (*i))
+				{
+					selectedParent->GetChilds().erase(i);
+					if (selected == app->scene->GetRecalculateGO()) app->scene->RecalculateAABB(nullptr);
+					RELEASE(selected);
+					app->scene->ResetQuadtree();
+					break;
+				}
+			}
+		}
+	}
+
 	if (app->input->GetKey(SDL_SCANCODE_LCTRL) == KeyState::KEY_REPEAT &&
 		app->input->GetKey(SDL_SCANCODE_D) == KeyState::KEY_DOWN)
 	{
-		//if (selected) app->scene->DuplicateGO(selected, selectedParent);
+		if (selected) app->scene->DuplicateGO(selected, selectedParent);
 	}
 
 	return ret;
@@ -72,7 +91,7 @@ bool ModuleEditor::Update(float dt)
 bool ModuleEditor::Draw(Framebuffer* editorBuffer, Framebuffer* gameBuffer)
 {
 	RG_PROFILING_FUNCTION("Drawing Module Editor");
-	
+
 	viewport->Draw(editorBuffer, gameBuffer, currentOperation);
 	gameView->Draw(gameBuffer);
 	ImGui::EndFrame();

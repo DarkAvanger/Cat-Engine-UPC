@@ -14,7 +14,7 @@ public:
 
 	virtual bool Init(JsonParsing& node)
 	{
-		return true; 
+		return true;
 	}
 
 	virtual bool Start()
@@ -37,9 +37,9 @@ public:
 		return true;
 	}
 
-	virtual bool CleanUp() 
-	{ 
-		return true; 
+	virtual bool CleanUp()
+	{
+		return true;
 	}
 
 	virtual bool LoadConfig(JsonParsing& node)

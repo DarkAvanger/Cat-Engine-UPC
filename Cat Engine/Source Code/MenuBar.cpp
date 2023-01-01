@@ -26,7 +26,7 @@ MenuBar::MenuBar() : Menu(true), buttonPlay(nullptr), buttonPause(nullptr), butt
 	menus.emplace_back(new MenuAbout());
 	menus.emplace_back(new MenuInspector());
 	menus.emplace_back(new MenuHierarchy());
-	menus.emplace_back(new ContentBrowserMenu());
+	menus.emplace_back(new MenuContentBrowser());
 }
 
 MenuBar::~MenuBar()
@@ -268,7 +268,7 @@ MenuConsole* MenuBar::GetConsole()
 
 std::string& MenuBar::GetCurrentDir()
 {
-	ContentBrowserMenu* content = (ContentBrowserMenu*)menus[(int)Menus::CONTENT_BROWSER];
+	MenuContentBrowser* content = (MenuContentBrowser*)menus[(int)Menus::CONTENT_BROWSER];
 
 	return content->GetCurrentDir();
 }

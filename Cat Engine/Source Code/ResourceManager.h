@@ -1,17 +1,15 @@
 #pragma once
-#include "Globals.h"
 
+#include "Globals.h"
 #include <vector>
 #include <string>
-
 #include <map>
 #include <memory>
-
-enum class ResourceType;
 
 class Texture;
 class Mesh;
 class Resource;
+enum class ResourceType;
 
 class ResourceManager
 {
@@ -23,15 +21,15 @@ public:
 	void CheckForNewResources();
 
 	uint CreateResource(ResourceType type, std::string& assets, std::string& library);
+	void CreateResourceCreated(ResourceType type, uint uid, std::string& assets, std::string& library);
 
 	std::shared_ptr<Resource> LoadResource(uint uid);
 	std::shared_ptr<Resource> LoadResource(std::string& path);
-	void CreateResourceCreated(ResourceType type, uint uid, std::string& assets, std::string& library);
 
 	bool CheckResource(std::string& path);
 	void ImportResourcesFromLibrary();
 	void ImportAllResources();
-	
+
 	std::shared_ptr<Resource> GetResource(uint uid);
 	std::shared_ptr<Resource> GetResource(std::string path);
 

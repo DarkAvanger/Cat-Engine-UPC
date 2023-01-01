@@ -7,6 +7,7 @@
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "Framebuffer.h"
+
 #include "glew/include/GL/glew.h"
 
 #include "Imgui/imgui.h"
@@ -19,7 +20,7 @@
 
 #include "Profiling.h"
 
-ModuleRenderer3D::ModuleRenderer3D(bool startEnabled) : Module(startEnabled), mainCameraFbo(nullptr)
+ModuleRenderer3D::ModuleRenderer3D(bool startEnabled) : Module(startEnabled), mainCameraFbo(nullptr), rayCast(true)
 {
 	name = "Renderer";
 	context = NULL;
@@ -48,16 +49,15 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 {
 	DEBUG_LOG("Creating 3D Renderer context");
 	bool ret = true;
-	
-	//Create context
+
 	context = SDL_GL_CreateContext(app->window->window);
-	if(context == NULL)
+	if (context == NULL)
 	{
 		DEBUG_LOG("OpenGL context could not be created! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
-	
-	if(ret == true)
+
+	if (ret == true)
 	{
 		GLenum err = glewInit();
 		if (GLEW_OK != err)
@@ -69,9 +69,9 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 
 		ilutRenderer(ILUT_OPENGL);
 
-		//Use Vsync
+
 		vsync = node.GetJsonBool("vsync");
-		if(SDL_GL_SetSwapInterval(vsync) < 0)
+		if (SDL_GL_SetSwapInterval(vsync) < 0)
 			DEBUG_LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 
 		IMGUI_CHECKVERSION();
@@ -80,6 +80,7 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 		io.IniFilename = "Settings/imgui.ini";
 		(void)io;
 		io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 
 		ImGui::DarkTheme();
 
@@ -91,57 +92,55 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 		DEBUG_LOG("OpenGL version supported %s", glGetString(GL_VERSION));
 		DEBUG_LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-		//Initialize Projection Matrix
+
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 
-		//Check for error
+
 		GLenum error = glGetError();
-		if(error != GL_NO_ERROR)
+		if (error != GL_NO_ERROR)
 		{
 			ret = false;
 		}
 
-		//Initialize Modelview Matrix
+
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
 
-		//Check for error
 		error = glGetError();
-		if(error != GL_NO_ERROR)
+		if (error != GL_NO_ERROR)
 		{
 			ret = false;
 		}
-		
+
 		glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 		glClearDepth(1.0f);
-		
+
 		//Initialize clear color
 		glClearColor(0.f, 0.f, 0.f, 1.f);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		
-		//Check for error
+
 		error = glGetError();
-		if(error != GL_NO_ERROR)
+		if (error != GL_NO_ERROR)
 		{
 			ret = false;
 		}
-		
-		GLfloat lightModelAmbient[] = {0.0f, 0.0f, 0.0f, 1.0f};
+
+		GLfloat lightModelAmbient[] = { 0.0f, 0.0f, 0.0f, 1.0f };
 		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, lightModelAmbient);
-		
+
 		lights[0].ref = GL_LIGHT0;
 		lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
 		lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
 		lights[0].SetPos(0.0f, 0.0f, 2.5f);
 		lights[0].Init();
-		
-		GLfloat materialAmbient[] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+		GLfloat materialAmbient[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, materialAmbient);
 
-		GLfloat materialDiffuse[] = {1.0f, 1.0f, 1.0f, 1.0f};
+		GLfloat materialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, materialDiffuse);
-		
+
 		depthTest = node.GetJsonBool("depth test");
 		cullFace = node.GetJsonBool("cull face");
 		lighting = node.GetJsonBool("lighting");
@@ -152,7 +151,7 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 		wireMode = node.GetJsonBool("wire mode");
 
 		lights[0].Active(true);
-		
+
 		if (depthTest) SetDepthTest();
 		if (cullFace) SetCullFace();
 		if (lighting) SetLighting();
@@ -161,35 +160,37 @@ bool ModuleRenderer3D::Init(JsonParsing& node)
 		if (stencil) SetStencil();
 		if (blending) SetBlending();
 		if (wireMode) SetWireMode();
+
 	}
 
 	int w = *app->window->GetWindowWidth();
 	int h = *app->window->GetWindowHeight();
 	OnResize(w, h);
 
+
 	fbo = new Framebuffer(w, h, 1);
 	fbo->Unbind();
 	mainCameraFbo = new Framebuffer(w, h, 0);
 	mainCameraFbo->Unbind();
+
 
 	grid = new PGrid(200, 200);
 
 	return ret;
 }
 
-// PreUpdate: clear buffer
 bool ModuleRenderer3D::PreUpdate(float dt)
 {
-
 	return true;
 }
 
-// PostUpdate present buffer to screen
+
 bool ModuleRenderer3D::PostUpdate()
 {
 	RG_PROFILING_FUNCTION("Rendering");
 
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+
 	fbo->Bind();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
@@ -199,18 +200,31 @@ bool ModuleRenderer3D::PostUpdate()
 	glLoadMatrixf(app->camera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
+	std::set<GameObject*> objects;
+	app->scene->GetQuadtree().Intersect(objects, app->scene->mainCamera);
 
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilMask(0xFF);
-	app->scene->Draw();
 
-	if (stencil)
+	if (app->camera->visualizeFrustum)
+	{
+		for (std::set<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
+		{
+			(*it)->Draw();
+		}
+	}
+	else
+	{
+		app->scene->Draw();
+	}
+
+	if (stencil && app->editor->GetGO() && app->editor->GetGO()->GetActive())
 	{
 		glColor3f(0.25f, 0.87f, 0.81f);
 		glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 		glStencilMask(0x00);
 		glDisable(GL_DEPTH_TEST);
-		if (app->editor->GetGO()) app->editor->GetGO()->DrawOutline();
+		app->editor->GetGO()->DrawOutline();
 
 		glStencilMask(0xFF);
 		glStencilFunc(GL_ALWAYS, 0, 0xFF);
@@ -218,18 +232,19 @@ bool ModuleRenderer3D::PostUpdate()
 		glColor3f(1.0f, 1.0f, 1.0f);
 	}
 
-	math::LineSegment line = app->camera->rayCastToDraw.ToLineSegment(50.0f);
-	glLineWidth(2.5f);
+	if (rayCast)
+	{
+		math::LineSegment line = app->camera->rayCastToDraw.ToLineSegment(50.0f);
+		glLineWidth(2.5f);
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.64f, 0.0f);
+		glVertex3f(line.a.x, line.a.y, line.a.z);
+		glVertex3f(line.b.x, line.b.y, line.b.z);
+		glColor3f(1.0f, 1.0f, 1.0f);
 
-	glBegin(GL_LINES);
-	glColor3f(1.0f, 0.64f, 0.0f);
-	glVertex3f(line.a.x, line.a.y, line.a.z);
-	glVertex3f(line.b.x, line.b.y, line.b.z);
-	glColor3f(1.0f, 1.0f, 1.0f);
-
-
-	glEnd();
-	glLineWidth(1.0f);
+		glEnd();
+		glLineWidth(1.0f);
+	}
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -248,8 +263,6 @@ bool ModuleRenderer3D::PostUpdate()
 	glLoadMatrixf(app->scene->mainCamera->matrixViewFrustum.Transposed().ptr());
 
 	grid->Draw();
-	std::set<GameObject*> objects;
-	app->scene->GetQuadtree().Intersect(objects, app->scene->mainCamera);
 
 	for (std::set<GameObject*>::iterator it = objects.begin(); it != objects.end(); ++it)
 	{
@@ -265,7 +278,6 @@ bool ModuleRenderer3D::PostUpdate()
 	mainCameraFbo->Unbind();
 
 	app->editor->Draw(fbo, mainCameraFbo);
-
 
 	SDL_GL_SwapWindow(app->window->window);
 

@@ -20,7 +20,6 @@ enum class GameState
 	PLAYING,
 	PAUSE
 };
-
 class CameraComponent;
 
 class ModuleScene : public Module
@@ -36,10 +35,12 @@ public:
 	bool Draw();
 	bool CleanUp() override;
 
+	void NewScene();
+
 	GameObject* CreateGameObject(GameObject* parent, bool createTransform = true);
-	inline std::vector<GameObject*> GetGameObjectsList() const 
-	{ 
-		return root->GetChilds(); 
+	inline std::vector<GameObject*> GetGameObjectsList() const
+	{
+		return root->GetChilds();
 	}
 
 	inline GameObject* GetRoot() const { return root; }
@@ -62,22 +63,32 @@ public:
 	bool LoadScene(const char* name);
 	bool SaveScene(const char* name);
 
+	inline void RecalculateAABB(GameObject* go) { goToRecalculate = go; }
+
 	void DuplicateGO(GameObject* go, GameObject* parent);
 
+	void ImportPrimitives();
+
 	inline void ResetQuadtree() { resetQuadtree = true; }
+
+	inline const std::string& SceneDirectory() const { return sceneDir; }
+
+	inline const GameObject* GetRecalculateGO() const { return goToRecalculate; }
 
 	Quadtree& GetQuadtree() { return qTree; }
 	void SetGameDeltaTime(float deltaTime) { gameTimer.SetDesiredDeltaTime(deltaTime); }
 
 	CameraComponent* mainCamera;
-
 private:
 	GameObject* root;
-
 	Quadtree qTree;
 	GameState gameState;
 	bool frameSkip;
+
 	bool resetQuadtree;
 
 	GameTimer gameTimer;
+	GameObject* goToRecalculate;
+
+	std::string sceneDir;
 };

@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Resource.h"
+
 #include <vector>
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float2.h"
@@ -16,6 +18,8 @@ public:
 	~Mesh();
 
 	void Load() override;
+	void UnLoad() override;
+
 	void Draw(bool& verticesNormals, bool& faceNormals, float3& colorNormal, float& colorLength);
 
 	void ShowVertexNormals(float3& colorNormal, float& normalLength);
@@ -29,7 +33,6 @@ public:
 	inline const std::vector<unsigned int>& GetIndicesVector() const { return indices; }
 
 	void Reimport(ModelParameters& data);
-
 private:
 	std::vector<float3> vertices;
 	std::vector<unsigned int> indices;

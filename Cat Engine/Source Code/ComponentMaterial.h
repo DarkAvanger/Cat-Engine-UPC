@@ -31,7 +31,5 @@ private:
 	bool checker;
 	bool showTexMenu;
 
-	Texture* checkerImage;
-
 	std::shared_ptr<Texture> diff;
 };

@@ -164,21 +164,6 @@
     <ClCompile Include="Source Code\ComponentCamera.cpp">
       <Filter>Sources\GameObject\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.cpp">
-      <Filter>Externals\WWise</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.cpp">
-      <Filter>Externals\WWise</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.cpp">
-      <Filter>Externals\WWise</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.cpp">
-      <Filter>Externals\WWise</Filter>
-    </ClCompile>
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.cpp">
-      <Filter>Externals\WWise</Filter>
-    </ClCompile>
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.cpp">
       <Filter>Externals\WWise</Filter>
     </ClCompile>
@@ -393,34 +378,13 @@
     <ClInclude Include="Source Code\ComponentCamera.h">
       <Filter>Sources\GameObject\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileHelpersBase.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h">
-      <Filter>Externals\WWise</Filter>
-    </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.h">
       <Filter>Externals\WWise</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.h">
+      <Filter>Externals\WWise</Filter>
+    </ClInclude>
+    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h">
       <Filter>Externals\WWise</Filter>
     </ClInclude>
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFilePackageLowLevelIOBlocking.h">
@@ -486,12 +450,7 @@
       <UniqueIdentifier>{48bcd55c-86bf-4760-8784-cd660afe0d88}</UniqueIdentifier>
     </Filter>
     <Filter Include="Externals\WWise">
-      <UniqueIdentifier>{e345be88-5408-4626-ac79-f0c010b3d05a}</UniqueIdentifier>
+      <UniqueIdentifier>{1ea7072a-f9d4-44ec-b94b-47496a039593}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.inl">
-      <Filter>Externals\WWise</Filter>
-    </None>
   </ItemGroup>
 </Project>

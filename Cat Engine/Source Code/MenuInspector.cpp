@@ -1,10 +1,10 @@
-#include "MenuInspector.h" 
+#include "MenuInspector.h"
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
-#include "Resource.h"
 
 #include "GameObject.h"
+#include "Resource.h"
 
 #include "Profiling.h"
 
@@ -23,12 +23,17 @@ bool MenuInspector::Update(float dt)
 	{
 		if (app->editor->GetGO())
 		{
-			app->editor->GetGO()->DrawEditor();
+			if (ImGui::BeginChild("Selected GO"))
+			{
+				app->editor->GetGO()->DrawEditor();
+				ImGui::EndChild();
+			}
 		}
 		else if (app->editor->GetResource())
 		{
 			app->editor->GetResource()->DrawOnEditor();
 		}
+
 	}
 	ImGui::End();
 

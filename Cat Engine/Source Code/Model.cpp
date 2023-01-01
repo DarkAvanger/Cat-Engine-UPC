@@ -1,7 +1,8 @@
 #include "Model.h"
-#include "Globals.h"
 
+#include "Globals.h"
 #include "ModelImporter.h"
+
 #include "ResourceManager.h"
 #include "Mesh.h"
 
@@ -28,10 +29,15 @@ void Model::DrawOnEditor()
 {
 	if (ImGui::CollapsingHeader("Model Import Settings"))
 	{
-		ImGui::Checkbox("Optimize Mesh", &parameters.optimizedMesh);
-		ImGui::Checkbox("Has Normals", &parameters.normals);
+		ImGui::Checkbox("Debone", &parameters.debone);
 		ImGui::Checkbox("Flipped UVs", &parameters.flippedUvs);
-		ImGui::Checkbox("Triangulate", &parameters.triangulated);
+		ImGui::Checkbox("Generate Smooth Normals", &parameters.genSmoothNormals);
+		ImGui::Checkbox("Generate UV Coordinates", &parameters.genUVCoords);
+		ImGui::Checkbox("Has Normals", &parameters.normals);
+		ImGui::Checkbox("Optimize Mesh", &parameters.optimizedMesh);
+		ImGui::Checkbox("Optimize Graph", &parameters.optimizeGraph);
+		ImGui::Checkbox("Remove Redundant Materials", &parameters.removeRedundantMaterials);
+		ImGui::Checkbox("Split Large Meshes", &parameters.splitLargeMeshes);
 
 		if (ImGui::Button("Apply Changes")) Reimport();
 	}

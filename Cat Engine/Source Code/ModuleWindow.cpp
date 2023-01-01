@@ -88,7 +88,6 @@ bool ModuleWindow::Init(JsonParsing& node)
 		}
 		else
 		{
-			//Get window surface
 			screenSurface = SDL_GetWindowSurface(window);
 			SDL_SetWindowBrightness(window, brightness);
 			SDL_DisplayMode* display = new SDL_DisplayMode();
@@ -106,13 +105,11 @@ bool ModuleWindow::CleanUp()
 {
 	DEBUG_LOG("Destroying SDL window and quitting all SDL systems");
 
-	//Destroy window
 	if(window != NULL)
 	{
 		SDL_DestroyWindow(window);
 	}
 
-	//Quit SDL subsystems
 	SDL_Quit();
 	return true;
 }

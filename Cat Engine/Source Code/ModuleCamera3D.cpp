@@ -24,6 +24,8 @@ ModuleCamera3D::ModuleCamera3D(bool startEnabled) : horizontalFov(DegToRad(70.0f
 	CalculateVerticalFov(horizontalFov, SCREEN_WIDTH, SCREEN_HEIGHT);
 	cameraFrustum.SetPerspective(horizontalFov, verticalFov);
 	cameraFrustum.SetFrame(float3(0.0f, 1.5f, 5.0f), float3(0.0f, 0.0f, -1.0f), float3(0.0f, 1.0f, 0.0f));
+
+	visualizeFrustum = false;
 }
 
 ModuleCamera3D::~ModuleCamera3D()
@@ -68,6 +70,11 @@ void ModuleCamera3D::UpdateFov()
 	cameraFrustum.SetVerticalFovAndAspectRatio(verticalFov, (currentScreenWidth / currentScreenHeight));
 }
 
+void ModuleCamera3D::SetPlanes()
+{
+	cameraFrustum.SetViewPlaneDistances(nearPlane, farPlane);
+}
+
 bool ModuleCamera3D::LoadConfig(JsonParsing& node)
 {
 
@@ -97,7 +104,7 @@ bool ModuleCamera3D::Update(float dt)
 		float dY = -app->input->GetMouseYMotion();
 
 		// Inputs for the camera
-		if (app->input->GetKey(SDL_SCANCODE_R) == KeyState::KEY_UP)
+		if (app->input->GetKey(SDL_SCANCODE_T) == KeyState::KEY_UP)
 		{
 			newUp = float3::unitY;
 			newFront = -float3::unitZ;
@@ -118,7 +125,7 @@ bool ModuleCamera3D::Update(float dt)
 			if (dY != 0)
 			{
 				Quat rotateVertical;
-				rotateVertical = rotateVertical.RotateAxisAngle(cameraFrustum.WorldRight().Normalized(), -dY * dt);
+				rotateVertical = rotateVertical.RotateAxisAngle(cameraFrustum.WorldRight().Normalized(), dY * dt);
 				newFront = rotateVertical * newFront;
 				newUp = rotateVertical * newUp;
 				newFront.Normalize();
@@ -152,6 +159,7 @@ bool ModuleCamera3D::Update(float dt)
 				Quat rotateOrbitY;
 				rotateOrbitY = rotateOrbitY.RotateY(-dX * dt);
 				rotateOrbitY.Normalize();
+
 
 				Quat rotateOrbitX;
 				rotateOrbitX = rotateOrbitX.RotateAxisAngle(cameraFrustum.WorldRight().Normalized(), -dY * dt);
@@ -188,8 +196,9 @@ bool ModuleCamera3D::Update(float dt)
 			}
 		}
 		float4 size = app->editor->GetViewport()->GetBounds();
+
 		float2 pos(app->input->GetMouseX(), app->input->GetMouseY());
-		if (pos.x > size.x && pos.x < size.x + size.z && pos.y > size.y && pos.y < size.y + size.w)
+		if (app->editor->GetViewport()->GetState() && pos.x > size.x && pos.x < size.x + size.z && pos.y > size.y && pos.y < size.y + size.w)
 		{
 			if (app->input->GetMouseZ() == 1) newPos += newFront * speed;
 			if (app->input->GetMouseZ() == -1) newPos -= newFront * speed;
@@ -219,7 +228,6 @@ bool ModuleCamera3D::Update(float dt)
 					TransformComponent* transform = (*it)->GetComponent<TransformComponent>();
 					if ((*it)->GetAABB().IsFinite() && transform)
 					{
-
 						picking = prevLine;
 						hit = picking.Intersects((*it)->GetAABB());
 
@@ -234,7 +242,11 @@ bool ModuleCamera3D::Update(float dt)
 								float distance = 0.0f;
 								float closestDistance = 0.0f;
 								math::vec hitPoint = { 0.0f, 0.0f, 0.0f };
-								int size = meshComponent->GetMesh()->GetIndicesSize();
+								int size = 0;
+								if (meshComponent->GetMesh())
+								{
+									size = meshComponent->GetMesh()->GetIndicesSize();
+								}
 
 								int hits = 0;
 								picking.Transform(transform->GetGlobalTransform().Inverted());

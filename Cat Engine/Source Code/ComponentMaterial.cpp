@@ -1,34 +1,34 @@
 #include "ComponentMaterial.h"
+
 #include "Application.h"
 #include "GameObject.h"
-#include "Imgui/imgui.h"
+#include "ResourceManager.h"
+#include "Texture.h"
 
 #include "FileSystem.h"
 
-#include "ResourceManager.h"
-#include "Texture.h"
+#include "Imgui/imgui.h"
 
 #include "Profiling.h"
 
 MaterialComponent::MaterialComponent(GameObject* own) : diff(nullptr), showTexMenu(false)
 {
 	type = ComponentType::MATERIAL;
-	checkerImage = nullptr;
 	owner = own;
 	checker = false;
 
-	//checkerImage = std::static_pointer_cast<Texture>(ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Checker.png")));
 	active = true;
+}
+
+MaterialComponent::MaterialComponent(MaterialComponent* mat) : showTexMenu(false)
+{
+	checker = mat->checker;
+	diff = mat->diff;
 }
 
 MaterialComponent::~MaterialComponent()
 {
-}
-
-MaterialComponent::MaterialComponent(MaterialComponent* mat) : showTexMenu(false), checkerImage(nullptr)
-{
-	checker = mat->checker;
-	diff = mat->diff;
+	if (diff.use_count() - 1 == 1) diff->UnLoad();
 }
 
 void MaterialComponent::OnEditor()
@@ -38,27 +38,11 @@ void MaterialComponent::OnEditor()
 	if (ImGui::CollapsingHeader("Material"))
 	{
 		Checkbox(this, "Active", active);
-		if (checker)
+		if (diff != nullptr)
 		{
-			if (ImGui::Button(checker ? "Checker" : ""))
-			{
-				showTexMenu = true;
-			}
-			ImGui::Text("Path: ");
+			ImGui::Text("Select texture: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%s", checkerImage->GetAssetsPath().c_str());
-			ImGui::Text("Width: ");
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", checkerImage->GetWidth());
-			ImGui::Text("Height: ");
-			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", checkerImage->GetHeight());
-			ImGui::Checkbox("Checker Image", &checker);
-			ImGui::Image((ImTextureID)checkerImage->GetId(), ImVec2(128, 128));
-		}
-		else if (diff != nullptr)
-		{
-			if (ImGui::Button(diff ? "Diffuse" : ""))
+			if (ImGui::Button(diff ? diff->GetName().c_str() : ""))
 			{
 				showTexMenu = true;
 			}
@@ -73,13 +57,14 @@ void MaterialComponent::OnEditor()
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diff->GetHeight());
 			ImGui::Text("Reference Count: ");
 			ImGui::SameLine();
-			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", diff.use_count());
-			ImGui::Checkbox("Checker Image", &checker);
+			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d (Warning: There's already one instance of it on the resources map)", diff.use_count());
 			ImGui::Image((ImTextureID)diff->GetId(), ImVec2(128, 128));
 		}
 		else
 		{
-			if(ImGui::Button(""))
+			ImGui::Text("Select texture: ");
+			ImGui::SameLine();
+			if (ImGui::Button("No Texture"))
 			{
 				showTexMenu = true;
 			}
@@ -90,13 +75,22 @@ void MaterialComponent::OnEditor()
 			ImGui::Text("Height: ");
 			ImGui::SameLine();
 			ImGui::TextColored(ImVec4(1, 1, 0, 1), "%d", 0);
-			ImGui::Checkbox("Checker Image", &checker);
 		}
 		ImGui::Separator();
 	}
+
 	if (showTexMenu)
 	{
 		ImGui::Begin("Textures", &showTexMenu);
+		ImVec2 winPos = ImGui::GetWindowPos();
+		ImVec2 size = ImGui::GetWindowSize();
+		ImVec2 mouse = ImGui::GetIO().MousePos;
+		if (!(mouse.x < winPos.x + size.x && mouse.x > winPos.x &&
+			mouse.y < winPos.y + size.y && mouse.y > winPos.y))
+		{
+			if (ImGui::GetIO().MouseClicked[0]) showTexMenu = false;
+		}
+
 		std::vector<std::string> files;
 		app->fs->DiscoverFiles("Library/Textures/", files);
 		for (std::vector<std::string>::iterator it = files.begin(); it != files.end(); ++it)
@@ -106,9 +100,11 @@ void MaterialComponent::OnEditor()
 				app->fs->GetFilenameWithoutExtension(*it);
 				*it = (*it).substr((*it).find_last_of("_") + 1, (*it).length());
 				uint uid = std::stoll(*it);
-				std::shared_ptr<Resource> res = ResourceManager::GetInstance()->LoadResource(uid);
-				if (ImGui::Button(res->GetName().c_str(), { ImGui::GetWindowWidth() - 30, 20 }))
+				std::shared_ptr<Resource> res = ResourceManager::GetInstance()->GetResource(uid);
+				if (ImGui::Selectable(res->GetName().c_str()))
 				{
+					res->Load();
+					if (diff.use_count() - 1 == 1) diff->UnLoad();
 					SetTexture(res);
 				}
 			}
@@ -143,30 +139,15 @@ bool MaterialComponent::OnSave(JsonParsing& node, JSON_Array* array)
 
 void MaterialComponent::BindTexture()
 {
-	if (checker)
-	{
-		if (checkerImage) checkerImage->Bind();
-	}
-	else
-	{
-		if (diff) diff->Bind();
-	}
+	if (diff) diff->Bind();
 }
 
 void MaterialComponent::UnbindTexture()
 {
-	if (checker)
-	{
-		if (checkerImage) checkerImage->Unbind();
-	}
-	else
-	{
-		if (diff) diff->Unbind();
-	}
+	if (diff) diff->Unbind();
 }
 
 void MaterialComponent::SetTexture(std::shared_ptr<Resource> tex)
 {
 	diff = std::static_pointer_cast<Texture>(tex);
 }
-

@@ -126,6 +126,7 @@ void TextureImporter::LoadTexture(const char* path, unsigned int& id, int& width
 	uint uuid = metaFile.GetJsonNumber("Uuid");
 
 	char* buffer = nullptr;
+
 	unsigned int size = app->fs->Load(path, &buffer);
 
 	if (size > 0)
@@ -175,23 +176,20 @@ void TextureImporter::CreateMetaTexture(std::string& path, TextureParameters& da
 	metaTexture.SetNewJsonNumber(metaTexture.ValueToObject(metaTexture.GetRootValue()), "Noise", data.noise);
 	metaTexture.SetNewJsonNumber(metaTexture.ValueToObject(metaTexture.GetRootValue()), "Pixelization", data.pixelization);
 
-
 	metaTexture.SetNewJsonBool(metaTexture.ValueToObject(metaTexture.GetRootValue()), "MipMap", false);
 	metaTexture.SetNewJsonNumber(metaTexture.ValueToObject(metaTexture.GetRootValue()), "Uuid", uid);
 	metaTexture.SetNewJsonString(metaTexture.ValueToObject(metaTexture.GetRootValue()), "Assets Path", assets.c_str());
-
 
 	char* buffer = nullptr;
 	size_t size = metaTexture.Save(&buffer);
 
 	app->fs->Save(path.c_str(), buffer, size);
+
 	RELEASE_ARRAY(buffer);
 }
 
 void TextureImporter::SetIluParameters(TextureParameters& data)
 {
-
-
 	if (data.alienify) iluAlienify();
 	if (data.blurAvg != 0) iluBlurAvg(data.blurAvg);
 	if (data.blurGaussian != 0) iluBlurAvg(data.blurGaussian);

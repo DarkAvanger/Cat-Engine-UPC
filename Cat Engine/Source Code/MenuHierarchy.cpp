@@ -1,7 +1,7 @@
 #include "MenuHierarchy.h"
 
-#include "Globals.h"
 #include "Application.h"
+#include "Globals.h"
 #include "ModuleEditor.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
@@ -20,11 +20,12 @@ MenuHierarchy::~MenuHierarchy()
 
 bool MenuHierarchy::Update(float dt)
 {
-	ImGui::Begin("Hierarchy", &active);
+	ImGui::Begin("Hierarchy", &active, ImGuiWindowFlags_NoCollapse);
 	if (ImGui::Button("+"))
 	{
 		createGameObject = true;
 	}
+
 	int size = app->scene->GetGameObjectsList().size();
 	GameObject* root = app->scene->GetRoot();
 	GameObject* selected = app->editor->GetGO();
@@ -84,14 +85,19 @@ bool MenuHierarchy::Update(float dt)
 			}
 			else if (ImGui::Button("Delete", ImVec2(100.0f, 30.0f)))
 			{
-				for (std::vector<GameObject*>::iterator i = selectedParent->GetChilds().begin(); i != selectedParent->GetChilds().end(); ++i)
+
+				if (selected && selected->GetComponent<CameraComponent>() == nullptr)
 				{
-					if (selected == (*i))
+					for (std::vector<GameObject*>::iterator i = selectedParent->GetChilds().begin(); i != selectedParent->GetChilds().end(); ++i)
 					{
-						selectedParent->GetChilds().erase(i);
-						RELEASE(selected);
-						app->scene->ResetQuadtree();
-						break;
+						if (selected == (*i))
+						{
+							selectedParent->GetChilds().erase(i);
+							if (selected == app->scene->GetRecalculateGO()) app->scene->RecalculateAABB(nullptr);
+							RELEASE(selected);
+							app->scene->ResetQuadtree();
+							break;
+						}
 					}
 				}
 				app->editor->SetGO(nullptr);
@@ -99,6 +105,8 @@ bool MenuHierarchy::Update(float dt)
 			}
 			else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
 			{
+				/*app->editor->SetSelected(nullptr);
+				app->editor->SetSelectedParent(nullptr);*/
 				gameObjectOptions = false;
 			}
 			ImGui::EndPopup();
@@ -109,31 +117,31 @@ bool MenuHierarchy::Update(float dt)
 		ImGui::OpenPopup("Create GameObject");
 		if (ImGui::BeginPopup("Create GameObject"))
 		{
-			if (ImGui::Button("Create Empty Object"))
+			if (ImGui::Selectable("Create Empty Object"))
 			{
 				if (selected != nullptr) app->scene->CreateGameObject(selected);
 				else app->scene->CreateGameObject(nullptr);
 				createGameObject = false;
 			}
-			else if (ImGui::Button("Create Cube"))
+			else if (ImGui::Selectable("Create Cube"))
 			{
 				if (selected != nullptr) app->scene->Create3DObject(Object3D::CUBE, selected);
 				else app->scene->Create3DObject(Object3D::CUBE, nullptr);
 				createGameObject = false;
 			}
-			else if (ImGui::Button("Create Pyramide"))
+			else if (ImGui::Selectable("Create Pyramide"))
 			{
 				if (selected != nullptr) app->scene->Create3DObject(Object3D::PYRAMIDE, selected);
 				else app->scene->Create3DObject(Object3D::PYRAMIDE, nullptr);
 				createGameObject = false;
 			}
-			else if (ImGui::Button("Create Sphere"))
+			else if (ImGui::Selectable("Create Sphere"))
 			{
 				if (selected != nullptr) app->scene->Create3DObject(Object3D::SPHERE, selected);
 				else app->scene->Create3DObject(Object3D::SPHERE, nullptr);
 				createGameObject = false;
 			}
-			else if (ImGui::Button("Create Cylinder"))
+			else if (ImGui::Selectable("Create Cylinder"))
 			{
 				if (selected != nullptr) app->scene->Create3DObject(Object3D::CYLINDER, selected);
 				else app->scene->Create3DObject(Object3D::CYLINDER, nullptr);
@@ -154,6 +162,7 @@ bool MenuHierarchy::Update(float dt)
 
 void MenuHierarchy::ShowChildren(GameObject* parent)
 {
+
 	GameObject* selected = app->editor->GetGO();
 	for (int i = 0; i < parent->GetChilds().size(); ++i)
 	{
@@ -193,7 +202,6 @@ void MenuHierarchy::ShowChildren(GameObject* parent)
 				gameObjectOptions = true;
 			}
 
-
 			if (opened)
 			{
 				ShowChildren(obj);
@@ -202,9 +210,8 @@ void MenuHierarchy::ShowChildren(GameObject* parent)
 
 			if (!ImGui::IsAnyItemHovered() && (ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1]))
 			{
-					
-			}
 
+			}
 		}
 		ImGui::PopID();
 	}

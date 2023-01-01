@@ -15,41 +15,38 @@
 
 #include "Profiling.h"
 
-ContentBrowserMenu::ContentBrowserMenu() : Menu(true)
+MenuContentBrowser::MenuContentBrowser() : sceneIcon(nullptr), dirIcon(nullptr), modelIcon(nullptr), picIcon(nullptr), Menu(true)
 {
 	mainDirectory = "Assets/";
 	currentDirectory = mainDirectory;
-
-	dirIcon = nullptr;
 }
 
-ContentBrowserMenu::~ContentBrowserMenu()
+MenuContentBrowser::~MenuContentBrowser()
 {
 	RELEASE(dirIcon);
 	RELEASE(picIcon);
 	RELEASE(modelIcon);
+	RELEASE(sceneIcon);
 }
 
-bool ContentBrowserMenu::Start()
+bool MenuContentBrowser::Start()
 {
 	dirIcon = new Texture(-1, std::string("Settings/EngineResources/folder.cattexture"));
 	dirIcon->Load();
 
-	picIcon = new Texture(-2, std::string("Settings/EngineResources/pic.cattexture"));
+	picIcon = new Texture(-2, std::string("Settings/EngineResources/picture.cattexture"));
 	picIcon->Load();
 
 	modelIcon = new Texture(-3, std::string("Settings/EngineResources/model.cattexture"));
 	modelIcon->Load();
 
+	sceneIcon = new Texture(-4, std::string("Settings/EngineResources/logo.cattexture"));
+	sceneIcon->Load();
+
 	return true;
 }
 
-static void UpdatingResources()
-{
-	ResourceManager::GetInstance()->ImportAllResources();
-}
-
-bool ContentBrowserMenu::Update(float dt)
+bool MenuContentBrowser::Update(float dt)
 {
 	std::vector<std::string> files;
 	std::vector<std::string> dirs;
@@ -85,7 +82,7 @@ bool ContentBrowserMenu::Update(float dt)
 	ImGui::BeginChild("Assets");
 
 	float padding = 10.0f;
-	float cell = 64 + padding;
+	float cell = 64;
 
 	float width = ImGui::GetContentRegionAvail().x;
 	int columns = (int)(width / cell);
@@ -103,6 +100,12 @@ bool ContentBrowserMenu::Update(float dt)
 		std::string item = (*it);
 		app->fs->GetRelativeDirectory(item);
 
+		bool selected = false;
+		if (currentFile == *it)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::ColorConvertFloat4ToU32(ImVec4(0.0f, 0.29f, 0.66f, 1.0f)));
+			selected = true;
+		}
 		ImGui::ImageButton(dirIcon ? (ImTextureID)dirIcon->GetId() : 0, { cell, cell });
 		if (ImGui::IsItemClicked())
 		{
@@ -122,8 +125,12 @@ bool ContentBrowserMenu::Update(float dt)
 
 		ImGui::Text(item.c_str());
 
+		if (selected) ImGui::PopStyleColor();
+
 		ImGui::NextColumn();
 	}
+
+	if (!ImGui::IsWindowFocused()) currentFile = "";
 
 	int i = 0;
 	for (std::vector<std::string>::const_iterator it = files2.begin(); it != files2.end(); ++it)
@@ -131,11 +138,28 @@ bool ContentBrowserMenu::Update(float dt)
 		ImGui::PushID(i++);
 		std::string item = (*it);
 
+		ResourceType type = app->fs->CheckExtension(item);
 		app->fs->GetFilenameWithExtension(item);
 
-		if (item.find(".png") != std::string::npos) ImGui::ImageButton(picIcon ? (ImTextureID)picIcon->GetId() : "", { cell, cell });
-		else if (item.find(".fbx") != std::string::npos) ImGui::ImageButton(modelIcon ? (ImTextureID)modelIcon->GetId() : "", { cell, cell });
-		else ImGui::ImageButton("", { cell, cell });
+		bool selected = false;
+		if (currentFile == *it)
+		{
+			ImGui::PushStyleColor(ImGuiCol_Button, ImGui::ColorConvertFloat4ToU32(ImVec4(0.0f, 0.29f, 0.66f, 1.0f)));
+			selected = true;
+		}
+
+		switch (type)
+		{
+		case ResourceType::TEXTURE:
+			ImGui::ImageButton(picIcon ? (ImTextureID)picIcon->GetId() : "", { cell, cell });
+			break;
+		case ResourceType::MODEL:
+			ImGui::ImageButton(modelIcon ? (ImTextureID)modelIcon->GetId() : "", { cell, cell });
+			break;
+		case ResourceType::SCENE:
+			ImGui::ImageButton(sceneIcon ? (ImTextureID)sceneIcon->GetId() : "", { cell, cell });
+			break;
+		}
 		if (ImGui::IsItemClicked())
 		{
 			app->editor->SetResource(ResourceManager::GetInstance()->GetResource((*it)).get());
@@ -148,6 +172,7 @@ bool ContentBrowserMenu::Update(float dt)
 			ImGui::EndDragDropSource();
 		}
 		ImGui::Text(item.c_str());
+		if (selected) ImGui::PopStyleColor();
 
 		ImGui::NextColumn();
 
@@ -176,7 +201,7 @@ bool ContentBrowserMenu::Update(float dt)
 	return true;
 }
 
-void ContentBrowserMenu::DrawRecursive(std::vector<std::string>& dirs)
+void MenuContentBrowser::DrawRecursive(std::vector<std::string>& dirs)
 {
 	for (std::vector<std::string>::iterator it = dirs.begin(); it != dirs.end(); ++it)
 	{

@@ -48,6 +48,7 @@ public:
 
 	bool DrawVec3(std::string& name, float3& vec);
 	void ShowTransformationInfo();
+
 private:
 	float3 position;
 	Quat rotation;
@@ -55,6 +56,7 @@ private:
 	float3 scale;
 	float4x4 globalMatrix;
 	float4x4 localMatrix;
-;
+
+
 	bool changeTransform;
 };

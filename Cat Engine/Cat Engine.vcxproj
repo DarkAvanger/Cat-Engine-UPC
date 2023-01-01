@@ -56,7 +56,8 @@
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)Source Code\External Libraries\glew\include;$(SolutionDir)Source Code\External Libraries\;$(SolutionDir)Source Code\External Libraries\SDL\include;$(SolutionDir)Source Code\External Libraries\Assimp\include;$(SolutionDir)Source Code\External Libraries\DevIL\include;$(SolutionDir)Source Code\External Libraries\Wwise\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>RG_PROFILING;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>RG_PROFILING;GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;%(PreprocessorDefinitions);_UNICODE;UNICODE</PreprocessorDefinitions>
+      <AdditionalOptions>/UNICODE</AdditionalOptions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -76,7 +77,7 @@
       <ExceptionHandling>false</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <AdditionalIncludeDirectories>$(SolutionDir)Source Code\External Libraries\glew\include;$(SolutionDir)Source Code\External Libraries\;$(SolutionDir)Source Code\External Libraries\SDL\include;$(SolutionDir)Source Code\External Libraries\Assimp\include;$(SolutionDir)Source Code\External Libraries\DevIL\include;%(AdditionalIncludeDirectories);$(SolutionDir)Source Code\External Libraries\Wwise\include</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;AK_OPTIMIZED;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC;LOGGING_SUPPORT_DISABLED;WINDOWS_IGNORE_PACKING_MISMATCH;USE_IMGUI_API;_MBCS;AK_OPTIMIZED;%(PreprocessorDefinitions);_UNICODE;UNICODE</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -93,13 +94,6 @@
     <ClInclude Include="Source Code\Dialogs.h" />
     <ClInclude Include="Source Code\EngineTimer.h" />
     <ClInclude Include="Source Code\External Libraries\Imgui\ImGuizmo.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileHelpersBase.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.h" />
-    <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.h" />
     <ClInclude Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkFileHelpers.h" />
@@ -176,11 +170,6 @@
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\EngineTimer.cpp" />
     <ClCompile Include="Source Code\External Libraries\Imgui\ImGuizmo.cpp" />
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkDefaultLowLevelIODispatcher.cpp" />
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFileLocationBase.cpp" />
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackage.cpp" />
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLUT.cpp" />
-    <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkMultipleFileLocation.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookBlocking.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\AkDefaultIOHookDeferred.cpp" />
     <ClCompile Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Win32\stdafx.cpp" />
@@ -236,9 +225,6 @@
     <ClCompile Include="Source Code\ComponentTransform.cpp" />
     <ClCompile Include="Source Code\VertexBuffer.cpp" />
     <ClCompile Include="Source Code\MenuViewport.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source Code\External Libraries\Wwise\include\AK\SoundEngine\Common\AkFilePackageLowLevelIO.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

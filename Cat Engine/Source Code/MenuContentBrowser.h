@@ -4,18 +4,19 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 #include <thread>
+#include <memory>
 
 class Texture;
 
-class ContentBrowserMenu : public Menu
+class MenuContentBrowser : public Menu
 {
 public:
-	ContentBrowserMenu();
-	~ContentBrowserMenu();
+	MenuContentBrowser();
+	~MenuContentBrowser();
 
 	bool Start() override;
+
 	bool Update(float dt) override;
 
 	void DrawRecursive(std::vector<std::string>& dirs);
@@ -25,11 +26,11 @@ public:
 private:
 	std::string currentDirectory;
 	std::string mainDirectory;
+
 	std::string currentFile;
 
 	Texture* dirIcon;
 	Texture* picIcon;
 	Texture* modelIcon;
-
-	std::thread resource;
+	Texture* sceneIcon;
 };

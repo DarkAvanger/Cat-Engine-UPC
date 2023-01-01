@@ -1,23 +1,23 @@
-#include "GameObject.h" 
-#include "Globals.h"
+#include "GameObject.h"
+
 #include "Application.h"
 #include "ModuleScene.h"
+#include "Globals.h"
 
 #include "JsonParse.h"
-
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
 #include "glew/include/GL/glew.h"
 #include "Imgui/imgui.h"
-
+#include "Imgui/imgui_internal.h"
 
 #include "Profiling.h"
+
 
 GameObject::GameObject() : active(true), parent(nullptr), name("Game Object"), newComponent(false), index(nullptr), vertex(nullptr), colliders(false), staticObj(true)
 {
 	globalAabb.SetNegativeInfinity();
-
 	LCG lcg;
 	uuid = lcg.IntFast();
 }
@@ -81,12 +81,18 @@ void GameObject::DrawOutline()
 	}
 }
 
-
 void GameObject::DrawEditor()
 {
+	ImGui::PushMultiItemsWidths(3, ImGui::GetWindowWidth());
 	ImGui::Checkbox("Active", &active);
+	ImGui::PopItemWidth();
 	ImGui::SameLine();
 	ImGui::InputText("Name", &name[0], 20);
+	ImGui::PopItemWidth();
+	ImGui::SameLine();
+	ImGui::Checkbox("Static", &staticObj);
+	ImGui::PopItemWidth();
+
 	ImGui::Checkbox("Colliders", &colliders);
 	ImGui::Separator();
 	for (int i = 0; i < components.size(); ++i)
@@ -97,9 +103,24 @@ void GameObject::DrawEditor()
 	ImGui::NewLine();
 	float x = ImGui::GetWindowSize().x;
 	ImGui::SameLine((x / 2) - 50);
-	if (ImGui::Button("New Component", ImVec2(100, 20)))
+	ImGui::SetNextItemWidth(120);
+	if (ImGui::BeginCombo(" ", "New Component"))
 	{
-		newComponent = true;
+		if (ImGui::Selectable("Mesh Component"))
+		{
+			CreateComponent(ComponentType::MESH_RENDERER);
+			newComponent = false;
+		}
+		if (ImGui::Selectable("Material Component"))
+		{
+			CreateComponent(ComponentType::MATERIAL);
+			newComponent = false;
+		}
+		else if (!ImGui::IsAnyItemHovered() && ((ImGui::GetIO().MouseClicked[0] || ImGui::GetIO().MouseClicked[1])))
+		{
+			newComponent = false;
+		}
+		ImGui::EndCombo();
 	}
 
 	if (newComponent)
@@ -128,6 +149,7 @@ void GameObject::DrawEditor()
 
 void GameObject::DebugColliders()
 {
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	vertex->Bind();
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
@@ -140,6 +162,7 @@ void GameObject::DebugColliders()
 	vertex->Unbind();
 	index->Unbind();
 	glDisableClientState(GL_VERTEX_ARRAY);
+
 	float3 corners[8];
 	globalAabb.GetCornerPoints(corners);
 
@@ -209,23 +232,6 @@ void GameObject::AddComponent(Component* component)
 	components.emplace_back(component);
 }
 
-void GameObject::AddChild(GameObject* object)
-{
-	children.emplace_back(object);
-}
-
-void GameObject::RemoveChild(GameObject* object)
-{
-	for (std::vector<GameObject*>::iterator i = children.begin(); i != children.end(); ++i)
-	{
-		if ((*i) == object)
-		{
-			children.erase(i);
-			break;
-		}
-	}
-}
-
 void GameObject::CopyComponent(Component* component)
 {
 	Component* c = nullptr;
@@ -251,6 +257,23 @@ void GameObject::CopyComponent(Component* component)
 	}
 }
 
+void GameObject::AddChild(GameObject* object)
+{
+	children.emplace_back(object);
+}
+
+void GameObject::RemoveChild(GameObject* object)
+{
+	for (std::vector<GameObject*>::iterator i = children.begin(); i != children.end(); ++i)
+	{
+		if ((*i) == object)
+		{
+			children.erase(i);
+			break;
+		}
+	}
+}
+
 void GameObject::SetAABB(AABB newAABB, bool needToClean)
 {
 	globalObb = newAABB;
@@ -261,9 +284,9 @@ void GameObject::SetAABB(AABB newAABB, bool needToClean)
 	if (parent != nullptr && parent != app->scene->GetRoot())
 	{
 		parent->SetAABB(globalAabb);
-
 	}
 
+	// Configure buffers
 	float3 corners[8];
 	globalAabb.GetCornerPoints(corners);
 
@@ -298,13 +321,22 @@ void GameObject::SetAABB(AABB newAABB, bool needToClean)
 void GameObject::SetAABB(OBB newOBB)
 {
 	globalAabb.Enclose(newOBB);
+}
 
-	if (parent != nullptr && parent != app->scene->GetRoot())
+void GameObject::SetNewAABB()
+{
+	for (int i = 0; i < children.size(); ++i)
 	{
-		OBB newObb = globalAabb.ToOBB();
-		parent->SetAABB(newObb);
+		children[i]->SetNewAABB();
+		OBB newObb = children[i]->GetAABB().ToOBB();
+		globalAabb.Enclose(newObb);
 	}
-
+	if (GetComponent<MeshComponent>() && GetComponent<MeshComponent>()->GetMesh())
+	{
+		OBB newObb = GetComponent<MeshComponent>()->GetLocalAABB().ToOBB();
+		newObb.Transform(GetComponent<TransformComponent>()->GetGlobalTransform());
+		globalAabb.Enclose(newObb);
+	}
 }
 
 void GameObject::MoveChildrenUp(GameObject* child)
@@ -345,7 +377,6 @@ void GameObject::MoveChildrenDown(GameObject* child)
 
 void GameObject::OnLoad(JsonParsing& node)
 {
-
 	uuid = node.GetJsonNumber("UUID");
 	name = node.GetJsonString("Name");
 	active = node.GetJsonBool("Active");

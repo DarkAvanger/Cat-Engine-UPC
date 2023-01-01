@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Module.h"
+
 #include "MathGeoLib/src/Geometry/Frustum.h"
 #include "MathGeoLib/src/Geometry/Line.h"
 
@@ -19,6 +21,7 @@ public:
 	void CalculateVerticalFov(float horizontalFovRadians, float width, float height);
 	void UpdateFovAndScreen(float width, float height);
 	void UpdateFov();
+	void SetPlanes();
 
 	bool LoadConfig(JsonParsing& node) override;
 	bool SaveConfig(JsonParsing& node) const override;
@@ -42,4 +45,5 @@ public:
 	math::Line rayCastToDraw;
 
 	bool canBeUpdated;
+	bool visualizeFrustum;
 };

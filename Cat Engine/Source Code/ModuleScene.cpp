@@ -4,9 +4,10 @@
 #include "Globals.h"
 #include "ModuleEditor.h"
 #include "Primitives.h"
-#include "ModelImporter.h"
-#include "ResourceManager.h"
+#include "MeshImporter.h"
 #include "FileSystem.h"
+#include "Resource.h"
+#include "ResourceManager.h"
 
 #include <AK/SoundEngine/Common/AkMemoryMgr.h>
 #include "AK/SoundEngine/Common/AkModule.h"
@@ -17,14 +18,16 @@
 
 #include <stack>
 
+
+
 #include "Profiling.h"
 
 CAkFilePackageLowLevelIOBlocking lowLevelIO;
 
-ModuleScene::ModuleScene() : mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true)
+ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
 {
 	root = new GameObject();
-	root->SetName("Scene");
+	root->SetName("Untitled");
 }
 
 ModuleScene::~ModuleScene()
@@ -70,6 +73,7 @@ bool ModuleScene::Start()
 
 	ResourceManager::GetInstance()->ImportResourcesFromLibrary();
 	ResourceManager::GetInstance()->ImportAllResources();
+	ImportPrimitives();
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
 
 	return true;
@@ -86,7 +90,7 @@ bool ModuleScene::Update(float dt)
 {
 	RG_PROFILING_FUNCTION("Updating Scene");
 
-	mainCamera->Update(gameTimer.GetDeltaTime());
+	if (mainCamera != nullptr) mainCamera->Update(gameTimer.GetDeltaTime());
 
 	for (int i = 0; i < root->GetChilds().size(); ++i)
 		root->GetChilds()[i]->Update(gameTimer.GetDeltaTime());
@@ -96,6 +100,24 @@ bool ModuleScene::Update(float dt)
 		DEBUG_LOG("DELTA TIME GAME %f", gameTimer.GetDeltaTime());
 		DEBUG_LOG("Seconds passed since game startup %d", gameTimer.GetEngineTimeStartup() / 1000);
 		frameSkip = false;
+	}
+
+	if (goToRecalculate && goToRecalculate->GetParent() != root)
+	{
+		std::stack<GameObject*> objects;
+		objects.push(goToRecalculate->GetParent());
+		while (!objects.empty())
+		{
+			GameObject* parent = objects.top();
+			objects.pop();
+
+			parent->ClearAABB();
+			parent->SetNewAABB();
+
+			if (parent->GetParent() != root) objects.push(parent->GetParent());
+		}
+
+		goToRecalculate = nullptr;
 	}
 
 	if (resetQuadtree)
@@ -145,14 +167,17 @@ bool ModuleScene::Draw()
 	while (!stack.empty())
 	{
 		GameObject* go = stack.top();
-
-		go->Draw();
-
 		stack.pop();
 
-		for (int i = 0; i < go->GetChilds().size(); ++i)
-			stack.push(go->GetChilds()[i]);
+		if (go->GetActive())
+		{
+			go->Draw();
+
+			for (int i = 0; i < go->GetChilds().size(); ++i)
+				stack.push(go->GetChilds()[i]);
+		}
 	}
+
 
 	return true;
 }
@@ -162,6 +187,24 @@ bool ModuleScene::CleanUp()
 	RELEASE(root);
 
 	return true;
+}
+
+void ModuleScene::NewScene()
+{
+	RELEASE(root);
+
+	sceneDir.clear();
+
+	root = new GameObject();
+	root->SetName("Untitled");
+
+	GameObject* camera = CreateGameObject(nullptr);
+	camera->CreateComponent(ComponentType::CAMERA);
+	camera->SetName("Camera");
+
+	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
+
+	app->editor->SetGO(nullptr);
 }
 
 GameObject* ModuleScene::CreateGameObject(GameObject* parent, bool createTransform)
@@ -187,40 +230,32 @@ GameObject* ModuleScene::CreateGameObject(GameObject* parent, bool createTransfo
 GameObject* ModuleScene::Create3DObject(Object3D type, GameObject* parent)
 {
 	GameObject* object = CreateGameObject(parent);
-	std::vector<float3> vertices;
-	std::vector<float3> normals;
-	std::vector<unsigned int> indices;
-	std::vector<float2> texCoords;
-
 	std::string path;
 
 	switch (type)
 	{
 	case Object3D::CUBE:
 		object->SetName("Cube");
-		RCube::CreateCube(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cube.catmesh");
+		path = "Settings/EngineResources/__Cube.mesh";
 		break;
 	case Object3D::PYRAMIDE:
 		object->SetName("Pyramide");
-		RPyramide::CreatePyramide(vertices, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Pyramide.catmesh");
+		path = "Settings/EngineResources/__Pyramide.mesh";
 		break;
 	case Object3D::SPHERE:
 		object->SetName("Sphere");
-		RSphere::CreateSphere(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Sphere.catmesh");
+		path = "Settings/EngineResources/__Sphere.mesh";
 		break;
 	case Object3D::CYLINDER:
 		object->SetName("Cylinder");
-		RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
-		path = MESHES_FOLDER + std::string("Cylinder.catmesh");
+		path = "Settings/EngineResources/__Cylinder.mesh";
 		break;
 	}
 
-	if (!vertices.empty())
+	if (!path.empty())
 	{
 		MeshComponent* mesh = (MeshComponent*)object->CreateComponent(ComponentType::MESH_RENDERER);
+		mesh->SetMesh(ResourceManager::GetInstance()->LoadResource(path));
 	}
 
 	return object;
@@ -279,6 +314,11 @@ bool ModuleScene::LoadScene(const char* name)
 	DEBUG_LOG("Loading Scene");
 
 	RELEASE(root);
+
+	//char* buffer = nullptr;
+
+	//app->fs->Load(name, &buffer);
+	sceneDir = name;
 
 	JsonParsing sceneFile = JsonParsing();
 
@@ -341,6 +381,12 @@ bool ModuleScene::SaveScene(const char* name)
 {
 	DEBUG_LOG("Saving Scene");
 
+	sceneDir = name;
+
+	std::string rootName = name;
+	app->fs->GetFilenameWithoutExtension(rootName);
+	root->SetName(rootName.c_str());
+
 	JsonParsing sceneFile;
 
 	sceneFile = sceneFile.SetChild(sceneFile.GetRootValue(), "Scene");
@@ -374,16 +420,60 @@ void ModuleScene::DuplicateGO(GameObject* go, GameObject* parent)
 	{
 		DuplicateGO(go->GetChilds()[i], gameObject);
 	}
+
 }
 
+void ModuleScene::ImportPrimitives()
+{
+	std::vector<float3> vertices;
+	std::vector<unsigned int> indices;
+	std::vector<float3> normals;
+	std::vector<float2> texCoords;
+
+	RCube::CreateCube(vertices, indices, texCoords);
+	std::string library;
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Cube.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RPyramide::CreatePyramide(vertices, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Pyramide.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RSphere::CreateSphere(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Sphere.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+	library.clear();
+
+	RCylinder::CreateCylinder(vertices, normals, indices, texCoords);
+	ResourceManager::GetInstance()->CreateResource(ResourceType::MESH, std::string("Settings/EngineResources/__Cylinder.mesh"), library);
+	MeshImporter::SaveMesh(library, vertices, indices, normals, texCoords);
+
+	vertices.clear();
+	indices.clear();
+	normals.clear();
+	texCoords.clear();
+}
 
 void ModuleScene::Play()
 {
 	DEBUG_LOG("Saving Scene");
-
-	std::string rootName = name;
-	app->fs->GetFilenameWithoutExtension(rootName);
-	root->SetName(rootName.c_str());
 
 	JsonParsing sceneFile;
 

@@ -30,24 +30,25 @@ public:
 	bool OnSave(JsonParsing& node, JSON_Array* array) override;
 
 	void SetMesh(std::shared_ptr<Resource> m);
+
 	inline void SetTransform(TransformComponent* trans) { transform = trans; }
 	inline void SetMaterial(MaterialComponent* mat) { material = mat; }
+
 	inline AABB GetLocalAABB() { return localBoundingBox; }
 	const std::shared_ptr<Mesh> GetMesh() const { return mesh; }
-
 private:
-
 	TransformComponent* transform;
 	MaterialComponent* material;
 
 	float normalLength;
 	float3 colorNormal;
-	
-	bool showMeshMenu;
+
 	bool faceNormals;
 	bool verticesNormals;
+
 	std::shared_ptr<Mesh> mesh;
 
 	AABB localBoundingBox;
 
+	bool showMeshMenu;
 };

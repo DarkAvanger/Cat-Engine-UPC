@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Resource.h"
 #include <string>
 
@@ -15,7 +16,7 @@ struct TextureParameters
 	float gammaCorrectCurve = 0.0f;
 	bool negative = false;
 	float noise = 0.0f;
-	uint pixelization = 0;
+	int pixelization = 0;
 };
 
 class Texture : public Resource
@@ -27,7 +28,10 @@ public:
 	~Texture();
 
 	void Load() override;
+	void UnLoad() override;
+
 	void DrawOnEditor() override;
+
 	void Bind();
 	void Unbind();
 
@@ -39,6 +43,7 @@ public:
 private:
 	void Reimport();
 
+private:
 	unsigned int id;
 	int width;
 	int height;

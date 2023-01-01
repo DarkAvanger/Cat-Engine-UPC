@@ -10,7 +10,12 @@ struct ModelParameters
 	bool flippedUvs = true;
 	bool optimizedMesh = true;
 	bool normals = true;
-	bool triangulated = true;
+	bool genSmoothNormals = false;
+	bool splitLargeMeshes = true;
+	bool removeRedundantMaterials = false;
+	bool genUVCoords = false;
+	bool optimizeGraph = false;
+	bool debone = false;
 };
 
 class Model : public Resource
@@ -27,10 +32,9 @@ public:
 	inline void SetMeshes(std::vector<uint>& meshesUids) { meshes = meshesUids; }
 
 private:
-
 	void Reimport();
 
 	ModelParameters parameters;
-	std::vector<uint> meshes;
 
+	std::vector<uint> meshes;
 };
