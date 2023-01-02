@@ -3,6 +3,8 @@
 #include "AudioManager.h"
 #include "ComponentTransform.h"
 #include "GameObject.h"
+#include "Application.h"
+#include "ModuleScene.h"
 
 #include "Imgui/imgui.h"
 

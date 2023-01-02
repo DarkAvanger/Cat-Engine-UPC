@@ -91,6 +91,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source Code\AudioManager.h" />
+    <ClInclude Include="Source Code\AudioReverbZoneComponent.h" />
     <ClInclude Include="Source Code\AudioSourceComponent.h" />
     <ClInclude Include="Source Code\ComponentCamera.h" />
     <ClInclude Include="Source Code\Dialogs.h" />
@@ -178,6 +179,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Code\AudioManager.cpp" />
+    <ClCompile Include="Source Code\AudioReverbZoneComponent.cpp" />
     <ClCompile Include="Source Code\AudioSourceComponent.cpp" />
     <ClCompile Include="Source Code\ComponentCamera.cpp" />
     <ClCompile Include="Source Code\EngineTimer.cpp" />

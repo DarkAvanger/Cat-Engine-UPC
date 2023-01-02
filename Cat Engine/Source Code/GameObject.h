@@ -10,6 +10,7 @@
 #include "ComponentCamera.h"
 #include "AudioSourceComponent.h"
 #include "ListenerComponent.h"
+#include "AudioReverbZoneComponent.h"
 
 #include "MathGeoLib/src/MathGeoLib.h"
 
