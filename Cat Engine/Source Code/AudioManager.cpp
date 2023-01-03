@@ -181,6 +181,35 @@ void AudioManager::DeleteReverbZone(AudioReverbZoneComponent* reverbZone)
 	}
 }
 
+void AudioManager::StopAllAudioSources()
+{
+	AK::SoundEngine::StopAll();
+}
+
+void AudioManager::PlayAllAudioSources()
+{
+	for (int i = 0; i < audioSources.size(); ++i)
+	{
+		audioSources[i]->PlayClipOnAwake();
+	}
+}
+
+void AudioManager::ResumeAllAudioSources()
+{
+	for (int i = 0; i < audioSources.size(); ++i)
+	{
+		audioSources[i]->ResumeClip();
+	}
+}
+
+void AudioManager::PauseAllAudioSources()
+{
+	for (int i = 0; i < audioSources.size(); ++i)
+	{
+		audioSources[i]->PauseClip();
+	}
+}
+
 void AudioManager::CheckReverbGameObject(unsigned int UUID)
 {
 	AkAuxSendValue aEnvs;
@@ -211,6 +240,25 @@ void AudioManager::CheckReverbGameObject(unsigned int UUID)
 	}
 }
 
+void AudioManager::AddAudioSource(AudioSourceComponent* audioSource)
+{
+	audioSources.push_back(audioSource);
+}
+
+void AudioManager::DeleteAudioSource(AudioSourceComponent* audioSource)
+{
+	std::vector<AudioSourceComponent*>::iterator iterator = audioSources.begin();
+
+	for (; iterator != audioSources.end(); ++iterator)
+	{
+		if (*iterator == audioSource)
+		{
+			audioSources.erase(iterator);
+			break;
+		}
+	}
+}
+
 void AudioManager::SetDefaultListener(AkGameObjectID* uuid, TransformComponent* listenerPosition)
 {
 	AK::SoundEngine::SetDefaultListeners(uuid, 1);
@@ -222,12 +270,15 @@ void AudioManager::SetPosition(int uuid, AkSoundPosition position)
 	AK::SoundEngine::SetPosition(uuid, position);
 }
 
-void AudioManager::PostEvent(const char* name, int uuid)
+AkPlayingID AudioManager::PostEvent(const char* name, int uuid)
 {
-	if (AK::SoundEngine::PostEvent(name, uuid) == AK_INVALID_PLAYING_ID)
+	AkPlayingID playingID = AK::SoundEngine::PostEvent(name, uuid);
+	if (playingID == AK_INVALID_PLAYING_ID)
 	{
 		DEBUG_LOG("Post event %s failed", name);
+		return -1;
 	}
+	return playingID;
 }
 
 AudioManager::AudioManager() : currentListenerPosition(nullptr)

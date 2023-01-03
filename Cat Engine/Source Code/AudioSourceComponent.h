@@ -24,6 +24,7 @@ private:
 	TransformComponent* transform;
 
 	std::string audioClip;
+	unsigned int playingID;
 	bool mute;
 	float volume;
 	float pitch;

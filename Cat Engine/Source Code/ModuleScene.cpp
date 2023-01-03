@@ -74,12 +74,6 @@ bool ModuleScene::Update(float dt)
 		frameSkip = false;
 	}
 
-	if (app->input->GetKey(SDL_SCANCODE_SPACE) == KeyState::KEY_UP)
-	{
-		app->editor->GetGO()->GetComponent<AudioSourceComponent>()->PlayClip();
-	}
-
-
 	if (goToRecalculate && goToRecalculate->GetParent() != root)
 	{
 		std::stack<GameObject*> objects;

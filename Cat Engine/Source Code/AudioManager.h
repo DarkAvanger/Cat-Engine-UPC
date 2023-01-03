@@ -1,5 +1,6 @@
 #pragma once
 
+#include "AudioSourceComponent.h"
 #include <AK/SoundEngine/Win32/AkFilePackageLowLevelIOBlocking.h>
 #include "AudioReverbZoneComponent.h"
 #include <vector>
@@ -39,10 +40,17 @@ public:
 	void DeleteReverbZone(AudioReverbZoneComponent* reverbZone);
 	void CheckReverbGameObject(unsigned int UUID);
 
+	void AddAudioSource(AudioSourceComponent* audioSource);
+	void DeleteAudioSource(AudioSourceComponent* audioSource);
+	void StopAllAudioSources();
+	void PlayAllAudioSources();
+	void ResumeAllAudioSources();
+	void PauseAllAudioSources();
+
 	void SetDefaultListener(AkGameObjectID* uuid, TransformComponent* listenerPosition);
 	void SetPosition(int uuid, AkSoundPosition position);
 
-	void PostEvent(const char* name, int uuid);
+	AkPlayingID PostEvent(const char* name, int uuid);
 
 	inline std::vector<std::string> GetEventsList() const { return wwiseInfo.events; }
 	inline std::vector<std::string> GetBussesList() const { return wwiseInfo.busses; }
@@ -51,6 +59,9 @@ private:
 	AudioManager();
 
 	std::vector<AudioReverbZoneComponent*> reverbZones;
+
+	std::vector<AudioSourceComponent*> audioSources;
+
 
 	TransformComponent* currentListenerPosition;
 
