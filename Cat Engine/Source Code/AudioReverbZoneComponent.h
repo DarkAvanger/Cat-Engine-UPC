@@ -26,6 +26,9 @@ public:
 
 	bool Update(float dt) override;
 
+	bool OnLoad(JsonParsing& node) override;
+	bool OnSave(JsonParsing& node, JSON_Array* array) override;
+
 	void OnEditor() override;
 
 private:
@@ -36,4 +39,5 @@ private:
 
 	IndexBuffer* ebo;
 	VertexBuffer* vbo;
+	float3 dimensions;
 };

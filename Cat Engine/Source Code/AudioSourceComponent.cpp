@@ -8,7 +8,7 @@
 
 #include "Imgui/imgui.h"
 
-AudioSourceComponent::AudioSourceComponent(GameObject* own, TransformComponent* trans) : audioClip("ActivateBgMusic"), volume(50.0f), mute(false), transform(trans), pitch(0.0f), reverb(0.0f)
+AudioSourceComponent::AudioSourceComponent(GameObject* own, TransformComponent* trans) : audioClip("None"), volume(50.0f), mute(false), transform(trans), pitch(0.0f)
 {
 	owner = own;
 	type = ComponentType::AUDIO_SOURCE;
@@ -33,7 +33,23 @@ void AudioSourceComponent::OnEditor()
 	{
 		ImGui::Text("AudioClip");
 		ImGui::SameLine();
-		ImGui::InputText("##Audio", &audioClip[0], audioClip.size());
+		if (ImGui::BeginCombo("##AudioClip", audioClip.c_str()))
+		{
+			if (ImGui::Selectable("None"))
+			{
+				audioClip = "None";
+			}
+			std::vector<std::string> events = AudioManager::Get()->GetEventsList();
+			for (int i = 0; i < events.size(); i++)
+			{
+				if (ImGui::Selectable(events[i].c_str()))
+				{
+					audioClip = events[i];
+				}
+			}
+
+			ImGui::EndCombo();
+		}
 
 		ImGui::Text("Mute");
 		ImGui::SameLine();
@@ -76,11 +92,24 @@ bool AudioSourceComponent::Update(float dt)
 
 bool AudioSourceComponent::OnLoad(JsonParsing& node)
 {
+	audioClip = node.GetJsonString("Audio Clip");
+	volume = node.GetJsonNumber("Volume");
+	pitch = node.GetJsonNumber("Pitch");
+	mute = node.GetJsonBool("Mute");
 	return true;
 }
 
 bool AudioSourceComponent::OnSave(JsonParsing& node, JSON_Array* array)
 {
+	JsonParsing file = JsonParsing();
+
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Type", (int)type);
+	file.SetNewJsonString(file.ValueToObject(file.GetRootValue()), "Audio Clip", audioClip.c_str());
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Volume", volume);
+	file.SetNewJsonNumber(file.ValueToObject(file.GetRootValue()), "Pitch", pitch);
+	file.SetNewJsonBool(file.ValueToObject(file.GetRootValue()), "Mute", mute);
+
+	node.SetValueToArray(array, file.GetRootValue());
 	return true;
 }
 
