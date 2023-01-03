@@ -8,10 +8,12 @@
 
 #include "Imgui/imgui.h"
 
-AudioSourceComponent::AudioSourceComponent(GameObject* own, TransformComponent* trans) : audioClip("None"), volume(50.0f), mute(false), transform(trans), pitch(0.0f), playingID(-1)
+AudioSourceComponent::AudioSourceComponent(GameObject* own, TransformComponent* trans) : audioClip("None"), volume(50.0f), mute(false), transform(trans), pitch(0.0f), playingID(-1), playOnAwake(false)
 {
 	owner = own;
 	type = ComponentType::AUDIO_SOURCE;
+
+	AudioManager::Get()->AddAudioSource(this);
 
 	if (!owner->CheckAudioRegister())
 	{
@@ -23,6 +25,7 @@ AudioSourceComponent::AudioSourceComponent(GameObject* own, TransformComponent* 
 
 AudioSourceComponent::~AudioSourceComponent()
 {
+	AudioManager::Get()->DeleteAudioSource(this);
 	AudioManager::Get()->UnregisterGameObject(owner->GetUUID());
 }
 
@@ -53,7 +56,7 @@ void AudioSourceComponent::OnEditor()
 
 		ImGui::Text("Mute");
 		ImGui::SameLine();
-		if (ImGui::Checkbox("Mute", &mute))
+		if (ImGui::Checkbox("##Mute", &mute))
 		{
 			if (mute) AK::SoundEngine::SetRTPCValue("Volume", 0, owner->GetUUID());
 			else AK::SoundEngine::SetRTPCValue("Volume", volume, owner->GetUUID());
@@ -63,25 +66,39 @@ void AudioSourceComponent::OnEditor()
 
 		ImGui::Text("Volume");
 		ImGui::SameLine();
-		if (ImGui::SliderFloat("Volume", &volume, 0.0f, 100.0f))
+		if (ImGui::SliderFloat("##Volume", &volume, 0.0f, 100.0f))
 		{
 			AK::SoundEngine::SetRTPCValue("Volume", volume, owner->GetUUID());
 			mute = false;
 		}
 		ImGui::Text("Pitch");
 		ImGui::SameLine();
-		if (ImGui::SliderFloat("Pitch", &pitch, -2400.0f, 2400.0f))
+		if (ImGui::SliderFloat("##Pitch", &pitch, -2400.0f, 2400.0f))
 		{
 			AK::SoundEngine::SetRTPCValue("Pitch", pitch, owner->GetUUID());
 		}
+
+		ImGui::Text("Play On Awake");
+		ImGui::SameLine();
+		ImGui::Checkbox("##Play On Awake", &playOnAwake);
 		if (ImGui::Button("Play"))
 		{
 			PlayClip();
 		}
 		ImGui::SameLine();
+		if (ImGui::Button("Pause"))
+		{
+			PauseClip();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Resume"))
+		{
+			ResumeClip();
+		}
+		ImGui::SameLine();
 		if (ImGui::Button("Stop"))
 		{
-			AK::SoundEngine::StopPlayingID(playingID);
+			StopClip();
 		}
 	}
 	ImGui::PopID();
@@ -125,4 +142,24 @@ bool AudioSourceComponent::OnSave(JsonParsing& node, JSON_Array* array)
 void AudioSourceComponent::PlayClip()
 {
 	playingID = AudioManager::Get()->PostEvent(audioClip.c_str(), owner->GetUUID());
+}
+
+void AudioSourceComponent::PlayClipOnAwake()
+{
+	if (playOnAwake) playingID = AudioManager::Get()->PostEvent(audioClip.c_str(), owner->GetUUID());
+}
+
+void AudioSourceComponent::StopClip()
+{
+	AK::SoundEngine::StopPlayingID(playingID);
+}
+
+void AudioSourceComponent::PauseClip()
+{
+	AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType_Pause, playingID);
+}
+
+void AudioSourceComponent::ResumeClip()
+{
+	AK::SoundEngine::ExecuteActionOnPlayingID(AK::SoundEngine::AkActionOnEventType_Resume, playingID);
 }

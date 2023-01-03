@@ -12,6 +12,11 @@ public:
 	AudioSourceComponent(GameObject* own, TransformComponent* trans);
 	~AudioSourceComponent();
 
+	void PlayClipOnAwake();
+	void StopClip();
+	void PauseClip();
+	void ResumeClip();
+
 	void OnEditor() override;
 	bool Update(float dt) override;
 
@@ -28,4 +33,5 @@ private:
 	bool mute;
 	float volume;
 	float pitch;
+	bool playOnAwake;
 };

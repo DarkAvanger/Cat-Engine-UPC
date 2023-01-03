@@ -30,6 +30,8 @@ public:
 	MenuConsole* GetConsole();
 	std::string& GetCurrentDir();
 
+	void StyleTheme();
+
 private:
 	bool showMenu;
 
@@ -39,5 +41,6 @@ private:
 	Texture* buttonPause;
 	Texture* buttonPauseBlue;
 
+	bool saveWindow;
 	std::vector<Menu*> menus;
 };
