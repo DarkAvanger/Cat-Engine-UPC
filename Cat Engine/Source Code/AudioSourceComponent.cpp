@@ -70,6 +70,7 @@ bool AudioSourceComponent::Update(float dt)
 	float3 orientation = transform->GetRotation().ToEulerXYZ().Normalized();
 	audioSourcePos.SetOrientation({ 0, 0, -1 }, { 0,1,0 });
 	AudioManager::Get()->SetPosition(owner->GetUUID(), audioSourcePos);
+	AudioManager::Get()->CheckReverbGameObject(owner->GetUUID());
 	return true;
 }
 

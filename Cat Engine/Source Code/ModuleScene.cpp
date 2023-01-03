@@ -18,7 +18,7 @@
 
 #include "Profiling.h"
 
-ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr)
+ModuleScene::ModuleScene() : sceneDir(""), mainCamera(nullptr), gameState(GameState::NOT_PLAYING), frameSkip(0), resetQuadtree(true), goToRecalculate(nullptr), camera(nullptr)
 {
 	root = new GameObject();
 	root->SetName("Untitled");
@@ -32,14 +32,14 @@ bool ModuleScene::Start()
 {
 	RG_PROFILING_FUNCTION("Starting Scene");
 
-	GameObject* camera = CreateGameObject(nullptr);
+	camera = CreateGameObject(nullptr);
 	camera->CreateComponent(ComponentType::CAMERA);
 	camera->SetName("Camera");
 	camera->CreateComponent(ComponentType::AUDIO_LISTENER);
 
 	AkGameObjectID cameraID = camera->GetUUID();
 
-	AudioManager::Get()->SetDefaultListener(&cameraID);
+	AudioManager::Get()->SetDefaultListener(&cameraID, camera->GetComponent<TransformComponent>());
 
 	qTree.Create(AABB(float3(-200, -50, -200), float3(200, 50, 200)));
 
@@ -49,10 +49,17 @@ bool ModuleScene::Start()
 	ResourceManager::GetInstance()->LoadResource(std::string("Assets/Resources/Street.fbx"));
 
 	AkAuxSendValue aEnvs[1];
-	/*AkReal32 fObstruction = 0.05f;
-	AkReal32 fOcclusion = 0.0f;
 
-	AK::SoundEngine::SetObjectObstructionAndOcclusion(camera->GetUUID(), camera->GetUUID(), fObstruction, fOcclusion);*/
+	root->GetChilds()[1]->GetChilds()[1]->CreateComponent(ComponentType::AUDIO_REVERB_ZONE);
+
+	aEnvs[0].listenerID = camera->GetUUID();
+	aEnvs[0].auxBusID = AK::SoundEngine::GetIDFromString(L"ReverbZone");
+	aEnvs[0].fControlValue = 0.0f;
+
+	if (AK::SoundEngine::SetGameObjectAuxSendValues(camera->GetUUID(), aEnvs, 1) != AK_Success)
+	{
+		DEBUG_LOG("Couldn't set aux send values");
+	}
 
 	return true;
 }
